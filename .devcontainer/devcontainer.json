@@ -3,7 +3,14 @@
   "image": "mcr.microsoft.com/devcontainers/base:bookworm",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.12"
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/google-cloud-cli:1": {
+      "version": "latest",
+      "installGkeGcloudAuthPlugin": false
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest"
     },
     "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
@@ -13,8 +20,24 @@
     "vscode": {
       "extensions": [
         "charliermarsh.ruff",
-        "ms-python.python"
-      ]
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.vscode-jupyter-cell-tags",
+        "ms-azuretools.vscode-docker",
+        "googlecloudtools.cloudcode"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+          }
+        }
+      }
     }
   }
 }
