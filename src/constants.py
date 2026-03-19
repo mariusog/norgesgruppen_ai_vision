@@ -32,8 +32,8 @@ INFERENCE_TIMEOUT = 300
 # Path to YOLOv8 weights file (relative to repo root)
 MODEL_PATH = "weights/model.pt"
 
-# Number of detection categories (IDs 0-355)
-NUM_CLASSES = 356
+# Number of detection categories (IDs 0-356; category 356 = "unknown_product")
+NUM_CLASSES = 357
 
 # YOLO input resolution -- higher = more accurate, slower
 IMAGE_SIZE = 640
@@ -58,7 +58,7 @@ MAX_DETECTIONS_PER_IMAGE = 300
 # ---------------------------------------------------------------------------
 
 # Maximum total size of all weight files in the zip (MB)
-MAX_WEIGHT_SIZE_MB = 420
+MAX_WEIGHT_SIZE_MB = 420  # Also: max 3 weight files, max 10 .py files in zip
 
 # Safety margin: flag if projected total inference time exceeds this (seconds)
 INFERENCE_BUDGET_SOFT_LIMIT = 250

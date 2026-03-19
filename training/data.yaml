@@ -8,8 +8,8 @@ path: /workspace/data          # Root dataset directory (mounted in training con
 train: train/images
 val: val/images
 
-# Number of classes
-nc: 356
+# Number of classes (IDs 0-356; category 356 = unknown_product)
+nc: 357
 
 # Class names: grocery product categories 0-355
 # TODO: Replace with actual category names from competition MCP once dataset is downloaded

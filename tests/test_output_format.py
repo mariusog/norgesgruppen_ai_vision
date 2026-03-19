@@ -39,8 +39,8 @@ def _is_valid_prediction(item: Any, index: int) -> list[str]:
         errors.append(
             f"[{index}] category_id must be int, got {type(item['category_id']).__name__}"
         )
-    elif not (0 <= item["category_id"] <= 355):
-        errors.append(f"[{index}] category_id {item['category_id']} out of range [0, 355]")
+    elif not (0 <= item["category_id"] <= 356):
+        errors.append(f"[{index}] category_id {item['category_id']} out of range [0, 356]")
 
     # bbox must be [x, y, w, h] — exactly 4 numeric elements
     bbox = item["bbox"]
@@ -86,7 +86,7 @@ class TestPredictionSchema:
         assert any("bbox" in e for e in errors)
 
     def test_category_id_out_of_range_fails(self) -> None:
-        pred = {"image_id": 1, "category_id": 356, "bbox": [0.0, 0.0, 10.0, 10.0], "score": 0.5}
+        pred = {"image_id": 1, "category_id": 357, "bbox": [0.0, 0.0, 10.0, 10.0], "score": 0.5}
         errors = _is_valid_prediction(pred, 0)
         assert any("category_id" in e for e in errors)
 
@@ -133,7 +133,7 @@ class TestOutputFileFormat:
         predictions = [
             {"image_id": 1, "category_id": 0, "bbox": [10.0, 20.0, 50.0, 60.0], "score": 0.87},
             {"image_id": 1, "category_id": 12, "bbox": [100.0, 150.0, 30.0, 40.0], "score": 0.63},
-            {"image_id": 2, "category_id": 355, "bbox": [5.0, 5.0, 200.0, 300.0], "score": 0.99},
+            {"image_id": 2, "category_id": 356, "bbox": [5.0, 5.0, 200.0, 300.0], "score": 0.99},
         ]
         output = tmp_path / "out.json"
         output.write_text(json.dumps(predictions))

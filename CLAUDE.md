@@ -5,7 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Competition Context
 
 **NM i AI 2026 – NorgesGruppen Object Detection** (deadline March 22, 2026).
-Task: detect and classify grocery products from 356 categories (IDs 0–355) in shelf images.
+Task: detect and classify grocery products from **357 categories** (IDs 0–356; ID 356 = `unknown_product`) in shelf images.
+Scoring: **70% detection mAP** (bbox IoU ≥ 0.5, category ignored) + **30% classification mAP** (IoU ≥ 0.5 AND correct category_id). Detection-only baseline scores up to 0.70.
+Submission limits: **3 per day**, 2 in-flight at once.
 
 ## Commands
 
@@ -69,12 +71,21 @@ The `nmiai` MCP server (`https://mcp-docs.ainm.no/mcp`) is configured in `.mcp.j
 
 ## Competition Constraints
 
-### BLOCKED IMPORTS — submission is disqualified if any `.py` file contains:
+### BLOCKED — submission is disqualified if any `.py` file contains:
 
 ```python
+# Blocked modules
 import os          # use pathlib.Path instead
-import subprocess  # not allowed
-import socket      # not allowed
+import subprocess
+import socket
+import ctypes
+import builtins
+
+# Blocked builtins
+eval(...)
+exec(...)
+compile(...)
+__import__(...)
 ```
 
 The `security-imports.sh` PostToolUse hook blocks any edit that introduces these. If the hook fires, fix it before continuing. Tests in `tests/test_security.py` also enforce this.
@@ -88,7 +99,7 @@ The `security-imports.sh` PostToolUse hook blocks any edit that introduces these
   ```
   - `bbox` is `[x_topleft, y_topleft, width, height]` in pixels (xywh, **not** xyxy)
   - `score` must be Python `float`, `category_id` and `image_id` must be Python `int`
-  - `image_id` comes from the image filename stem (e.g. `000042.jpg` → `42`)
+  - `image_id` comes from `int(img_path.stem.split("_")[-1])` — filenames are `img_00042.jpg` → `42`
 - Max weight files: **420 MB** total
 - Timeout: **300 seconds** for the entire test set on an NVIDIA L4 (24 GB VRAM, 8 GB RAM)
 - Pre-installed: Python 3.11, ultralytics 8.1.0, PyTorch 2.6.0+cu124, onnxruntime-gpu 1.20.0

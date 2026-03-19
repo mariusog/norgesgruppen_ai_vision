@@ -1,8 +1,9 @@
 """
-Tests that no Python source files use forbidden imports.
+Tests that no Python source files use forbidden imports or calls.
 
 The competition sandbox security scanner disqualifies any submission using:
-  import os, import subprocess, import socket
+  Blocked modules: os, subprocess, socket, ctypes, builtins
+  Blocked builtins: eval(), exec(), compile(), __import__()
 
 These tests catch violations before they reach the sandbox.
 """
@@ -24,13 +25,15 @@ SOURCE_FILES_AT_ROOT = [
     REPO_ROOT / "run.py",
 ]
 
+_BLOCKED_MODULES = "os|subprocess|socket|ctypes|builtins"
+_BLOCKED_BUILTINS = "eval|exec|compile|__import__"
+
 FORBIDDEN_PATTERNS = [
-    (re.compile(r"^import os(\s|;|$)", re.MULTILINE), "import os"),
-    (re.compile(r"^from os(\s|\.|$)", re.MULTILINE), "from os"),
-    (re.compile(r"^import subprocess(\s|;|$)", re.MULTILINE), "import subprocess"),
-    (re.compile(r"^from subprocess(\s|\.|$)", re.MULTILINE), "from subprocess"),
-    (re.compile(r"^import socket(\s|;|$)", re.MULTILINE), "import socket"),
-    (re.compile(r"^from socket(\s|\.|$)", re.MULTILINE), "from socket"),
+    # Blocked module imports (anchored to line start)
+    (re.compile(rf"^\s*import ({_BLOCKED_MODULES})\b", re.MULTILINE), "blocked module import"),
+    (re.compile(rf"^\s*from ({_BLOCKED_MODULES})(\s|\.|;|$)", re.MULTILINE), "blocked from-import"),
+    # Blocked builtin calls (anchored to line start to avoid matching comments/strings)
+    (re.compile(rf"^\s*({_BLOCKED_BUILTINS})\s*\(", re.MULTILINE), "blocked builtin call"),
 ]
 
 

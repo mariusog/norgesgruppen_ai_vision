@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
-# Blocks forbidden imports that will disqualify the competition submission.
+# Blocks forbidden imports/calls that will disqualify the competition submission.
 # Runs as a PostToolUse hook after Edit|Write on Python files.
 #
-# Scans for actual import STATEMENTS only (lines starting with import/from),
-# not string literals or comments that happen to contain these words.
+# Full blocked list per competition security scanner:
+#   Modules: os, subprocess, socket, ctypes, builtins
+#   Builtins: eval(), exec(), compile(), __import__()
 
 set -euo pipefail
 
-# Read the tool input JSON from stdin
 INPUT=$(cat)
 
-# Extract the file path from the tool input
 FILE_PATH=$(echo "$INPUT" | python3 -c "
 import sys, json
 data = json.load(sys.stdin)
@@ -18,34 +17,40 @@ tool_input = data.get('tool_input', data)
 print(tool_input.get('file_path', ''))
 " 2>/dev/null || echo "")
 
-# Only check Python files
 if [[ "$FILE_PATH" != *.py ]]; then
   exit 0
 fi
 
-# Only check if the file exists
 if [[ -z "$FILE_PATH" ]] || [[ ! -f "$FILE_PATH" ]]; then
   exit 0
 fi
 
-# Match actual import statements only — anchored at start of line (with optional leading whitespace)
-# These patterns match: import os, import os.path, from os import ..., etc.
-# They do NOT match occurrences inside string literals or comments.
-SINGLE_PATTERN='^\s*(import (os|subprocess|socket)\b|from (os|subprocess|socket)(\s|\.|;|$))'
+# Forbidden import statements (anchored to start of line, with optional whitespace)
+IMPORT_PATTERN='^\s*(import (os|subprocess|socket|ctypes|builtins)\b|from (os|subprocess|socket|ctypes|builtins)(\s|\.|;|$))'
 
-MATCHES=$(grep -Pn "$SINGLE_PATTERN" "$FILE_PATH" 2>/dev/null || true)
+# Forbidden builtin calls
+CALL_PATTERN='^\s*(eval|exec|compile|__import__)\s*\('
 
-if [[ -n "$MATCHES" ]]; then
+IMPORT_MATCHES=$(grep -Pn "$IMPORT_PATTERN" "$FILE_PATH" 2>/dev/null || true)
+CALL_MATCHES=$(grep -Pn "$CALL_PATTERN" "$FILE_PATH" 2>/dev/null || true)
+
+if [[ -n "$IMPORT_MATCHES" ]] || [[ -n "$CALL_MATCHES" ]]; then
   echo ""
   echo "COMPETITION SECURITY VIOLATION: $FILE_PATH"
-  echo "The sandbox security scanner will DISQUALIFY submissions using these imports:"
-  echo "  import os | import subprocess | import socket"
+  echo "Sandbox scanner DISQUALIFIES submissions using these:"
+  echo "  Blocked modules: os, subprocess, socket, ctypes, builtins"
+  echo "  Blocked builtins: eval(), exec(), compile(), __import__()"
   echo ""
-  echo "Violations found:"
-  echo "$MATCHES" | head -5 | sed 's/^/  /'
+  if [[ -n "$IMPORT_MATCHES" ]]; then
+    echo "Forbidden imports:"
+    echo "$IMPORT_MATCHES" | head -5 | sed 's/^/  /'
+  fi
+  if [[ -n "$CALL_MATCHES" ]]; then
+    echo "Forbidden calls:"
+    echo "$CALL_MATCHES" | head -5 | sed 's/^/  /'
+  fi
   echo ""
-  echo "Fix: use pathlib.Path for file ops; avoid subprocess/socket entirely."
-  echo ""
+  echo "Fix: use pathlib.Path for file ops; avoid subprocess/socket/ctypes entirely."
   exit 2
 fi
 

@@ -50,7 +50,7 @@ def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
 
     with torch.no_grad():
         for img_path in image_paths:
-            image_id = int(img_path.stem)
+            image_id = int(img_path.stem.split("_")[-1])
             results = model.predict(
                 str(img_path),
                 verbose=False,
