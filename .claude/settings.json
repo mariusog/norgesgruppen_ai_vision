@@ -1,4 +1,5 @@
 {
+  "enabledMcpjsonServers": ["nmiai"],
   "hooks": {
     "PreToolUse": [
       {
@@ -21,6 +22,12 @@
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-after-edit.sh",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/security-imports.sh",
+            "timeout": 10,
+            "statusMessage": "Checking for forbidden imports..."
           }
         ]
       }

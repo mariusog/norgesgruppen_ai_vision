@@ -1,0 +1,21 @@
+# YOLO dataset configuration for NorgesGruppen grocery detection
+# NM i AI 2026 — 356 categories, IDs 0-355
+#
+# Dataset stored in GCS: gs://ai-nm26osl-1792-nmiai/datasets/
+# Pull locally before training: see scripts/download_dataset.sh
+
+path: /workspace/data          # Root dataset directory (mounted in training container)
+train: train/images
+val: val/images
+
+# Number of classes
+nc: 356
+
+# Class names: grocery product categories 0-355
+# TODO: Replace with actual category names from competition MCP once dataset is downloaded
+names:
+  0: category_0
+  1: category_1
+  2: category_2
+  # ... fill in from competition dataset metadata
+  355: category_355

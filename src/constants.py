@@ -13,7 +13,74 @@ When adding a new constant:
 """
 
 # ---------------------------------------------------------------------------
-# System limits
+# Competition: hardware constraints
+# ---------------------------------------------------------------------------
+
+# NVIDIA L4 GPU VRAM (GB) -- sandbox hardware
+MAX_GPU_MEMORY_GB = 24
+
+# System RAM (GB) -- sandbox limit
+MAX_RAM_GB = 8
+
+# Wall-clock timeout for the entire test set (seconds)
+INFERENCE_TIMEOUT = 300
+
+# ---------------------------------------------------------------------------
+# Competition: model configuration
+# ---------------------------------------------------------------------------
+
+# Path to YOLOv8 weights file (relative to repo root)
+MODEL_PATH = "weights/model.pt"
+
+# Number of detection categories (IDs 0-355)
+NUM_CLASSES = 356
+
+# YOLO input resolution -- higher = more accurate, slower
+IMAGE_SIZE = 640
+
+# ---------------------------------------------------------------------------
+# Competition: inference tuning
+# ---------------------------------------------------------------------------
+
+# Minimum confidence to include a detection in output
+# Lower = more detections (better recall), higher = fewer false positives
+# Tune against validation mAP; start at 0.25
+CONFIDENCE_THRESHOLD = 0.25
+
+# NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
+IOU_THRESHOLD = 0.45
+
+# Max detections per image -- L4 has plenty of memory, but cap for safety
+MAX_DETECTIONS_PER_IMAGE = 300
+
+# ---------------------------------------------------------------------------
+# Competition: submission constraints
+# ---------------------------------------------------------------------------
+
+# Maximum total size of all weight files in the zip (MB)
+MAX_WEIGHT_SIZE_MB = 420
+
+# Safety margin: flag if projected total inference time exceeds this (seconds)
+INFERENCE_BUDGET_SOFT_LIMIT = 250
+
+# ---------------------------------------------------------------------------
+# File handling
+# ---------------------------------------------------------------------------
+
+# Supported image extensions for input directory scanning
+IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp")
+
+# ---------------------------------------------------------------------------
+# GCP configuration
+# ---------------------------------------------------------------------------
+
+GCP_PROJECT_ID = "ai-nm26osl-1792"
+GCS_BUCKET = "ai-nm26osl-1792-nmiai"
+GCS_DATASET_PREFIX = "datasets"
+GCS_WEIGHTS_PREFIX = "weights"
+
+# ---------------------------------------------------------------------------
+# System limits (generic safeguards)
 # ---------------------------------------------------------------------------
 
 # Maximum iterations for search/exploration functions (prevents unbounded loops)
@@ -22,33 +89,8 @@ MAX_SEARCH_STEPS = 10_000
 # Maximum file/data size to process in one pass
 MAX_BATCH_SIZE = 1_000
 
-# ---------------------------------------------------------------------------
-# Performance tuning
-# ---------------------------------------------------------------------------
-
 # Cache size limit for LRU caches (0 = unbounded, use with caution)
 DEFAULT_CACHE_SIZE = 1024
 
 # Timeout budget for real-time operations (seconds)
 OPERATION_TIMEOUT = 2.0
-
-# ---------------------------------------------------------------------------
-# Algorithm parameters
-# ---------------------------------------------------------------------------
-
-# Example: thresholds, weights, and scoring parameters go here.
-# Replace with your project-specific constants.
-#
-# SCORE_MULTIPLIER = 1.15
-# BASE_BONUS = 5
-# RETRY_LIMIT = 3
-
-# ---------------------------------------------------------------------------
-# Logging and diagnostics
-# ---------------------------------------------------------------------------
-
-# Example diagnostic thresholds. Replace with your project's needs.
-#
-# IDLE_THRESHOLD = 10          # steps idle before flagging as anomaly
-# OSCILLATION_THRESHOLD = 5   # state flip-flops before flagging
-# SCORE_GAP_THRESHOLD = 20    # steps without progress before flagging

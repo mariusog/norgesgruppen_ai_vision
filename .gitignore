@@ -66,6 +66,17 @@ terraform.tfstate*
 .claude/settings.local.json
 .claude/worktrees/
 
+# Competition model weights (stored in GCS: gs://ai-nm26osl-1792-nmiai/weights/)
+weights/
+*.pt
+*.pth
+*.onnx
+*.engine
+*.trt
+
+# Competition submission zip
+submission*.zip
+
 # OS files
 .DS_Store
 Thumbs.db
