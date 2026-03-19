@@ -5,10 +5,10 @@ echo "=== Setting up Norgesgruppen AI Vision devcontainer ==="
 
 # Install gcloud CLI via official apt repo (Debian bookworm)
 curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
-  | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+  | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
-  | tee /etc/apt/sources.list.d/google-cloud-sdk.list
-apt-get update -qq && apt-get install -y -q google-cloud-cli
+  | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
+sudo apt-get update -qq && sudo apt-get install -y -q google-cloud-cli
 
 # Install Python dev tools + competition packages
 pip install --upgrade pip
