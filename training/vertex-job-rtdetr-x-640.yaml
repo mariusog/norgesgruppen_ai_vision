@@ -1,0 +1,27 @@
+workerPoolSpecs:
+  - machineSpec:
+      machineType: a2-highgpu-1g
+      acceleratorType: NVIDIA_TESLA_A100
+      acceleratorCount: 1
+    replicaCount: 1
+    containerSpec:
+      imageUri: europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+      command:
+        - "python"
+        - "training/train.py"
+      args:
+        - "--data"
+        - "training/data.yaml"
+        - "--model"
+        - "rtdetr-x.pt"
+        - "--imgsz"
+        - "640"
+        - "--batch"
+        - "4"
+        - "--epochs"
+        - "150"
+        - "--run-id"
+        - "rtdetr-x-640_augmented"
+    diskSpec:
+      bootDiskType: pd-ssd
+      bootDiskSizeGb: 100

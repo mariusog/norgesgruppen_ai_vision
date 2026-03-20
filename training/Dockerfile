@@ -19,8 +19,10 @@ COPY pyproject.toml ./
 COPY src/ src/
 COPY training/ training/
 
-# Only install what's NOT in the base image: GCS SDK for dataset download/weight upload
-RUN pip install --no-cache-dir "google-cloud-storage==2.14.0"
+# Install what's NOT in the base image
+RUN pip install --no-cache-dir \
+    "google-cloud-storage==2.14.0" \
+    "timm==0.9.12"
 
 # Default command: run training with standard config
 CMD ["python", "training/train.py", "--data", "training/data.yaml"]
