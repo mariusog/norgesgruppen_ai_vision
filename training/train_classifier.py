@@ -371,9 +371,9 @@ def validate(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="EfficientNet-B3 classifier training for NorgesGruppen products"
-    )
+    global INPUT_SIZE, GCS_WEIGHTS_NAME
+
+    parser = argparse.ArgumentParser(description="Classifier training for NorgesGruppen products")
     parser.add_argument("--epochs", type=int, default=NUM_EPOCHS)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--lr", type=float, default=LEARNING_RATE)
@@ -406,9 +406,9 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
-    # Override global INPUT_SIZE if --input-size provided
-    global INPUT_SIZE
+    # Override globals from CLI args
     INPUT_SIZE = args.input_size
+    GCS_WEIGHTS_NAME = args.gcs_name
 
     # Build datasets
     train_dataset = ProductClassificationDataset(
@@ -518,9 +518,6 @@ def main() -> None:
 
     # Upload to GCS
     if not args.no_upload:
-        # Use custom GCS name if provided
-        global GCS_WEIGHTS_NAME
-        GCS_WEIGHTS_NAME = args.gcs_name
         upload_weights(save_path)
 
     print("Done.")
