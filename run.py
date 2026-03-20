@@ -27,6 +27,7 @@ from ultralytics import YOLO  # noqa: E402
 
 from src.constants import (  # noqa: E402
     CONFIDENCE_THRESHOLD,
+    ENSEMBLE_WEIGHTS,
     HALF_PRECISION,
     IMAGE_EXTENSIONS,
     IMAGE_SIZE,
@@ -36,6 +37,8 @@ from src.constants import (  # noqa: E402
     MODEL_ENGINE_PATH,
     MODEL_PATH,
     USE_TTA,
+    WBF_IOU_THRESHOLD,
+    WBF_SKIP_BOX_THRESHOLD,
 )
 
 
@@ -54,6 +57,19 @@ def load_model() -> YOLO:
     model = YOLO(str(model_path))
     model.to("cuda")
     return model
+
+
+def load_ensemble_models() -> list[YOLO]:
+    """Load multiple YOLO models for ensemble inference."""
+    models: list[YOLO] = []
+    for weight_path in ENSEMBLE_WEIGHTS:
+        p = Path(weight_path)
+        if not p.exists():
+            raise FileNotFoundError(f"Ensemble weight not found: {p}")
+        model = YOLO(str(p))
+        model.to("cuda")
+        models.append(model)
+    return models
 
 
 def collect_images(input_dir: Path) -> list[Path]:
@@ -102,6 +118,93 @@ def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
     return predictions
 
 
+def run_ensemble_inference(models: list[YOLO], image_paths: list[Path]) -> list[dict]:
+    """Run ensemble detection using WBF to merge predictions from multiple models.
+
+    Each image is processed independently: all models predict on it, then
+    Weighted Box Fusion merges the detections into a single set.
+    """
+    from ensemble_boxes import weighted_boxes_fusion
+
+    predictions: list[dict] = []
+    with torch.no_grad():
+        for img_path in image_paths:
+            image_id = int(img_path.stem.split("_")[-1])
+            img_str = str(img_path)
+
+            boxes_list: list[list[list[float]]] = []
+            scores_list: list[list[float]] = []
+            labels_list: list[list[int]] = []
+            img_h: int = 0
+            img_w: int = 0
+
+            for model in models:
+                results = model.predict(
+                    img_str,
+                    verbose=False,
+                    conf=CONFIDENCE_THRESHOLD,
+                    iou=IOU_THRESHOLD,
+                    imgsz=IMAGE_SIZE,
+                    half=HALF_PRECISION,
+                    augment=USE_TTA,
+                    max_det=MAX_DETECTIONS_PER_IMAGE,
+                )
+                result = results[0]
+                img_h, img_w = result.orig_shape
+
+                model_boxes: list[list[float]] = []
+                model_scores: list[float] = []
+                model_labels: list[int] = []
+
+                if result.boxes is not None and len(result.boxes) > 0:
+                    for box in result.boxes:
+                        x1, y1, x2, y2 = box.xyxy[0].tolist()
+                        # Normalize to [0, 1] for WBF
+                        model_boxes.append([
+                            x1 / img_w,
+                            y1 / img_h,
+                            x2 / img_w,
+                            y2 / img_h,
+                        ])
+                        model_scores.append(float(box.conf[0].item()))
+                        model_labels.append(int(box.cls[0].item()))
+
+                boxes_list.append(model_boxes)
+                scores_list.append(model_scores)
+                labels_list.append(model_labels)
+
+            # Skip WBF if no model produced any detections
+            if all(len(b) == 0 for b in boxes_list):
+                continue
+
+            fused_boxes, fused_scores, fused_labels = weighted_boxes_fusion(
+                boxes_list,
+                scores_list,
+                labels_list,
+                weights=None,
+                iou_thr=WBF_IOU_THRESHOLD,
+                skip_box_thr=WBF_SKIP_BOX_THRESHOLD,
+            )
+
+            for box, score, label in zip(fused_boxes, fused_scores, fused_labels, strict=True):
+                # Denormalize back to pixel coordinates (xyxy)
+                x1 = float(box[0]) * img_w
+                y1 = float(box[1]) * img_h
+                x2 = float(box[2]) * img_w
+                y2 = float(box[3]) * img_h
+                # Convert xyxy → xywh for competition format
+                predictions.append(
+                    {
+                        "image_id": int(image_id),
+                        "category_id": int(label),
+                        "bbox": [x1, y1, x2 - x1, y2 - y1],
+                        "score": float(score),
+                    }
+                )
+
+    return predictions
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="NorgesGruppen grocery detector")
     parser.add_argument("--input", type=str, required=True, help="Input image directory")
@@ -116,10 +219,14 @@ def main() -> None:
 
     t_start = time.perf_counter()
 
-    model = load_model()
     image_paths = collect_images(input_dir)
 
-    predictions = run_inference(model, image_paths)
+    if ENSEMBLE_WEIGHTS:
+        models = load_ensemble_models()
+        predictions = run_ensemble_inference(models, image_paths)
+    else:
+        model = load_model()
+        predictions = run_inference(model, image_paths)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(predictions))

@@ -48,6 +48,20 @@ HALF_PRECISION = True
 MODEL_ENGINE_PATH = "weights/model.engine"
 
 # ---------------------------------------------------------------------------
+# Model ensemble — WBF (Weighted Box Fusion)
+# ---------------------------------------------------------------------------
+
+# List of weight paths to load (empty = single model mode using MODEL_PATH).
+# When populated, predictions from all models are merged with WBF.
+ENSEMBLE_WEIGHTS: list[str] = []
+
+# WBF IoU threshold — boxes with IoU above this are fused together
+WBF_IOU_THRESHOLD = 0.55
+
+# WBF minimum score to keep a box before fusion
+WBF_SKIP_BOX_THRESHOLD = 0.001
+
+# ---------------------------------------------------------------------------
 # Competition: inference tuning
 # ---------------------------------------------------------------------------
 
