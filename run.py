@@ -23,9 +23,14 @@ import torch
 # ultralytics 8.1.0 model loading. Patch before importing ultralytics.
 torch.load = functools.partial(torch.load, weights_only=False)
 
+from PIL import Image  # noqa: E402
+from torchvision import transforms  # noqa: E402
 from ultralytics import YOLO  # noqa: E402
 
 from src.constants import (  # noqa: E402
+    CLASSIFIER_INPUT_SIZE,
+    CLASSIFIER_MODEL_NAME,
+    CLASSIFIER_PATH,
     CONFIDENCE_THRESHOLD,
     ENSEMBLE_WEIGHTS,
     HALF_PRECISION,
@@ -36,6 +41,8 @@ from src.constants import (  # noqa: E402
     MAX_DETECTIONS_PER_IMAGE,
     MODEL_ENGINE_PATH,
     MODEL_PATH,
+    NUM_CLASSES,
+    USE_CLASSIFIER,
     USE_TTA,
     WBF_IOU_THRESHOLD,
     WBF_SKIP_BOX_THRESHOLD,
@@ -70,6 +77,114 @@ def load_ensemble_models() -> list[YOLO]:
         model.to("cuda")
         models.append(model)
     return models
+
+
+def load_classifier() -> torch.nn.Module | None:
+    """Load the two-stage classifier if weights exist and USE_CLASSIFIER is True.
+
+    Returns the classifier model on CUDA in eval mode, or None if unavailable.
+    """
+    if not USE_CLASSIFIER:
+        return None
+
+    classifier_path = Path(CLASSIFIER_PATH)
+    if not classifier_path.exists():
+        return None
+
+    import timm
+
+    model = timm.create_model(CLASSIFIER_MODEL_NAME, num_classes=NUM_CLASSES)
+    state_dict = torch.load(str(classifier_path), map_location="cpu")
+    model.load_state_dict(state_dict)
+    model.to("cuda")
+    model.eval()
+    return model
+
+
+def classify_crops(
+    image_paths: list[Path],
+    predictions: list[dict],
+    classifier: torch.nn.Module,
+    batch_size: int = 64,
+) -> list[dict]:
+    """Re-classify each YOLO detection using the two-stage classifier.
+
+    Crops each detected bbox from the original image, resizes to
+    CLASSIFIER_INPUT_SIZE, runs the classifier, and overrides category_id.
+
+    Args:
+        image_paths: list of image paths used during detection.
+        predictions: list of prediction dicts (mutated in place and returned).
+        classifier: the loaded classifier model.
+        batch_size: number of crops to classify per forward pass.
+
+    Returns:
+        The updated predictions list with refined category_id values.
+    """
+    if not predictions:
+        return predictions
+
+    # Build a lookup from image_id to file path
+    id_to_path: dict[int, Path] = {}
+    for p in image_paths:
+        img_id = int(p.stem.split("_")[-1])
+        id_to_path[img_id] = p
+
+    # ImageNet normalization transform
+    normalize = transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225],
+    )
+
+    # Cache opened images to avoid re-reading the same file
+    image_cache: dict[int, Image.Image] = {}
+
+    # Prepare all crops
+    crop_tensors: list[torch.Tensor] = []
+    for pred in predictions:
+        img_id = pred["image_id"]
+        if img_id not in image_cache:
+            img_path = id_to_path[img_id]
+            image_cache[img_id] = Image.open(str(img_path)).convert("RGB")
+        img = image_cache[img_id]
+
+        # bbox is [x, y, width, height] in pixels
+        bx, by, bw, bh = pred["bbox"]
+        # Clamp crop coordinates to image bounds
+        img_w, img_h = img.size
+        left = max(0, int(bx))
+        upper = max(0, int(by))
+        right = min(img_w, int(bx + bw))
+        lower = min(img_h, int(by + bh))
+
+        crop = img.crop((left, upper, right, lower))
+        crop = crop.resize(
+            (CLASSIFIER_INPUT_SIZE, CLASSIFIER_INPUT_SIZE),
+            Image.BILINEAR,
+        )
+
+        # Convert to tensor [C, H, W] in [0, 1] range, then normalize
+        tensor = transforms.functional.to_tensor(crop)
+        tensor = normalize(tensor)
+        crop_tensors.append(tensor)
+
+    # Free cached images
+    image_cache.clear()
+
+    # Run classifier in batches
+    all_class_ids: list[int] = []
+    with torch.no_grad():
+        for i in range(0, len(crop_tensors), batch_size):
+            batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
+            logits = classifier(batch)
+            class_ids = logits.argmax(dim=1).cpu().tolist()
+            all_class_ids.extend(class_ids)
+
+    # Update predictions with classifier results
+    for pred, cls_id in zip(predictions, all_class_ids, strict=True):
+        pred["category_id"] = int(cls_id)
+
+    return predictions
 
 
 def collect_images(input_dir: Path) -> list[Path]:
@@ -220,6 +335,7 @@ def main() -> None:
     t_start = time.perf_counter()
 
     image_paths = collect_images(input_dir)
+    classifier = load_classifier()
 
     if ENSEMBLE_WEIGHTS:
         models = load_ensemble_models()
@@ -227,6 +343,9 @@ def main() -> None:
     else:
         model = load_model()
         predictions = run_inference(model, image_paths)
+
+    if classifier is not None:
+        predictions = classify_crops(image_paths, predictions, classifier)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(predictions))

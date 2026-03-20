@@ -62,6 +62,17 @@ WBF_IOU_THRESHOLD = 0.55
 WBF_SKIP_BOX_THRESHOLD = 0.001
 
 # ---------------------------------------------------------------------------
+# Two-stage classifier — refines YOLO category predictions
+# When classifier weights exist, each YOLO detection is cropped, resized to
+# CLASSIFIER_INPUT_SIZE, and re-classified with higher accuracy.
+# ---------------------------------------------------------------------------
+
+CLASSIFIER_PATH = "weights/classifier.pt"
+CLASSIFIER_MODEL_NAME = "efficientnet_b3"
+CLASSIFIER_INPUT_SIZE = 224
+USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
+
+# ---------------------------------------------------------------------------
 # Competition: inference tuning
 # ---------------------------------------------------------------------------
 
