@@ -13,7 +13,7 @@ import torch
 if "cv2" not in sys.modules:
     sys.modules["cv2"] = MagicMock()
 
-from run import collect_images, load_model, run_inference
+from run import collect_images, load_model, main, run_inference
 
 
 class TestCollectImages:
@@ -54,6 +54,36 @@ class TestLoadModel:
             pytest.raises(FileNotFoundError, match="No model found at"),
         ):
             load_model()
+
+    def test_load_model_prefers_engine_over_pt(self, tmp_path: Path) -> None:
+        """When both .engine and .pt exist, load_model should pick .engine."""
+        engine_file = tmp_path / "model.engine"
+        pt_file = tmp_path / "model.pt"
+        engine_file.touch()
+        pt_file.touch()
+
+        with (
+            patch("run.MODEL_PATH", str(pt_file)),
+            patch("run.MODEL_ENGINE_PATH", str(engine_file)),
+            patch("run.YOLO") as mock_yolo,
+        ):
+            mock_yolo.return_value.to = MagicMock()
+            load_model()
+            mock_yolo.assert_called_once_with(str(engine_file))
+
+    def test_load_model_falls_back_to_pt(self, tmp_path: Path) -> None:
+        """When only .pt exists, load_model should use it."""
+        pt_file = tmp_path / "model.pt"
+        pt_file.touch()
+
+        with (
+            patch("run.MODEL_PATH", str(pt_file)),
+            patch("run.MODEL_ENGINE_PATH", str(tmp_path / "missing.engine")),
+            patch("run.YOLO") as mock_yolo,
+        ):
+            mock_yolo.return_value.to = MagicMock()
+            load_model()
+            mock_yolo.assert_called_once_with(str(pt_file))
 
 
 def _make_mock_boxes(xyxy_list: list, cls_list: list, conf_list: list) -> MagicMock:
@@ -139,6 +169,47 @@ class TestRunInference:
         preds = run_inference(model, [img1])
         assert preds == []
 
+    def test_run_inference_multiple_detections(self, tmp_path: Path) -> None:
+        """Multiple detections in one image all appear in output."""
+        img = tmp_path / "img_00010.jpg"
+        img.touch()
+
+        boxes = _make_mock_boxes(
+            xyxy_list=[[0.0, 0.0, 50.0, 50.0], [100.0, 100.0, 200.0, 200.0]],
+            cls_list=[3, 7],
+            conf_list=[0.9, 0.8],
+        )
+        mock_result = _make_mock_result(boxes)
+        model = MagicMock()
+        model.predict.return_value = [mock_result]
+
+        preds = run_inference(model, [img])
+        assert len(preds) == 2
+        assert preds[0]["category_id"] == 3
+        assert preds[1]["category_id"] == 7
+        assert all(p["image_id"] == 10 for p in preds)
+
+    def test_run_inference_multiple_images(self, tmp_path: Path) -> None:
+        """Batch of images each produce independent predictions."""
+        img1 = tmp_path / "img_00001.jpg"
+        img2 = tmp_path / "img_00002.jpg"
+        img1.touch()
+        img2.touch()
+
+        boxes1 = _make_mock_boxes([[10.0, 10.0, 20.0, 20.0]], [0], [0.7])
+        boxes2 = _make_mock_boxes([[30.0, 30.0, 40.0, 40.0]], [5], [0.6])
+
+        model = MagicMock()
+        model.predict.return_value = [
+            _make_mock_result(boxes1),
+            _make_mock_result(boxes2),
+        ]
+
+        preds = run_inference(model, [img1, img2])
+        assert len(preds) == 2
+        assert preds[0]["image_id"] == 1
+        assert preds[1]["image_id"] == 2
+
     def test_run_inference_empty_boxes(self, tmp_path: Path) -> None:
         """Mock model returning empty boxes list, verify empty list."""
         img1 = tmp_path / "img_00001.jpg"
@@ -188,3 +259,42 @@ class TestImageIdExtraction:
 
     def test_image_id_from_img_00000(self, tmp_path: Path) -> None:
         assert self._run_with_filename(tmp_path, "img_00000.jpg") == 0
+
+
+class TestMain:
+    def test_main_rejects_nonexistent_input(self, tmp_path: Path) -> None:
+        """main() raises NotADirectoryError for missing input dir."""
+        fake_input = str(tmp_path / "nonexistent")
+        fake_output = str(tmp_path / "out.json")
+        with (
+            patch("sys.argv", ["run.py", "--input", fake_input, "--output", fake_output]),
+            pytest.raises(NotADirectoryError, match="not a directory"),
+        ):
+            main()
+
+    def test_main_end_to_end(self, tmp_path: Path) -> None:
+        """main() writes valid JSON output with mocked model."""
+        import json
+
+        input_dir = tmp_path / "images"
+        input_dir.mkdir()
+        (input_dir / "img_00001.jpg").touch()
+        output_file = tmp_path / "predictions.json"
+
+        boxes = _make_mock_boxes([[5.0, 5.0, 15.0, 15.0]], [2], [0.85])
+        mock_result = _make_mock_result(boxes)
+        mock_model = MagicMock()
+        mock_model.predict.return_value = [mock_result]
+
+        with (
+            patch("sys.argv", ["run.py", "--input", str(input_dir), "--output", str(output_file)]),
+            patch("run.load_model", return_value=mock_model),
+        ):
+            main()
+
+        assert output_file.exists()
+        data = json.loads(output_file.read_text())
+        assert isinstance(data, list)
+        assert len(data) == 1
+        assert data[0]["image_id"] == 1
+        assert data[0]["category_id"] == 2

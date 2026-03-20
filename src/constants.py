@@ -41,7 +41,9 @@ IMAGE_SIZE = 640
 # Use FP16 (half precision) for inference -- ~2x faster on L4 with negligible accuracy loss
 HALF_PRECISION = True
 
-# Path to TensorRT engine file (preferred over .pt when available)
+# Path to TensorRT engine file (preferred over .pt for local benchmarking).
+# NOTE: .engine is NOT an allowed file type in competition submissions.
+# For submission, use .pt or .onnx. This path is for local speed testing only.
 MODEL_ENGINE_PATH = "weights/model.engine"
 
 # ---------------------------------------------------------------------------
