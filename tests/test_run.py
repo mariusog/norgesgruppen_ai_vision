@@ -10,7 +10,7 @@ from unittest.mock import MagicMock
 if "cv2" not in sys.modules:
     sys.modules["cv2"] = MagicMock()
 
-from run import collect_images  # noqa: E402
+from run import collect_images
 
 
 class TestCollectImages:
