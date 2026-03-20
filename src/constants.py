@@ -86,6 +86,9 @@ USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
 # Prevents low-confidence classifier predictions from overriding correct YOLO labels.
 CLASSIFIER_CONFIDENCE_GATE = 0.15
 
+# Classifier TTA: run crops through classifier with augmentations and average softmax
+USE_CLASSIFIER_TTA = True
+
 # ---------------------------------------------------------------------------
 # Prototype matching — cosine similarity against reference product embeddings
 # Falls back to prototype matching when classifier confidence is low.

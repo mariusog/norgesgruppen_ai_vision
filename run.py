@@ -49,6 +49,7 @@ from src.constants import (  # noqa: E402
     PROTOTYPE_PATH,
     PROTOTYPE_SIMILARITY_THRESHOLD,
     USE_CLASSIFIER,
+    USE_CLASSIFIER_TTA,
     USE_PROTOTYPE_MATCHING,
     USE_TTA,
     WBF_IOU_THRESHOLD,
@@ -158,12 +159,14 @@ def classify_crops(
 
         # bbox is [x, y, width, height] in pixels
         bx, by, bw, bh = pred["bbox"]
-        # Clamp crop coordinates to image bounds
+        # Add 10% padding for better classifier context
+        pad_w = bw * 0.10
+        pad_h = bh * 0.10
         img_w, img_h = img.size
-        left = max(0, int(bx))
-        upper = max(0, int(by))
-        right = min(img_w, int(bx + bw))
-        lower = min(img_h, int(by + bh))
+        left = max(0, int(bx - pad_w))
+        upper = max(0, int(by - pad_h))
+        right = min(img_w, int(bx + bw + pad_w))
+        lower = min(img_h, int(by + bh + pad_h))
 
         crop = img.crop((left, upper, right, lower))
         crop = crop.resize(
@@ -186,15 +189,26 @@ def classify_crops(
         prototypes = load_prototypes(proto_path)
         prototypes["embeddings"] = prototypes["embeddings"].to("cuda")
 
-    # Run classifier in batches with confidence gating + prototype fallback
+    # Run classifier in batches with optional TTA + prototype features
     all_class_ids: list[int] = []
     all_confidences: list[float] = []
     all_features: list[torch.Tensor] = []
     with torch.no_grad():
         for i in range(0, len(crop_tensors), batch_size):
             batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
-            logits = classifier(batch)
-            probs = torch.nn.functional.softmax(logits, dim=1)
+
+            if USE_CLASSIFIER_TTA:
+                # TTA: original + horizontal flip, average softmax
+                logits_orig = classifier(batch)
+                logits_flip = classifier(torch.flip(batch, dims=[3]))
+                probs = (
+                    torch.nn.functional.softmax(logits_orig, dim=1)
+                    + torch.nn.functional.softmax(logits_flip, dim=1)
+                ) / 2.0
+            else:
+                logits = classifier(batch)
+                probs = torch.nn.functional.softmax(logits, dim=1)
+
             max_probs, class_ids = probs.max(dim=1)
             all_class_ids.extend(class_ids.cpu().tolist())
             all_confidences.extend(max_probs.cpu().tolist())
