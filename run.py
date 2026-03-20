@@ -21,6 +21,8 @@ from ultralytics import YOLO
 from src.constants import (
     CONFIDENCE_THRESHOLD,
     IMAGE_EXTENSIONS,
+    IMAGE_SIZE,
+    IOU_THRESHOLD,
     MODEL_PATH,
 )
 
@@ -45,18 +47,25 @@ def collect_images(input_dir: Path) -> list[Path]:
 
 
 def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
-    """Run detection on all images, returning competition-format predictions."""
+    """Run detection on all images in batches, returning competition-format predictions."""
     predictions: list[dict] = []
+    batch_size = 16
 
     with torch.no_grad():
-        for img_path in image_paths:
-            image_id = int(img_path.stem.split("_")[-1])
+        for i in range(0, len(image_paths), batch_size):
+            batch_paths = image_paths[i : i + batch_size]
+            batch_strs = [str(p) for p in batch_paths]
+            batch_ids = [int(p.stem.split("_")[-1]) for p in batch_paths]
+
             results = model.predict(
-                str(img_path),
+                batch_strs,
                 verbose=False,
                 conf=CONFIDENCE_THRESHOLD,
+                iou=IOU_THRESHOLD,
+                imgsz=IMAGE_SIZE,
             )
-            for result in results:
+
+            for image_id, result in zip(batch_ids, results, strict=True):
                 if result.boxes is None or len(result.boxes) == 0:
                     continue
                 for box in result.boxes:
