@@ -137,8 +137,7 @@ def find_annotations_file() -> Path:
         if c.exists():
             return c
     raise FileNotFoundError(
-        "Cannot find annotations.json. Searched:\n"
-        + "\n".join(f"  - {c}" for c in candidates)
+        "Cannot find annotations.json. Searched:\n" + "\n".join(f"  - {c}" for c in candidates)
     )
 
 
@@ -152,8 +151,7 @@ def find_val_images_dir() -> Path:
         if c.is_dir():
             return c
     raise FileNotFoundError(
-        "Cannot find val/images directory. Searched:\n"
-        + "\n".join(f"  - {c}" for c in candidates)
+        "Cannot find val/images directory. Searched:\n" + "\n".join(f"  - {c}" for c in candidates)
     )
 
 
@@ -195,9 +193,7 @@ def compute_maps(
 
     # Filter GT to only include val images
     gt_filtered = copy.deepcopy(gt_annotations)
-    gt_filtered["images"] = [
-        img for img in gt_filtered["images"] if img["id"] in val_image_ids
-    ]
+    gt_filtered["images"] = [img for img in gt_filtered["images"] if img["id"] in val_image_ids]
     gt_filtered["annotations"] = [
         ann for ann in gt_filtered["annotations"] if ann["image_id"] in val_image_ids
     ]
@@ -602,9 +598,7 @@ def main() -> None:
         "overrides": {k: str(v) for k, v in overrides.items()},
     }
 
-    results_path = Path(
-        args.results_json or str(repo_root / "docs" / "eval_pipeline_results.json")
-    )
+    results_path = Path(args.results_json or str(repo_root / "docs" / "eval_pipeline_results.json"))
     results_path.parent.mkdir(parents=True, exist_ok=True)
 
     existing: list[dict] = []
