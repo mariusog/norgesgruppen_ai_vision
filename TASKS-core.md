@@ -35,6 +35,11 @@
 2. Alternatively, use DWS (Dynamic Workload Scheduler) to queue the job until resources free up.
 3. Consider falling back to T4 or other available GPU types if A100/L4 remain unavailable.
 
+**Update (lead-agent)**: Submitted 2 new jobs in different regions:
+- A100 in us-central1: `1400835658406166528` (display: `yolov8m-grocery-run2-a100-usc1`)
+- L4 in us-east4: `4894099703190257664` (display: `yolov8m-grocery-run2-l4-use4`)
+- europe-west1 doesn't support A100 or L4 machine types
+
 ---
 
 ### T6: Tune confidence and IOU thresholds
