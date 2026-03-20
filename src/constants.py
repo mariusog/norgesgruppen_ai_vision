@@ -38,6 +38,12 @@ NUM_CLASSES = 357
 # YOLO input resolution -- higher = more accurate, slower
 IMAGE_SIZE = 640
 
+# Use FP16 (half precision) for inference -- ~2x faster on L4 with negligible accuracy loss
+HALF_PRECISION = True
+
+# Path to TensorRT engine file (preferred over .pt when available)
+MODEL_ENGINE_PATH = "weights/model.engine"
+
 # ---------------------------------------------------------------------------
 # Competition: inference tuning
 # ---------------------------------------------------------------------------

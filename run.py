@@ -21,20 +21,31 @@ from ultralytics import YOLO
 
 from src.constants import (
     CONFIDENCE_THRESHOLD,
+    HALF_PRECISION,
     IMAGE_EXTENSIONS,
     IMAGE_SIZE,
     INFERENCE_BATCH_SIZE,
     IOU_THRESHOLD,
+    MODEL_ENGINE_PATH,
     MODEL_PATH,
 )
 
 
 def load_model() -> YOLO:
-    """Load YOLOv8 model onto CUDA device."""
+    """Load YOLOv8 model, preferring TensorRT engine over PyTorch weights."""
+    engine = Path(MODEL_ENGINE_PATH)
     weights = Path(MODEL_PATH)
-    if not weights.exists():
-        raise FileNotFoundError(f"Model weights not found: {weights}")
-    model = YOLO(str(weights))
+
+    if engine.exists():
+        model_path = engine
+    elif weights.exists():
+        model_path = weights
+    else:
+        raise FileNotFoundError(
+            f"No model found at {engine} or {weights}"
+        )
+
+    model = YOLO(str(model_path))
     model.to("cuda")
     return model
 
@@ -63,6 +74,7 @@ def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
                 conf=CONFIDENCE_THRESHOLD,
                 iou=IOU_THRESHOLD,
                 imgsz=IMAGE_SIZE,
+                half=HALF_PRECISION,
             )
 
             for image_id, result in zip(batch_ids, results, strict=True):
