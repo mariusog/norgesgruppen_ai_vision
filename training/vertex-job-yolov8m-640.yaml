@@ -1,0 +1,27 @@
+workerPoolSpecs:
+  - machineSpec:
+      machineType: a2-highgpu-1g
+      acceleratorType: NVIDIA_TESLA_A100
+      acceleratorCount: 1
+    replicaCount: 1
+    containerSpec:
+      imageUri: europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+      command:
+        - "python"
+        - "training/train.py"
+      args:
+        - "--data"
+        - "training/data.yaml"
+        - "--model"
+        - "yolov8m.pt"
+        - "--imgsz"
+        - "640"
+        - "--batch"
+        - "16"
+        - "--epochs"
+        - "150"
+        - "--run-id"
+        - "yolov8m-640_augmented"
+    diskSpec:
+      bootDiskType: pd-ssd
+      bootDiskSizeGb: 100
