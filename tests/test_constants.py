@@ -35,7 +35,7 @@ class TestInferenceConstants:
 
 class TestCompetitionConstants:
     def test_num_classes(self) -> None:
-        assert NUM_CLASSES == 357
+        assert NUM_CLASSES == 356
 
     def test_model_path_is_pt(self) -> None:
         assert MODEL_PATH.endswith(".pt")

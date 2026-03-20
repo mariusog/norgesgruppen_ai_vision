@@ -38,8 +38,8 @@ def _is_valid_prediction(item: Any, index: int) -> list[str]:
         errors.append(
             f"[{index}] category_id must be int, got {type(item['category_id']).__name__}"
         )
-    elif not (0 <= item["category_id"] <= 356):
-        errors.append(f"[{index}] category_id {item['category_id']} out of range [0, 356]")
+    elif not (0 <= item["category_id"] <= 355):
+        errors.append(f"[{index}] category_id {item['category_id']} out of range [0, 355]")
 
     # bbox must be [x, y, w, h] — exactly 4 numeric elements
     bbox = item["bbox"]

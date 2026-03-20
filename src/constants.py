@@ -32,8 +32,9 @@ INFERENCE_TIMEOUT = 300
 # Path to YOLOv8 weights file (relative to repo root)
 MODEL_PATH = "weights/model.pt"
 
-# Number of detection categories (IDs 0-356; category 356 = "unknown_product")
-NUM_CLASSES = 357
+# Number of detection categories (IDs 0-355; nc=356 in data.yaml)
+# Category 355 = "unknown_product". NUM_CLASSES matches data.yaml nc.
+NUM_CLASSES = 356
 
 # YOLO input resolution -- higher = more accurate, slower
 IMAGE_SIZE = 640

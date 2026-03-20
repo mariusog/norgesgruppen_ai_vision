@@ -32,6 +32,7 @@ from src.constants import (  # noqa: E402
     IMAGE_SIZE,
     INFERENCE_BATCH_SIZE,
     IOU_THRESHOLD,
+    MAX_DETECTIONS_PER_IMAGE,
     MODEL_ENGINE_PATH,
     MODEL_PATH,
     USE_TTA,
@@ -81,6 +82,7 @@ def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
                 imgsz=IMAGE_SIZE,
                 half=HALF_PRECISION,
                 augment=USE_TTA,
+                max_det=MAX_DETECTIONS_PER_IMAGE,
             )
 
             for image_id, result in zip(batch_ids, results, strict=True):
