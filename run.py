@@ -34,6 +34,7 @@ from src.constants import (  # noqa: E402
     IOU_THRESHOLD,
     MODEL_ENGINE_PATH,
     MODEL_PATH,
+    USE_TTA,
 )
 
 
@@ -79,6 +80,7 @@ def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
                 iou=IOU_THRESHOLD,
                 imgsz=IMAGE_SIZE,
                 half=HALF_PRECISION,
+                augment=USE_TTA,
             )
 
             for image_id, result in zip(batch_ids, results, strict=True):

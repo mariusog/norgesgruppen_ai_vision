@@ -58,6 +58,10 @@ CONFIDENCE_THRESHOLD = 0.25
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
 IOU_THRESHOLD = 0.45
 
+# Test-Time Augmentation -- runs predict on flipped/scaled variants and merges
+# Improves accuracy ~1-3% but ~2-3x slower. Enable only if within 300s budget.
+USE_TTA = False
+
 # Batch size for inference -- balances GPU utilization vs memory on L4 (24 GB)
 INFERENCE_BATCH_SIZE = 16
 
