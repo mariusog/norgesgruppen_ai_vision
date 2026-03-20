@@ -27,10 +27,11 @@ echo ""
 
 # 1. Forbidden imports
 echo "[1] Security scan (forbidden imports)"
-VIOLATIONS=$(grep -rPn '^\s*(import (os|subprocess|socket)\b|from (os|subprocess|socket)(\s|\.|;|$))' \
+BLOCKED="os|sys|subprocess|socket|ctypes|builtins|importlib|pickle|marshal|shelve|shutil|yaml|requests|urllib|http|multiprocessing|threading|signal|gc|code|codeop|pty"
+VIOLATIONS=$(grep -rPn "^\s*(import ($BLOCKED)\b|from ($BLOCKED)(\s|\.|;|$))" \
   "$REPO_ROOT/run.py" "$REPO_ROOT/src/" 2>/dev/null || true)
 if [[ -z "$VIOLATIONS" ]]; then
-  echo "  OK  No forbidden imports (os, subprocess, socket)"
+  echo "  OK  No forbidden imports (extended blocklist)"
   ((PASS++)) || true
 else
   echo " FAIL Forbidden imports found:"
@@ -74,6 +75,40 @@ echo ""
 echo "[4] Test suite"
 check "Security tests pass" "python -m pytest '$REPO_ROOT/tests/test_security.py' -q --tb=line 2>&1 | tail -5 | grep -v FAILED"
 check "Format tests pass" "python -m pytest '$REPO_ROOT/tests/test_output_format.py' -q --tb=line 2>&1 | tail -5 | grep -v FAILED"
+
+# 5. Zip structure
+echo "[5] Zip structure validation"
+# Count .py files (max 10)
+PY_COUNT=$(find "$REPO_ROOT/run.py" "$REPO_ROOT/src/" -name "*.py" -type f 2>/dev/null | wc -l)
+if [[ $PY_COUNT -le 10 ]]; then
+  echo "  OK  Python files: ${PY_COUNT} / 10 max"
+  ((PASS++)) || true
+else
+  echo " FAIL Python files: ${PY_COUNT} EXCEEDS 10 file limit"
+  ((FAIL++)) || true
+fi
+
+# Count weight files (max 3)
+WEIGHT_COUNT=0
+if [[ -d "$REPO_ROOT/weights" ]]; then
+  WEIGHT_COUNT=$(find "$REPO_ROOT/weights" -type f \( -name "*.pt" -o -name "*.onnx" -o -name "*.engine" \) 2>/dev/null | wc -l)
+fi
+if [[ $WEIGHT_COUNT -le 3 ]]; then
+  echo "  OK  Weight files: ${WEIGHT_COUNT} / 3 max"
+  ((PASS++)) || true
+else
+  echo " FAIL Weight files: ${WEIGHT_COUNT} EXCEEDS 3 file limit"
+  ((FAIL++)) || true
+fi
+
+# Verify run.py is at root (will be at zip root)
+if [[ -f "$REPO_ROOT/run.py" ]]; then
+  echo "  OK  run.py is at repository root (will be at zip root)"
+  ((PASS++)) || true
+else
+  echo " FAIL run.py missing from repository root"
+  ((FAIL++)) || true
+fi
 
 echo ""
 echo "=== Results: ${PASS} passed, ${FAIL} failed ==="
