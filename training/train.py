@@ -15,10 +15,18 @@ Usage (Vertex AI):
 from __future__ import annotations
 
 import argparse
+import functools
 import time
 from pathlib import Path
 
-from ultralytics import YOLO
+import torch
+
+# PyTorch 2.6 defaults torch.load(weights_only=True) which breaks
+# ultralytics 8.1.0 loading pretrained weights. Patch for training only.
+_orig_load = torch.load
+torch.load = functools.partial(_orig_load, weights_only=False)
+
+from ultralytics import YOLO  # noqa: E402
 
 GCS_BUCKET = "ai-nm26osl-1792-nmiai"
 WEIGHTS_PREFIX = "weights"
