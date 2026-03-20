@@ -9,8 +9,8 @@
 #     europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
 #     python training/train.py --data training/data.yaml --epochs 10 --no-upload
 
-# Google Deep Learning Container — PyTorch 2.6 + Python 3.11 + CUDA 12.4 pre-installed
-FROM us-docker.pkg.dev/deeplearning-platform-release/gcr.io/pytorch-gpu.2-6.py311
+# Ultralytics base image — includes ultralytics 8.1.0, PyTorch, CUDA, Python 3.11
+FROM ultralytics/ultralytics:8.1.0
 
 WORKDIR /workspace
 
@@ -19,15 +19,8 @@ COPY pyproject.toml ./
 COPY src/ src/
 COPY training/ training/
 
-# Only install what's NOT already in the DLC base image.
-# DLC includes: torch, torchvision, numpy, scipy, Pillow, etc.
-# We need: ultralytics, google-cloud-storage, and a few competition-specific packages.
-RUN pip install --no-cache-dir \
-    "ultralytics==8.1.0" \
-    "google-cloud-storage==2.14.0" \
-    "pycocotools==2.0.7" \
-    "albumentations==1.3.1" \
-    "ensemble-boxes==1.0.9"
+# Only install what's NOT in the base image: GCS SDK for dataset download/weight upload
+RUN pip install --no-cache-dir "google-cloud-storage==2.14.0"
 
 # Default command: run training with standard config
 CMD ["python", "training/train.py", "--data", "training/data.yaml"]
