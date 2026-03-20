@@ -4,7 +4,7 @@
 # Dataset stored in GCS: gs://ai-nm26osl-1792-nmiai/datasets/
 # Pull locally before training: see scripts/download_dataset.sh
 
-path: /workspace/data/yolo    # Root dataset directory (YOLO-converted data)
+path: /workspace/data    # Root dataset directory (downloaded from GCS datasets/yolo/)
 train: train/images
 val: val/images
 
