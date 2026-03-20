@@ -28,6 +28,7 @@ from torchvision import transforms  # noqa: E402
 from ultralytics import YOLO  # noqa: E402
 
 from src.constants import (  # noqa: E402
+    CLASSIFIER_BATCH_SIZE,
     CLASSIFIER_CONFIDENCE_GATE,
     CLASSIFIER_INPUT_SIZE,
     CLASSIFIER_MODEL_NAME,
@@ -107,7 +108,7 @@ def classify_crops(
     image_paths: list[Path],
     predictions: list[dict],
     classifier: torch.nn.Module,
-    batch_size: int = 64,
+    batch_size: int = CLASSIFIER_BATCH_SIZE,
 ) -> list[dict]:
     """Re-classify each YOLO detection using the two-stage classifier.
 

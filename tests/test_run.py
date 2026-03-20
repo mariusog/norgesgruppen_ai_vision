@@ -6,14 +6,16 @@ import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import numpy as np
 import pytest
 import torch
+from PIL import Image
 
 # Stub cv2 before importing run.py (requires libGL which isn't in CI)
 if "cv2" not in sys.modules:
     sys.modules["cv2"] = MagicMock()
 
-from run import collect_images, load_model, main, run_inference
+from run import classify_crops, collect_images, load_model, main, run_ensemble_inference, run_inference
 
 
 class TestCollectImages:
@@ -330,3 +332,217 @@ class TestMain:
         assert len(data) == 1
         assert data[0]["image_id"] == 1
         assert data[0]["category_id"] == 2
+
+
+def _make_mock_ensemble_result(
+    boxes_mock: MagicMock | None, orig_shape: tuple[int, int] = (480, 640)
+) -> MagicMock:
+    """Create a mock Result with .boxes and .orig_shape for ensemble inference."""
+    result = MagicMock()
+    result.boxes = boxes_mock
+    result.orig_shape = orig_shape  # (height, width)
+    return result
+
+
+class TestRunEnsembleInference:
+    """Tests for run_ensemble_inference with mocked YOLO models and WBF."""
+
+    def test_correct_output_format(self, tmp_path: Path) -> None:
+        """Ensemble produces predictions with correct keys and types."""
+        img = tmp_path / "img_00042.jpg"
+        img.touch()
+
+        # Mock two models each returning one detection
+        boxes1 = _make_mock_boxes([[10.0, 20.0, 110.0, 220.0]], [7], [0.95])
+        boxes2 = _make_mock_boxes([[12.0, 22.0, 112.0, 222.0]], [7], [0.90])
+
+        model1 = MagicMock()
+        model1.predict.return_value = [_make_mock_ensemble_result(boxes1, (480, 640))]
+        model2 = MagicMock()
+        model2.predict.return_value = [_make_mock_ensemble_result(boxes2, (480, 640))]
+
+        # WBF returns fused boxes in normalized [0,1] coords
+        fused_boxes = np.array([[11.0 / 640, 21.0 / 480, 111.0 / 640, 221.0 / 480]])
+        fused_scores = np.array([0.925])
+        fused_labels = np.array([7])
+
+        with patch("ensemble_boxes.weighted_boxes_fusion", return_value=(fused_boxes, fused_scores, fused_labels)):
+            with patch("run.ENSEMBLE_IMAGE_SIZES", [1280, 640]):
+                preds = run_ensemble_inference([model1, model2], [img])
+
+        assert len(preds) == 1
+        p = preds[0]
+        assert set(p.keys()) == {"image_id", "category_id", "bbox", "score"}
+        assert isinstance(p["image_id"], int)
+        assert isinstance(p["category_id"], int)
+        assert isinstance(p["score"], float)
+        assert isinstance(p["bbox"], list)
+        assert len(p["bbox"]) == 4
+        assert p["image_id"] == 42
+        assert p["category_id"] == 7
+
+        # bbox should be xywh (denormalized from WBF output)
+        x, y, w, h = p["bbox"]
+        assert w > 0
+        assert h > 0
+
+    def test_empty_detections_from_all_models(self, tmp_path: Path) -> None:
+        """When all models return no detections, output is empty."""
+        img = tmp_path / "img_00001.jpg"
+        img.touch()
+
+        empty_boxes = MagicMock()
+        empty_boxes.__len__ = lambda self: 0
+
+        model1 = MagicMock()
+        model1.predict.return_value = [_make_mock_ensemble_result(empty_boxes, (480, 640))]
+        model2 = MagicMock()
+        model2.predict.return_value = [_make_mock_ensemble_result(empty_boxes, (480, 640))]
+
+        with patch("run.ENSEMBLE_IMAGE_SIZES", [640, 640]):
+            preds = run_ensemble_inference([model1, model2], [img])
+
+        assert preds == []
+
+    def test_per_model_image_sizes_used(self, tmp_path: Path) -> None:
+        """Each model is called with its corresponding ENSEMBLE_IMAGE_SIZES entry."""
+        img = tmp_path / "img_00005.jpg"
+        img.touch()
+
+        empty_boxes = MagicMock()
+        empty_boxes.__len__ = lambda self: 0
+
+        model1 = MagicMock()
+        model1.predict.return_value = [_make_mock_ensemble_result(empty_boxes, (480, 640))]
+        model2 = MagicMock()
+        model2.predict.return_value = [_make_mock_ensemble_result(empty_boxes, (480, 640))]
+        model3 = MagicMock()
+        model3.predict.return_value = [_make_mock_ensemble_result(empty_boxes, (480, 640))]
+
+        with patch("run.ENSEMBLE_IMAGE_SIZES", [1280, 640, 960]):
+            run_ensemble_inference([model1, model2, model3], [img])
+
+        # Check that each model.predict was called with its specific imgsz
+        _, kwargs1 = model1.predict.call_args
+        assert kwargs1["imgsz"] == 1280
+        _, kwargs2 = model2.predict.call_args
+        assert kwargs2["imgsz"] == 640
+        _, kwargs3 = model3.predict.call_args
+        assert kwargs3["imgsz"] == 960
+
+    def test_bbox_is_xywh_format(self, tmp_path: Path) -> None:
+        """Ensemble output bbox is [x, y, width, height], not xyxy."""
+        img = tmp_path / "img_00010.jpg"
+        img.touch()
+
+        boxes = _make_mock_boxes([[100.0, 200.0, 300.0, 400.0]], [5], [0.8])
+        model = MagicMock()
+        model.predict.return_value = [_make_mock_ensemble_result(boxes, (800, 600))]
+
+        # WBF returns normalized xyxy coords
+        fused_boxes = np.array([[100.0 / 600, 200.0 / 800, 300.0 / 600, 400.0 / 800]])
+        fused_scores = np.array([0.8])
+        fused_labels = np.array([5])
+
+        with patch("ensemble_boxes.weighted_boxes_fusion", return_value=(fused_boxes, fused_scores, fused_labels)):
+            with patch("run.ENSEMBLE_IMAGE_SIZES", [640]):
+                preds = run_ensemble_inference([model], [img])
+
+        assert len(preds) == 1
+        x, y, w, h = preds[0]["bbox"]
+        # Width and height should be positive differences, not absolute coords
+        assert w == pytest.approx(300.0 - 100.0, abs=1e-3)
+        assert h == pytest.approx(400.0 - 200.0, abs=1e-3)
+
+
+class TestClassifyCrops:
+    """Tests for classify_crops with mocked classifier model."""
+
+    @staticmethod
+    def _make_test_image(tmp_path: Path, filename: str, size: tuple[int, int] = (640, 480)) -> Path:
+        """Create a real small test image file."""
+        img_path = tmp_path / filename
+        img = Image.new("RGB", size, color=(128, 128, 128))
+        img.save(str(img_path))
+        return img_path
+
+    def test_overrides_category_when_high_confidence(self, tmp_path: Path) -> None:
+        """Classifier overrides category_id when confidence > CLASSIFIER_CONFIDENCE_GATE."""
+        img_path = self._make_test_image(tmp_path, "img_00001.jpg")
+
+        predictions = [
+            {"image_id": 1, "category_id": 5, "bbox": [10.0, 20.0, 100.0, 100.0], "score": 0.9},
+        ]
+
+        # Classifier returns class 42 with high confidence
+        logits = torch.zeros(1, 356)
+        logits[0, 42] = 10.0  # Very high logit -> high softmax prob
+
+        classifier = MagicMock()
+        classifier.return_value = logits
+        classifier.to = MagicMock()
+
+        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+            result = classify_crops([img_path], predictions, classifier)
+
+        assert len(result) == 1
+        assert result[0]["category_id"] == 42  # Overridden by classifier
+
+    def test_does_not_override_when_low_confidence(self, tmp_path: Path) -> None:
+        """Classifier does NOT override category_id when confidence < CLASSIFIER_CONFIDENCE_GATE."""
+        img_path = self._make_test_image(tmp_path, "img_00001.jpg")
+
+        predictions = [
+            {"image_id": 1, "category_id": 5, "bbox": [10.0, 20.0, 100.0, 100.0], "score": 0.9},
+        ]
+
+        # Classifier returns roughly uniform logits -> low confidence for any class
+        logits = torch.zeros(1, 356)
+        # All near zero -> softmax ~ 1/356 ~ 0.0028, well below any reasonable gate
+
+        classifier = MagicMock()
+        classifier.return_value = logits
+        classifier.to = MagicMock()
+
+        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+            result = classify_crops([img_path], predictions, classifier)
+
+        assert len(result) == 1
+        assert result[0]["category_id"] == 5  # NOT overridden
+
+    def test_empty_predictions_list(self, tmp_path: Path) -> None:
+        """Empty predictions list returns immediately without calling classifier."""
+        img_path = self._make_test_image(tmp_path, "img_00001.jpg")
+
+        classifier = MagicMock()
+        result = classify_crops([img_path], [], classifier)
+
+        assert result == []
+        classifier.assert_not_called()
+
+    def test_multiple_predictions_mixed_confidence(self, tmp_path: Path) -> None:
+        """Only high-confidence classifier predictions override, low ones are kept."""
+        img_path = self._make_test_image(tmp_path, "img_00002.jpg")
+
+        predictions = [
+            {"image_id": 2, "category_id": 10, "bbox": [0.0, 0.0, 50.0, 50.0], "score": 0.8},
+            {"image_id": 2, "category_id": 20, "bbox": [60.0, 60.0, 50.0, 50.0], "score": 0.7},
+        ]
+
+        # First crop: high confidence for class 99; second crop: uniform (low confidence)
+        logits = torch.zeros(2, 356)
+        logits[0, 99] = 10.0  # High confidence -> will override
+        # logits[1, :] stays at 0 -> uniform -> low confidence -> won't override
+
+        classifier = MagicMock()
+        classifier.return_value = logits
+        classifier.to = MagicMock()
+
+        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+            result = classify_crops([img_path], predictions, classifier)
+
+        assert result[0]["category_id"] == 99  # Overridden
+        assert result[1]["category_id"] == 20  # Kept original

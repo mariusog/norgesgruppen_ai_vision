@@ -30,7 +30,8 @@ INFERENCE_TIMEOUT = 300
 # ---------------------------------------------------------------------------
 
 # Path to YOLOv8 weights file (relative to repo root)
-MODEL_PATH = "weights/model.pt"
+# Fallback single-model path (used when ENSEMBLE_WEIGHTS is empty)
+MODEL_PATH = "weights/yolov8l-640-aug.pt"
 
 # Number of detection categories (IDs 0-355; nc=356 in data.yaml)
 # Category 355 = "unknown_product". NUM_CLASSES matches data.yaml nc.
@@ -136,17 +137,8 @@ GCS_DATASET_PREFIX = "datasets"
 GCS_WEIGHTS_PREFIX = "weights"
 
 # ---------------------------------------------------------------------------
-# System limits (generic safeguards)
+# Classifier inference
 # ---------------------------------------------------------------------------
 
-# Maximum iterations for search/exploration functions (prevents unbounded loops)
-MAX_SEARCH_STEPS = 10_000
-
-# Maximum file/data size to process in one pass
-MAX_BATCH_SIZE = 1_000
-
-# Cache size limit for LRU caches (0 = unbounded, use with caution)
-DEFAULT_CACHE_SIZE = 1024
-
-# Timeout budget for real-time operations (seconds)
-OPERATION_TIMEOUT = 2.0
+# Batch size for classifier crop inference (balances GPU memory vs throughput)
+CLASSIFIER_BATCH_SIZE = 64
