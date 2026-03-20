@@ -9,12 +9,13 @@ SUBMISSION CODE: No forbidden imports (os, subprocess, etc.). Uses pathlib only.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import torch
 import torch.nn.functional as F
 
 
-def load_prototypes(path: Path) -> dict:
+def load_prototypes(path: Path) -> dict[str, Any]:
     """Load pre-computed prototype embeddings from a .pt file.
 
     Args:
@@ -26,7 +27,7 @@ def load_prototypes(path: Path) -> dict:
             - class_ids: list[int] of category IDs matching each row
             - model_name: str identifying the model used to compute embeddings
     """
-    data = torch.load(str(path), map_location="cpu", weights_only=True)  # nosec B614
+    data: dict[str, Any] = torch.load(str(path), map_location="cpu", weights_only=True)  # nosec B614
     return data
 
 

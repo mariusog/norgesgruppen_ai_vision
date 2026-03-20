@@ -217,15 +217,17 @@ def classify_crops(
             batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
 
             # Average softmax across all classifiers (ensemble)
-            probs_sum = None
+            probs_sum: torch.Tensor = torch.zeros(batch.size(0), NUM_CLASSES, device=batch.device)
             num_passes = 0
             for clf in classifiers:
                 logits = clf(batch)
-                p = torch.nn.functional.softmax(logits, dim=1)
+                cls_prob = torch.nn.functional.softmax(logits, dim=1)
                 if USE_CLASSIFIER_TTA:
-                    p_flip = torch.nn.functional.softmax(clf(torch.flip(batch, dims=[3])), dim=1)
-                    p = (p + p_flip) / 2.0
-                probs_sum = p if probs_sum is None else probs_sum + p
+                    cls_prob_flip = torch.nn.functional.softmax(
+                        clf(torch.flip(batch, dims=[3])), dim=1
+                    )
+                    cls_prob = (cls_prob + cls_prob_flip) / 2.0
+                probs_sum = probs_sum + cls_prob
                 num_passes += 1
             probs = probs_sum / num_passes
 
@@ -235,7 +237,7 @@ def classify_crops(
 
             # Extract features for prototype matching (use first classifier)
             if prototypes is not None:
-                feats = classifiers[0].forward_features(batch)
+                feats = classifiers[0].forward_features(batch)  # type: ignore[operator]
                 if feats.dim() == 4:
                     feats = feats.mean(dim=[2, 3])
                 feats = torch.nn.functional.normalize(feats, dim=1)

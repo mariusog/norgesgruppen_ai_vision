@@ -574,3 +574,85 @@ class TestClassifyCrops:
 
         assert result[0]["category_id"] == 99  # Overridden
         assert result[1]["category_id"] == 20  # Kept original
+
+
+class TestScoreFusion:
+    """Tests for score fusion logic in classify_crops."""
+
+    @staticmethod
+    def _make_test_image(tmp_path: Path, filename: str, size: tuple[int, int] = (640, 480)) -> Path:
+        img_path = tmp_path / filename
+        img = Image.new("RGB", size, color=(128, 128, 128))
+        img.save(str(img_path))
+        return img_path
+
+    def test_score_blended_when_alpha_less_than_one(self, tmp_path: Path) -> None:
+        """When SCORE_FUSION_ALPHA < 1.0, score = alpha * yolo + (1-alpha) * classifier."""
+        img_path = self._make_test_image(tmp_path, "img_00001.jpg")
+
+        yolo_score = 0.9
+        predictions = [
+            {
+                "image_id": 1,
+                "category_id": 5,
+                "bbox": [10.0, 20.0, 100.0, 100.0],
+                "score": yolo_score,
+            },
+        ]
+
+        # High-confidence classifier output for class 42
+        logits = torch.zeros(1, 356)
+        logits[0, 42] = 10.0
+
+        classifier = MagicMock()
+        classifier.return_value = logits
+        classifier.to = MagicMock()
+
+        alpha = 0.7
+        with (
+            patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15),
+            patch("run.USE_CLASSIFIER_TTA", False),
+            patch("run.USE_PROTOTYPE_MATCHING", False),
+            patch("run.SCORE_FUSION_ALPHA", alpha),
+            patch.object(torch.Tensor, "to", lambda self, *a, **kw: self),
+        ):
+            result = classify_crops([img_path], predictions, [classifier])
+
+        # Compute expected classifier confidence (softmax of logits)
+        expected_conf = torch.nn.functional.softmax(logits, dim=1).max().item()
+        expected_score = alpha * yolo_score + (1.0 - alpha) * expected_conf
+
+        assert result[0]["score"] == pytest.approx(expected_score, abs=1e-5)
+        assert result[0]["score"] != yolo_score  # Should differ from original
+
+    def test_score_preserved_when_alpha_is_one(self, tmp_path: Path) -> None:
+        """When SCORE_FUSION_ALPHA = 1.0, the YOLO score is preserved."""
+        img_path = self._make_test_image(tmp_path, "img_00001.jpg")
+
+        yolo_score = 0.85
+        predictions = [
+            {
+                "image_id": 1,
+                "category_id": 5,
+                "bbox": [10.0, 20.0, 100.0, 100.0],
+                "score": yolo_score,
+            },
+        ]
+
+        logits = torch.zeros(1, 356)
+        logits[0, 42] = 10.0
+
+        classifier = MagicMock()
+        classifier.return_value = logits
+        classifier.to = MagicMock()
+
+        with (
+            patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15),
+            patch("run.USE_CLASSIFIER_TTA", False),
+            patch("run.USE_PROTOTYPE_MATCHING", False),
+            patch("run.SCORE_FUSION_ALPHA", 1.0),
+            patch.object(torch.Tensor, "to", lambda self, *a, **kw: self),
+        ):
+            result = classify_crops([img_path], predictions, [classifier])
+
+        assert result[0]["score"] == pytest.approx(yolo_score, abs=1e-5)
