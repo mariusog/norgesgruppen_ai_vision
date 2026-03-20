@@ -19,7 +19,6 @@ Creates submission.zip at the project root containing:
 Idempotent: overwrites any existing submission.zip.
 """
 
-import os
 import sys
 import zipfile
 from pathlib import Path
@@ -54,8 +53,8 @@ MAX_WEIGHT_FILES = 3  # ensemble only; classifier is a special case
 
 # Explicitly excluded files (even if they match weight patterns)
 EXCLUDED_WEIGHTS = {
-    "weights/model.pt",           # duplicate of ensemble member
-    "weights/yolov8x-640-aug.pt", # 4th model, would exceed limit
+    "weights/model.pt",  # duplicate of ensemble member
+    "weights/yolov8x-640-aug.pt",  # 4th model, would exceed limit
 }
 
 
@@ -103,9 +102,7 @@ def main() -> int:
     # 3. Pre-flight checks
     # ------------------------------------------------------------------
     if weight_files_added > MAX_WEIGHT_FILES:
-        errors.append(
-            f"Too many ensemble weight files: {weight_files_added} > {MAX_WEIGHT_FILES}"
-        )
+        errors.append(f"Too many ensemble weight files: {weight_files_added} > {MAX_WEIGHT_FILES}")
 
     if has_classifier:
         total_weight_count = weight_files_added + 1
@@ -155,8 +152,7 @@ def main() -> int:
     # Size check (uncompressed total of weights)
     if total_size_mb > MAX_ZIP_SIZE_MB:
         errors.append(
-            f"Total uncompressed size {total_size_mb:.1f} MB exceeds "
-            f"{MAX_ZIP_SIZE_MB} MB limit"
+            f"Total uncompressed size {total_size_mb:.1f} MB exceeds {MAX_ZIP_SIZE_MB} MB limit"
         )
 
     # ------------------------------------------------------------------

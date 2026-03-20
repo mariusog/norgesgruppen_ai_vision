@@ -6,16 +6,15 @@ Usage:
 Requires validation images + labels in training/data/ (run download_dataset.sh first).
 Outputs best threshold combination to stdout.
 """
+
 from __future__ import annotations
 
 import argparse
 import itertools
 import time
-from pathlib import Path
 
 import torch
 from ultralytics import YOLO
-
 
 CONF_VALUES = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
 IOU_VALUES = [0.3, 0.4, 0.45, 0.5, 0.6, 0.7]

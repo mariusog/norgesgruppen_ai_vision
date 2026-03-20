@@ -17,7 +17,9 @@ from google.cloud import storage
 # --- Config ---
 METADATA_PATH = Path("/workspaces/norgesgruppen_ai_vision/training/data/images/metadata.json")
 PRODUCT_IMAGES_DIR = Path("/workspaces/norgesgruppen_ai_vision/training/data/images")
-CATEGORY_NAMES_PATH = Path("/workspaces/norgesgruppen_ai_vision/training/data/yolo/category_names.json")
+CATEGORY_NAMES_PATH = Path(
+    "/workspaces/norgesgruppen_ai_vision/training/data/yolo/category_names.json"
+)
 YOLO_TRAIN_IMAGES = Path("/workspaces/norgesgruppen_ai_vision/training/data/yolo/train/images")
 YOLO_TRAIN_LABELS = Path("/workspaces/norgesgruppen_ai_vision/training/data/yolo/train/labels")
 GCS_BUCKET = "ai-nm26osl-1792-nmiai"
@@ -114,7 +116,7 @@ def main() -> None:
             print(f"  Progress: {images_added} images added ...")
 
     # Summary
-    print(f"\n--- Summary ---")
+    print("\n--- Summary ---")
     print(f"  Images added:          {images_added}")
     print(f"  Categories covered:    {len(categories_covered)} / {len(name_to_cat_id)}")
     print(f"  Skipped (no match):    {skipped_no_match}")

@@ -22,12 +22,15 @@ TRAIN_IMAGES = REPO / "training" / "data" / "yolo" / "train" / "images"
 def get_image_size(img_name: str) -> tuple[int, int]:
     """Return (width, height) of the training image."""
     from PIL import Image
+
     img_path = TRAIN_IMAGES / img_name
     with Image.open(str(img_path)) as img:
         return img.size
 
 
-def xyxy_to_yolo(bbox_xyxy: list[float], img_w: int, img_h: int) -> tuple[float, float, float, float]:
+def xyxy_to_yolo(
+    bbox_xyxy: list[float], img_w: int, img_h: int
+) -> tuple[float, float, float, float]:
     """Convert [x1, y1, x2, y2] pixel coords to YOLO [cx, cy, w, h] normalized."""
     x1, y1, x2, y2 = bbox_xyxy
     cx = ((x1 + x2) / 2) / img_w
@@ -84,7 +87,11 @@ def main():
                     new_lines[best_idx] = " ".join(parts)
                     print(f"  {file_name}: class {old_cls} → {corr['newClass']} (line {best_idx})")
 
-            elif corr["decision"] == "other" and corr.get("bbox") and corr.get("newClass") is not None:
+            elif (
+                corr["decision"] == "other"
+                and corr.get("bbox")
+                and corr.get("newClass") is not None
+            ):
                 bbox = corr["bbox"]
                 cx_t, cy_t, w_t, h_t = xyxy_to_yolo(bbox, img_w, img_h)
                 # Try to find and update existing line

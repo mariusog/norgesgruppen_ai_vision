@@ -15,7 +15,14 @@ from PIL import Image
 if "cv2" not in sys.modules:
     sys.modules["cv2"] = MagicMock()
 
-from run import classify_crops, collect_images, load_model, main, run_ensemble_inference, run_inference
+from run import (
+    classify_crops,
+    collect_images,
+    load_model,
+    main,
+    run_ensemble_inference,
+    run_inference,
+)
 
 
 class TestCollectImages:
@@ -366,9 +373,12 @@ class TestRunEnsembleInference:
         fused_scores = np.array([0.925])
         fused_labels = np.array([7])
 
-        with patch("ensemble_boxes.weighted_boxes_fusion", return_value=(fused_boxes, fused_scores, fused_labels)):
-            with patch("run.ENSEMBLE_IMAGE_SIZES", [1280, 640]):
-                preds = run_ensemble_inference([model1, model2], [img])
+        wbf_rv = (fused_boxes, fused_scores, fused_labels)
+        with (
+            patch("ensemble_boxes.weighted_boxes_fusion", return_value=wbf_rv),
+            patch("run.ENSEMBLE_IMAGE_SIZES", [1280, 640]),
+        ):
+            preds = run_ensemble_inference([model1, model2], [img])
 
         assert len(preds) == 1
         p = preds[0]
@@ -382,7 +392,7 @@ class TestRunEnsembleInference:
         assert p["category_id"] == 7
 
         # bbox should be xywh (denormalized from WBF output)
-        x, y, w, h = p["bbox"]
+        _x, _y, w, h = p["bbox"]
         assert w > 0
         assert h > 0
 
@@ -444,12 +454,15 @@ class TestRunEnsembleInference:
         fused_scores = np.array([0.8])
         fused_labels = np.array([5])
 
-        with patch("ensemble_boxes.weighted_boxes_fusion", return_value=(fused_boxes, fused_scores, fused_labels)):
-            with patch("run.ENSEMBLE_IMAGE_SIZES", [640]):
-                preds = run_ensemble_inference([model], [img])
+        wbf_rv = (fused_boxes, fused_scores, fused_labels)
+        with (
+            patch("ensemble_boxes.weighted_boxes_fusion", return_value=wbf_rv),
+            patch("run.ENSEMBLE_IMAGE_SIZES", [640]),
+        ):
+            preds = run_ensemble_inference([model], [img])
 
         assert len(preds) == 1
-        x, y, w, h = preds[0]["bbox"]
+        _x, _y, w, h = preds[0]["bbox"]
         # Width and height should be positive differences, not absolute coords
         assert w == pytest.approx(300.0 - 100.0, abs=1e-3)
         assert h == pytest.approx(400.0 - 200.0, abs=1e-3)
@@ -482,11 +495,13 @@ class TestClassifyCrops:
         classifier.return_value = logits
         classifier.to = MagicMock()
 
-        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
-             patch("run.USE_CLASSIFIER_TTA", False), \
-             patch("run.USE_PROTOTYPE_MATCHING", False), \
-             patch("run.SCORE_FUSION_ALPHA", 1.0), \
-             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+        with (
+            patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15),
+            patch("run.USE_CLASSIFIER_TTA", False),
+            patch("run.USE_PROTOTYPE_MATCHING", False),
+            patch("run.SCORE_FUSION_ALPHA", 1.0),
+            patch.object(torch.Tensor, "to", lambda self, *a, **kw: self),
+        ):
             result = classify_crops([img_path], predictions, [classifier])
 
         assert len(result) == 1
@@ -508,11 +523,13 @@ class TestClassifyCrops:
         classifier.return_value = logits
         classifier.to = MagicMock()
 
-        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
-             patch("run.USE_CLASSIFIER_TTA", False), \
-             patch("run.USE_PROTOTYPE_MATCHING", False), \
-             patch("run.SCORE_FUSION_ALPHA", 1.0), \
-             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+        with (
+            patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15),
+            patch("run.USE_CLASSIFIER_TTA", False),
+            patch("run.USE_PROTOTYPE_MATCHING", False),
+            patch("run.SCORE_FUSION_ALPHA", 1.0),
+            patch.object(torch.Tensor, "to", lambda self, *a, **kw: self),
+        ):
             result = classify_crops([img_path], predictions, [classifier])
 
         assert len(result) == 1
@@ -546,11 +563,13 @@ class TestClassifyCrops:
         classifier.return_value = logits
         classifier.to = MagicMock()
 
-        with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
-             patch("run.USE_CLASSIFIER_TTA", False), \
-             patch("run.USE_PROTOTYPE_MATCHING", False), \
-             patch("run.SCORE_FUSION_ALPHA", 1.0), \
-             patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
+        with (
+            patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15),
+            patch("run.USE_CLASSIFIER_TTA", False),
+            patch("run.USE_PROTOTYPE_MATCHING", False),
+            patch("run.SCORE_FUSION_ALPHA", 1.0),
+            patch.object(torch.Tensor, "to", lambda self, *a, **kw: self),
+        ):
             result = classify_crops([img_path], predictions, [classifier])
 
         assert result[0]["category_id"] == 99  # Overridden

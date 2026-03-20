@@ -12,6 +12,7 @@ Usage:
     python scripts/eval_offline.py --weights weights/model.pt --tta
     python scripts/eval_offline.py --compare weights/v1.pt weights/v2.pt
 """
+
 from __future__ import annotations
 
 import argparse
@@ -38,7 +39,7 @@ def _load_class_names(data_yaml: str) -> dict[int, str]:
     path = Path(data_yaml)
     if not path.exists():
         return {}
-    with open(path, "r") as f:
+    with open(path) as f:
         cfg = yaml.safe_load(f)
     names = cfg.get("names", {})
     return {int(k): v for k, v in names.items()}
@@ -112,7 +113,7 @@ def evaluate(
     print(f"  Classification mAP@0.5:     {cls_map50:.4f}")
     print(f"  Classification mAP@0.5-0.95: {cls_map5095:.4f}")
     print()
-    print(f"  Estimated competition score:")
+    print("  Estimated competition score:")
     print(f"    0.7 x {det_map50:.4f} + 0.3 x {cls_map50:.4f} = {score:.4f}")
     print("=" * 60)
     print(f"  Evaluation time: {elapsed:.1f}s")
@@ -142,8 +143,10 @@ def evaluate(
         worst_categories = worst_10
 
     print()
-    print("NOTE: This is on the validation set. "
-          "Competition uses a different test set -- actual score will vary.")
+    print(
+        "NOTE: This is on the validation set. "
+        "Competition uses a different test set -- actual score will vary."
+    )
 
     return {
         "weights": weights,
@@ -157,7 +160,7 @@ def evaluate(
         "score": score,
         "elapsed_s": round(elapsed, 1),
         "worst_categories": worst_categories,
-        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
     }
 
 
@@ -168,7 +171,7 @@ def _save_results(results: list[dict[str, Any]]) -> None:
     existing: list[dict[str, Any]] = []
     if RESULTS_PATH.exists():
         try:
-            with open(RESULTS_PATH, "r") as f:
+            with open(RESULTS_PATH) as f:
                 existing = json.loads(f.read())
         except (json.JSONDecodeError, ValueError):
             existing = []
@@ -236,8 +239,13 @@ def compare(
         delta_cls = b["cls_map50"] - a["cls_map50"]
         delta_score = b["score"] - a["score"]
         delta_time = b["elapsed_s"] - a["elapsed_s"]
-        sign = lambda v: f"+{v:.4f}" if v >= 0 else f"{v:.4f}"
-        sign_t = lambda v: f"+{v:.1f}" if v >= 0 else f"{v:.1f}"
+
+        def sign(v):
+            return f"+{v:.4f}" if v >= 0 else f"{v:.4f}"
+
+        def sign_t(v):
+            return f"+{v:.1f}" if v >= 0 else f"{v:.1f}"
+
         line = (
             f"  {'Delta':<{col_w}s}"
             f"  {sign(delta_det):>10s}"
@@ -278,13 +286,9 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.compare:
-        results = compare(
-            args.compare, args.data, args.imgsz, args.conf, args.iou, tta=args.tta
-        )
+        results = compare(args.compare, args.data, args.imgsz, args.conf, args.iou, tta=args.tta)
     else:
-        result = evaluate(
-            args.weights, args.data, args.imgsz, args.conf, args.iou, tta=args.tta
-        )
+        result = evaluate(args.weights, args.data, args.imgsz, args.conf, args.iou, tta=args.tta)
         results = [result]
 
     if not args.no_save:

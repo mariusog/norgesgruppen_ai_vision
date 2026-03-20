@@ -68,9 +68,11 @@ def main():
 
     # PyTorch 2.6 compat
     _orig_load = torch.load
+
     def _patched_load(*a, **kw):
         kw.setdefault("weights_only", False)
         return _orig_load(*a, **kw)
+
     torch.load = _patched_load
 
     print(f"Loading model from {args.weights} ...")
@@ -78,7 +80,8 @@ def main():
 
     # Collect training images (img_* only, skip ref_*)
     all_images = sorted(
-        p for p in TRAIN_IMAGES.iterdir()
+        p
+        for p in TRAIN_IMAGES.iterdir()
         if p.stem.startswith("img_") and p.suffix.lower() in (".jpg", ".jpeg", ".png")
     )
     if args.max_images > 0:
@@ -89,7 +92,7 @@ def main():
 
     for idx, img_path in enumerate(all_images):
         if (idx + 1) % 20 == 0:
-            print(f"  [{idx+1}/{len(all_images)}] {img_path.name}")
+            print(f"  [{idx + 1}/{len(all_images)}] {img_path.name}")
 
         # Run inference
         results = model.predict(str(img_path), conf=args.conf, verbose=False)
@@ -101,11 +104,13 @@ def main():
         if result.boxes is not None and len(result.boxes):
             for box in result.boxes:
                 xyxy = box.xyxy[0].cpu().numpy().tolist()
-                preds.append({
-                    "class_id": int(box.cls[0].item()),
-                    "conf": float(box.conf[0].item()),
-                    "bbox": xyxy,
-                })
+                preds.append(
+                    {
+                        "class_id": int(box.cls[0].item()),
+                        "conf": float(box.conf[0].item()),
+                        "bbox": xyxy,
+                    }
+                )
 
         # Load ground truth
         label_path = TRAIN_LABELS / (img_path.stem + ".txt")
@@ -127,41 +132,47 @@ def main():
             if best_pred is not None and best_iou > 0.3:
                 matched_preds.add(best_pred_idx)
                 if best_pred["class_id"] != gt["class_id"] and best_pred["conf"] >= args.flag_conf:
-                    flags.append({
-                        "type": "wrong_class",
+                    flags.append(
+                        {
+                            "type": "wrong_class",
+                            "file": img_path.name,
+                            "gt_class": gt["class_id"],
+                            "pred_class": best_pred["class_id"],
+                            "conf": best_pred["conf"],
+                            "iou": best_iou,
+                            "gt_bbox": gt["bbox"],
+                            "pred_bbox": best_pred["bbox"],
+                        }
+                    )
+            elif best_iou <= 0.3:
+                flags.append(
+                    {
+                        "type": "undetected",
                         "file": img_path.name,
                         "gt_class": gt["class_id"],
-                        "pred_class": best_pred["class_id"],
-                        "conf": best_pred["conf"],
+                        "pred_class": None,
+                        "conf": 0.0,
                         "iou": best_iou,
                         "gt_bbox": gt["bbox"],
-                        "pred_bbox": best_pred["bbox"],
-                    })
-            elif best_iou <= 0.3:
-                flags.append({
-                    "type": "undetected",
-                    "file": img_path.name,
-                    "gt_class": gt["class_id"],
-                    "pred_class": None,
-                    "conf": 0.0,
-                    "iou": best_iou,
-                    "gt_bbox": gt["bbox"],
-                    "pred_bbox": None,
-                })
+                        "pred_bbox": None,
+                    }
+                )
 
         # Check unmatched predictions (possible missing annotations)
         for pi, pred in enumerate(preds):
             if pi not in matched_preds and pred["conf"] >= args.flag_conf:
-                flags.append({
-                    "type": "missing_annotation",
-                    "file": img_path.name,
-                    "gt_class": None,
-                    "pred_class": pred["class_id"],
-                    "conf": pred["conf"],
-                    "iou": 0.0,
-                    "gt_bbox": None,
-                    "pred_bbox": pred["bbox"],
-                })
+                flags.append(
+                    {
+                        "type": "missing_annotation",
+                        "file": img_path.name,
+                        "gt_class": None,
+                        "pred_class": pred["class_id"],
+                        "conf": pred["conf"],
+                        "iou": 0.0,
+                        "gt_bbox": None,
+                        "pred_bbox": pred["bbox"],
+                    }
+                )
 
     # Sort: wrong_class first (most actionable), then by confidence desc
     type_order = {"wrong_class": 0, "missing_annotation": 1, "undetected": 2}
@@ -204,14 +215,14 @@ def _build_html(flags: list[dict], cat_names: dict[int, str]) -> str:
         pred_name = cat_names.get(f["pred_class"], "N/A") if f["pred_class"] is not None else "N/A"
         rows.append(f"""<tr style="background:{bg}">
 <td><input type="checkbox" id="cb{i}"></td>
-<td>{type_labels.get(f['type'], f['type'])}</td>
-<td>{f['file']}</td>
-<td title="ID {f['gt_class']}">{gt_name}</td>
-<td title="ID {f['pred_class']}">{pred_name}</td>
-<td>{f['conf']:.3f}</td>
-<td>{f['iou']:.2f}</td>
-<td>{_fmt_bbox(f['gt_bbox'])}</td>
-<td>{_fmt_bbox(f['pred_bbox'])}</td>
+<td>{type_labels.get(f["type"], f["type"])}</td>
+<td>{f["file"]}</td>
+<td title="ID {f["gt_class"]}">{gt_name}</td>
+<td title="ID {f["pred_class"]}">{pred_name}</td>
+<td>{f["conf"]:.3f}</td>
+<td>{f["iou"]:.2f}</td>
+<td>{_fmt_bbox(f["gt_bbox"])}</td>
+<td>{_fmt_bbox(f["pred_bbox"])}</td>
 </tr>""")
 
     return f"""<!DOCTYPE html>
@@ -230,9 +241,9 @@ tr:hover {{ outline: 2px solid #007bff; }}
 <h1>Label Review Report</h1>
 <div class="stats">
 <b>Total flags:</b> {len(flags)} |
-<b>Wrong class:</b> {sum(1 for f in flags if f['type'] == 'wrong_class')} |
-<b>Missing annotation:</b> {sum(1 for f in flags if f['type'] == 'missing_annotation')} |
-<b>Undetected GT:</b> {sum(1 for f in flags if f['type'] == 'undetected')}
+<b>Wrong class:</b> {sum(1 for f in flags if f["type"] == "wrong_class")} |
+<b>Missing annotation:</b> {sum(1 for f in flags if f["type"] == "missing_annotation")} |
+<b>Undetected GT:</b> {sum(1 for f in flags if f["type"] == "undetected")}
 </div>
 <div class="legend">
 <span style="background:#ffcccc">Wrong class (likely error)</span>
@@ -245,7 +256,7 @@ tr:hover {{ outline: 2px solid #007bff; }}
 <th>Confidence</th><th>IoU</th><th>GT BBox (xyxy)</th><th>Pred BBox (xyxy)</th>
 </tr></thead>
 <tbody>
-{''.join(rows)}
+{"".join(rows)}
 </tbody></table>
 <script>
 document.querySelectorAll('input[type=checkbox]').forEach(cb => {{

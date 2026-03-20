@@ -4,7 +4,8 @@ Compares model predictions against ground truth annotations and outputs
 flagged disagreements as a JSON file that the labeling frontend can consume.
 
 Usage:
-    python scripts/generate_label_tasks.py [--weights weights/model.pt] [--max-images 0] [--conf 0.25]
+    python scripts/generate_label_tasks.py [--weights weights/model.pt] \
+        [--max-images 0] [--conf 0.25]
 
 Output: docs/label_tasks.json
 This is a training prep script — can use any imports.
@@ -91,16 +92,19 @@ def main():
 
     # PyTorch 2.6 compat
     _orig_load = torch.load
+
     def _patched_load(*a, **kw):
         kw.setdefault("weights_only", False)
         return _orig_load(*a, **kw)
+
     torch.load = _patched_load
 
     print(f"Loading model from {args.weights} ...")
     model = YOLO(args.weights)
 
     all_images = sorted(
-        p for p in TRAIN_IMAGES.iterdir()
+        p
+        for p in TRAIN_IMAGES.iterdir()
         if p.stem.startswith("img_") and p.suffix.lower() in (".jpg", ".jpeg", ".png")
     )
     if args.max_images > 0:
@@ -111,7 +115,7 @@ def main():
 
     for idx, img_path in enumerate(all_images):
         if (idx + 1) % 20 == 0:
-            print(f"  [{idx+1}/{len(all_images)}] {img_path.name}")
+            print(f"  [{idx + 1}/{len(all_images)}] {img_path.name}")
 
         results = model.predict(str(img_path), conf=args.conf, verbose=False)
         result = results[0]
@@ -121,11 +125,13 @@ def main():
         if result.boxes is not None and len(result.boxes):
             for box in result.boxes:
                 xyxy = box.xyxy[0].cpu().numpy().tolist()
-                preds.append({
-                    "class_id": int(box.cls[0].item()),
-                    "conf": float(box.conf[0].item()),
-                    "bbox": xyxy,
-                })
+                preds.append(
+                    {
+                        "class_id": int(box.cls[0].item()),
+                        "conf": float(box.conf[0].item()),
+                        "bbox": xyxy,
+                    }
+                )
 
         label_path = TRAIN_LABELS / (img_path.stem + ".txt")
         gt_boxes = load_gt_labels(label_path, img_w, img_h)
@@ -147,37 +153,44 @@ def main():
             if best_pred is not None and best_iou > 0.3:
                 matched_preds.add(best_pred_idx)
                 if best_pred["class_id"] != gt["class_id"] and best_pred["conf"] >= args.flag_conf:
-                    tasks.append({
-                        "id": len(tasks),
-                        "type": "wrong_class",
-                        "file": img_path.name,
-                        "gt_class": gt["class_id"],
-                        "gt_name": cat_names.get(gt["class_id"], f"ID {gt['class_id']}"),
-                        "pred_class": best_pred["class_id"],
-                        "pred_name": cat_names.get(best_pred["class_id"], f"ID {best_pred['class_id']}"),
-                        "conf": round(best_pred["conf"], 3),
-                        "iou": round(best_iou, 2),
-                        "gt_bbox": [round(v, 1) for v in gt["bbox"]],
-                        "pred_bbox": [round(v, 1) for v in best_pred["bbox"]],
-                        "crop": crop_to_base64(img, gt["bbox"]),
-                    })
+                    tasks.append(
+                        {
+                            "id": len(tasks),
+                            "type": "wrong_class",
+                            "file": img_path.name,
+                            "gt_class": gt["class_id"],
+                            "gt_name": cat_names.get(gt["class_id"], f"ID {gt['class_id']}"),
+                            "pred_class": best_pred["class_id"],
+                            "pred_name": cat_names.get(
+                                best_pred["class_id"],
+                                f"ID {best_pred['class_id']}",
+                            ),
+                            "conf": round(best_pred["conf"], 3),
+                            "iou": round(best_iou, 2),
+                            "gt_bbox": [round(v, 1) for v in gt["bbox"]],
+                            "pred_bbox": [round(v, 1) for v in best_pred["bbox"]],
+                            "crop": crop_to_base64(img, gt["bbox"]),
+                        }
+                    )
 
         for pi, pred in enumerate(preds):
             if pi not in matched_preds and pred["conf"] >= args.flag_conf:
-                tasks.append({
-                    "id": len(tasks),
-                    "type": "missing_annotation",
-                    "file": img_path.name,
-                    "gt_class": None,
-                    "gt_name": None,
-                    "pred_class": pred["class_id"],
-                    "pred_name": cat_names.get(pred["class_id"], f"ID {pred['class_id']}"),
-                    "conf": round(pred["conf"], 3),
-                    "iou": 0.0,
-                    "gt_bbox": None,
-                    "pred_bbox": [round(v, 1) for v in pred["bbox"]],
-                    "crop": crop_to_base64(img, pred["bbox"]),
-                })
+                tasks.append(
+                    {
+                        "id": len(tasks),
+                        "type": "missing_annotation",
+                        "file": img_path.name,
+                        "gt_class": None,
+                        "gt_name": None,
+                        "pred_class": pred["class_id"],
+                        "pred_name": cat_names.get(pred["class_id"], f"ID {pred['class_id']}"),
+                        "conf": round(pred["conf"], 3),
+                        "iou": 0.0,
+                        "gt_bbox": None,
+                        "pred_bbox": [round(v, 1) for v in pred["bbox"]],
+                        "crop": crop_to_base64(img, pred["bbox"]),
+                    }
+                )
 
         img.close()
 
@@ -188,7 +201,8 @@ def main():
         t["id"] = i
 
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps({"categories": cat_names, "tasks": tasks}, ensure_ascii=False))
+    data = json.dumps({"categories": cat_names, "tasks": tasks}, ensure_ascii=False)
+    OUTPUT_JSON.write_text(data)
     print(f"\nGenerated {len(tasks)} tasks → {OUTPUT_JSON}")
     print(f"  wrong_class:        {sum(1 for t in tasks if t['type'] == 'wrong_class')}")
     print(f"  missing_annotation: {sum(1 for t in tasks if t['type'] == 'missing_annotation')}")

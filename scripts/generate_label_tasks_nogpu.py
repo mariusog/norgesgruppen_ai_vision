@@ -6,7 +6,8 @@ Flags potential annotation issues by analyzing ground truth statistics:
   - Categories that appear very rarely (<3 occurrences)
 
 Usage:
-    python scripts/generate_label_tasks_nogpu.py [--min-box-size 20] [--min-ann-per-image 3] [--min-cat-count 3]
+    python scripts/generate_label_tasks_nogpu.py [--min-box-size 20] \
+        [--min-ann-per-image 3] [--min-cat-count 3]
 
 Output: docs/label_tasks.json (same format as generate_label_tasks.py)
 """
@@ -60,12 +61,24 @@ def crop_to_base64(img: Image.Image, bbox_xywh: list[float], pad: float = 0.1) -
 
 def main():
     parser = argparse.ArgumentParser(description="Generate label tasks without GPU")
-    parser.add_argument("--min-box-size", type=int, default=20,
-                        help="Flag boxes smaller than NxN pixels (default: 20)")
-    parser.add_argument("--min-ann-per-image", type=int, default=3,
-                        help="Flag images with fewer than N annotations (default: 3)")
-    parser.add_argument("--min-cat-count", type=int, default=3,
-                        help="Flag categories with fewer than N occurrences (default: 3)")
+    parser.add_argument(
+        "--min-box-size",
+        type=int,
+        default=20,
+        help="Flag boxes smaller than NxN pixels (default: 20)",
+    )
+    parser.add_argument(
+        "--min-ann-per-image",
+        type=int,
+        default=3,
+        help="Flag images with fewer than N annotations (default: 3)",
+    )
+    parser.add_argument(
+        "--min-cat-count",
+        type=int,
+        default=3,
+        help="Flag categories with fewer than N occurrences (default: 3)",
+    )
     args = parser.parse_args()
 
     # Load data
@@ -82,12 +95,12 @@ def main():
         cat_counter[ann["category_id"]] += 1
 
     # Identify rare categories
-    rare_cats = {cat_id for cat_id, count in cat_counter.items()
-                 if count < args.min_cat_count}
+    rare_cats = {cat_id for cat_id, count in cat_counter.items() if count < args.min_cat_count}
 
     # Identify images with few annotations
-    sparse_images = {img_id for img_id, anns in anns_by_image.items()
-                     if len(anns) < args.min_ann_per_image}
+    sparse_images = {
+        img_id for img_id, anns in anns_by_image.items() if len(anns) < args.min_ann_per_image
+    }
 
     print(f"Dataset: {len(images_by_id)} images, {len(coco['annotations'])} annotations")
     print(f"Rare categories (<{args.min_cat_count} occurrences): {len(rare_cats)}")
@@ -159,8 +172,10 @@ def main():
         img_path = TRAIN_IMAGES_DIR / img_info["file_name"]
 
         if (idx + 1) % 20 == 0 or idx == 0:
-            print(f"  Cropping [{idx+1}/{total_images}] {img_info['file_name']} "
-                  f"({len(img_task_list)} flagged annotations)")
+            print(
+                f"  Cropping [{idx + 1}/{total_images}] {img_info['file_name']} "
+                f"({len(img_task_list)} flagged annotations)"
+            )
 
         if not img_path.exists():
             print(f"  WARNING: {img_path} not found, skipping crops")
