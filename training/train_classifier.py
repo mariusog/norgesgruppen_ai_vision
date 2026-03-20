@@ -377,6 +377,21 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=NUM_EPOCHS)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--lr", type=float, default=LEARNING_RATE)
+    parser.add_argument(
+        "--model-name",
+        type=str,
+        default="efficientnet_b3",
+        help="timm model name (e.g. convnext_small.fb_in22k_ft_in1k)",
+    )
+    parser.add_argument(
+        "--input-size", type=int, default=INPUT_SIZE, help="Input image size for classifier"
+    )
+    parser.add_argument(
+        "--use-focal-loss", action="store_true", help="Use focal loss instead of CrossEntropy"
+    )
+    parser.add_argument(
+        "--gcs-name", type=str, default=GCS_WEIGHTS_NAME, help="Filename for GCS upload"
+    )
     parser.add_argument("--no-upload", action="store_true", help="Skip GCS upload")
     parser.add_argument("--run-id", type=str, default=time.strftime("%Y%m%d_%H%M%S"))
     args = parser.parse_args()
@@ -390,6 +405,10 @@ def main() -> None:
     # Device setup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
+
+    # Override global INPUT_SIZE if --input-size provided
+    global INPUT_SIZE
+    INPUT_SIZE = args.input_size
 
     # Build datasets
     train_dataset = ProductClassificationDataset(
@@ -425,13 +444,34 @@ def main() -> None:
     print(f"Train batches: {len(train_loader)}, Val batches: {len(val_loader)}")
 
     # Build model
-    model = timm.create_model("efficientnet_b3", pretrained=True, num_classes=NUM_CLASSES)
+    model = timm.create_model(args.model_name, pretrained=True, num_classes=NUM_CLASSES)
     model = model.to(device)
     param_count = sum(p.numel() for p in model.parameters()) / 1e6
-    print(f"Model: EfficientNet-B3, {param_count:.1f}M parameters, {NUM_CLASSES} classes")
+    print(
+        f"Model: {args.model_name}, {param_count:.1f}M params, "
+        f"{NUM_CLASSES} classes, input={INPUT_SIZE}px"
+    )
 
     # Loss, optimizer, scheduler
-    criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
+    if args.use_focal_loss:
+        # Focal loss: down-weights easy examples, focuses on hard ones
+        # gamma=2.0 is the standard value from the focal loss paper
+        class FocalLoss(nn.Module):
+            def __init__(self, gamma: float = 2.0, label_smoothing: float = 0.1):
+                super().__init__()
+                self.gamma = gamma
+                self.ce = nn.CrossEntropyLoss(label_smoothing=label_smoothing, reduction="none")
+
+            def forward(self, inputs: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+                ce_loss = self.ce(inputs, targets)
+                p_t = torch.exp(-ce_loss)
+                focal_loss = ((1 - p_t) ** self.gamma) * ce_loss
+                return focal_loss.mean()
+
+        criterion = FocalLoss(gamma=2.0, label_smoothing=0.1)
+        print("Using Focal Loss (gamma=2.0)")
+    else:
+        criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.epochs, eta_min=1e-6
@@ -478,6 +518,9 @@ def main() -> None:
 
     # Upload to GCS
     if not args.no_upload:
+        # Use custom GCS name if provided
+        global GCS_WEIGHTS_NAME
+        GCS_WEIGHTS_NAME = args.gcs_name
         upload_weights(save_path)
 
     print("Done.")
