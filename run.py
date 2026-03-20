@@ -12,14 +12,20 @@ Output: JSON array of {image_id, category_id, bbox, score} dicts.
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import time
 from pathlib import Path
 
 import torch
-from ultralytics import YOLO
 
-from src.constants import (
+# PyTorch 2.6 defaults torch.load(weights_only=True) which breaks
+# ultralytics 8.1.0 model loading. Patch before importing ultralytics.
+torch.load = functools.partial(torch.load, weights_only=False)
+
+from ultralytics import YOLO  # noqa: E402
+
+from src.constants import (  # noqa: E402
     CONFIDENCE_THRESHOLD,
     HALF_PRECISION,
     IMAGE_EXTENSIONS,
