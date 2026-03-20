@@ -78,6 +78,14 @@ WBF_SKIP_BOX_THRESHOLD = 0.001
 
 CLASSIFIER_PATH = "weights/classifier.pt"
 CLASSIFIER_MODEL_NAME = "efficientnet_b3"
+
+# Classifier ensemble: list of (path, model_name) tuples for multiple classifiers.
+# Empty = single classifier mode using CLASSIFIER_PATH + CLASSIFIER_MODEL_NAME.
+# When populated, softmax outputs are averaged across all classifiers.
+CLASSIFIER_ENSEMBLE: list[tuple[str, str]] = [
+    # ("weights/classifier.pt", "efficientnet_b3"),
+    # ("weights/classifier2.pt", "convnext_small.fb_in22k_ft_in1k"),
+]
 # EfficientNet-B3 native resolution is 300px; larger crops = better fine-grained accuracy
 CLASSIFIER_INPUT_SIZE = 300
 USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
@@ -88,6 +96,11 @@ CLASSIFIER_CONFIDENCE_GATE = 0.15
 
 # Classifier TTA: run crops through classifier with augmentations and average softmax
 USE_CLASSIFIER_TTA = True
+
+# Score fusion: blend YOLO detection confidence with classifier confidence
+# final_score = SCORE_FUSION_ALPHA * yolo_score + (1 - alpha) * classifier_conf
+# Set to 1.0 to disable (keep YOLO score only)
+SCORE_FUSION_ALPHA = 0.7
 
 # ---------------------------------------------------------------------------
 # Prototype matching — cosine similarity against reference product embeddings

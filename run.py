@@ -48,6 +48,7 @@ from src.constants import (  # noqa: E402
     PROTOTYPE_CONFIDENCE_THRESHOLD,
     PROTOTYPE_PATH,
     PROTOTYPE_SIMILARITY_THRESHOLD,
+    SCORE_FUSION_ALPHA,
     USE_CLASSIFIER,
     USE_CLASSIFIER_TTA,
     USE_PROTOTYPE_MATCHING,
@@ -88,43 +89,61 @@ def load_ensemble_models() -> list[YOLO]:
     return models
 
 
-def load_classifier() -> torch.nn.Module | None:
-    """Load the two-stage classifier if weights exist and USE_CLASSIFIER is True.
+def load_classifier() -> list[torch.nn.Module] | None:
+    """Load classifier(s) for two-stage classification.
 
-    Returns the classifier model on CUDA in eval mode, or None if unavailable.
+    Supports single classifier (CLASSIFIER_PATH) or ensemble (CLASSIFIER_ENSEMBLE).
+    Returns list of models on CUDA in eval mode, or None if unavailable.
     """
     if not USE_CLASSIFIER:
         return None
 
-    classifier_path = Path(CLASSIFIER_PATH)
-    if not classifier_path.exists():
-        return None
-
     import timm
 
-    model = timm.create_model(CLASSIFIER_MODEL_NAME, num_classes=NUM_CLASSES)
-    state_dict = torch.load(str(classifier_path), map_location="cpu")
-    model.load_state_dict(state_dict)
-    model.to("cuda")
-    model.eval()
-    return model
+    from src.constants import CLASSIFIER_ENSEMBLE
+
+    models: list[torch.nn.Module] = []
+
+    if CLASSIFIER_ENSEMBLE:
+        for path_str, model_name in CLASSIFIER_ENSEMBLE:
+            p = Path(path_str)
+            if not p.exists():
+                continue
+            model = timm.create_model(model_name, num_classes=NUM_CLASSES)
+            state_dict = torch.load(str(p), map_location="cpu")
+            model.load_state_dict(state_dict)
+            model.to("cuda")
+            model.eval()
+            models.append(model)
+    else:
+        classifier_path = Path(CLASSIFIER_PATH)
+        if not classifier_path.exists():
+            return None
+        model = timm.create_model(CLASSIFIER_MODEL_NAME, num_classes=NUM_CLASSES)
+        state_dict = torch.load(str(classifier_path), map_location="cpu")
+        model.load_state_dict(state_dict)
+        model.to("cuda")
+        model.eval()
+        models.append(model)
+
+    return models if models else None
 
 
 def classify_crops(
     image_paths: list[Path],
     predictions: list[dict],
-    classifier: torch.nn.Module,
+    classifiers: list[torch.nn.Module],
     batch_size: int = CLASSIFIER_BATCH_SIZE,
 ) -> list[dict]:
-    """Re-classify each YOLO detection using the two-stage classifier.
+    """Re-classify each YOLO detection using classifier ensemble.
 
     Crops each detected bbox from the original image, resizes to
-    CLASSIFIER_INPUT_SIZE, runs the classifier, and overrides category_id.
+    CLASSIFIER_INPUT_SIZE, runs all classifiers, averages softmax, overrides category_id.
 
     Args:
         image_paths: list of image paths used during detection.
         predictions: list of prediction dicts (mutated in place and returned).
-        classifier: the loaded classifier model.
+        classifiers: list of loaded classifier models.
         batch_size: number of crops to classify per forward pass.
 
     Returns:
@@ -197,25 +216,26 @@ def classify_crops(
         for i in range(0, len(crop_tensors), batch_size):
             batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
 
-            if USE_CLASSIFIER_TTA:
-                # TTA: original + horizontal flip, average softmax
-                logits_orig = classifier(batch)
-                logits_flip = classifier(torch.flip(batch, dims=[3]))
-                probs = (
-                    torch.nn.functional.softmax(logits_orig, dim=1)
-                    + torch.nn.functional.softmax(logits_flip, dim=1)
-                ) / 2.0
-            else:
-                logits = classifier(batch)
-                probs = torch.nn.functional.softmax(logits, dim=1)
+            # Average softmax across all classifiers (ensemble)
+            probs_sum = None
+            num_passes = 0
+            for clf in classifiers:
+                logits = clf(batch)
+                p = torch.nn.functional.softmax(logits, dim=1)
+                if USE_CLASSIFIER_TTA:
+                    p_flip = torch.nn.functional.softmax(clf(torch.flip(batch, dims=[3])), dim=1)
+                    p = (p + p_flip) / 2.0
+                probs_sum = p if probs_sum is None else probs_sum + p
+                num_passes += 1
+            probs = probs_sum / num_passes
 
             max_probs, class_ids = probs.max(dim=1)
             all_class_ids.extend(class_ids.cpu().tolist())
             all_confidences.extend(max_probs.cpu().tolist())
 
-            # Extract features for prototype matching if needed
+            # Extract features for prototype matching (use first classifier)
             if prototypes is not None:
-                feats = classifier.forward_features(batch)
+                feats = classifiers[0].forward_features(batch)
                 if feats.dim() == 4:
                     feats = feats.mean(dim=[2, 3])
                 feats = torch.nn.functional.normalize(feats, dim=1)
@@ -227,6 +247,12 @@ def classify_crops(
     ):
         if conf >= CLASSIFIER_CONFIDENCE_GATE:
             pred["category_id"] = int(cls_id)
+            # Blend YOLO detection score with classifier confidence
+            if SCORE_FUSION_ALPHA < 1.0:
+                yolo_score = pred["score"]
+                pred["score"] = float(
+                    SCORE_FUSION_ALPHA * yolo_score + (1.0 - SCORE_FUSION_ALPHA) * conf
+                )
 
             # For mid-confidence predictions, try prototype matching
             if prototypes is not None and conf < PROTOTYPE_CONFIDENCE_THRESHOLD:
@@ -398,7 +424,7 @@ def main() -> None:
     t_start = time.perf_counter()
 
     image_paths = collect_images(input_dir)
-    classifier = load_classifier()
+    classifiers = load_classifier()
 
     if ENSEMBLE_WEIGHTS:
         models = load_ensemble_models()
@@ -407,8 +433,8 @@ def main() -> None:
         model = load_model()
         predictions = run_inference(model, image_paths)
 
-    if classifier is not None:
-        predictions = classify_crops(image_paths, predictions, classifier)
+    if classifiers is not None:
+        predictions = classify_crops(image_paths, predictions, classifiers)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(predictions))

@@ -483,8 +483,11 @@ class TestClassifyCrops:
         classifier.to = MagicMock()
 
         with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch("run.USE_CLASSIFIER_TTA", False), \
+             patch("run.USE_PROTOTYPE_MATCHING", False), \
+             patch("run.SCORE_FUSION_ALPHA", 1.0), \
              patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
-            result = classify_crops([img_path], predictions, classifier)
+            result = classify_crops([img_path], predictions, [classifier])
 
         assert len(result) == 1
         assert result[0]["category_id"] == 42  # Overridden by classifier
@@ -506,8 +509,11 @@ class TestClassifyCrops:
         classifier.to = MagicMock()
 
         with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch("run.USE_CLASSIFIER_TTA", False), \
+             patch("run.USE_PROTOTYPE_MATCHING", False), \
+             patch("run.SCORE_FUSION_ALPHA", 1.0), \
              patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
-            result = classify_crops([img_path], predictions, classifier)
+            result = classify_crops([img_path], predictions, [classifier])
 
         assert len(result) == 1
         assert result[0]["category_id"] == 5  # NOT overridden
@@ -517,7 +523,7 @@ class TestClassifyCrops:
         img_path = self._make_test_image(tmp_path, "img_00001.jpg")
 
         classifier = MagicMock()
-        result = classify_crops([img_path], [], classifier)
+        result = classify_crops([img_path], [], [classifier])
 
         assert result == []
         classifier.assert_not_called()
@@ -541,8 +547,11 @@ class TestClassifyCrops:
         classifier.to = MagicMock()
 
         with patch("run.CLASSIFIER_CONFIDENCE_GATE", 0.15), \
+             patch("run.USE_CLASSIFIER_TTA", False), \
+             patch("run.USE_PROTOTYPE_MATCHING", False), \
+             patch("run.SCORE_FUSION_ALPHA", 1.0), \
              patch.object(torch.Tensor, "to", lambda self, *a, **kw: self):
-            result = classify_crops([img_path], predictions, classifier)
+            result = classify_crops([img_path], predictions, [classifier])
 
         assert result[0]["category_id"] == 99  # Overridden
         assert result[1]["category_id"] == 20  # Kept original
