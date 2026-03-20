@@ -50,6 +50,9 @@ CONFIDENCE_THRESHOLD = 0.25
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
 IOU_THRESHOLD = 0.45
 
+# Batch size for inference -- balances GPU utilization vs memory on L4 (24 GB)
+INFERENCE_BATCH_SIZE = 16
+
 # Max detections per image -- L4 has plenty of memory, but cap for safety
 MAX_DETECTIONS_PER_IMAGE = 300
 

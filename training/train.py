@@ -11,10 +11,10 @@ Usage (Vertex AI):
     Set via gcloud ai custom-jobs create worker pool spec.
     See model-agent.md for the full gcloud command.
 """
+
 from __future__ import annotations
 
 import argparse
-import json
 import time
 from pathlib import Path
 
@@ -89,8 +89,14 @@ def log_results(results: object, run_id: str, elapsed: float) -> None:
         map50 = 0.0
         map5095 = 0.0
 
-    header = "| Run | Date | Model | Epochs | mAP@50 | mAP@50:95 | Time (min) | Notes |\n|-----|------|-------|--------|--------|-----------|------------|-------|\n"
-    row = f"| {run_id} | {time.strftime('%Y-%m-%d')} | yolov8m | - | {map50:.3f} | {map5095:.3f} | {elapsed/60:.1f} | |\n"
+    header = (
+        "| Run | Date | Model | Epochs | mAP@50 | mAP@50:95 | Time (min) | Notes |\n"
+        "|-----|------|-------|--------|--------|-----------|------------|-------|\n"
+    )
+    row = (
+        f"| {run_id} | {time.strftime('%Y-%m-%d')} | yolov8m "
+        f"| - | {map50:.3f} | {map5095:.3f} | {elapsed / 60:.1f} | |\n"
+    )
 
     if not results_file.exists():
         results_file.write_text(f"# Training Benchmark Results\n\n{header}{row}")
@@ -105,7 +111,9 @@ def log_results(results: object, run_id: str, elapsed: float) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="YOLOv8m training for NorgesGruppen grocery detection")
+    parser = argparse.ArgumentParser(
+        description="YOLOv8m training for NorgesGruppen grocery detection"
+    )
     parser.add_argument("--data", type=str, default=DEFAULT_DATA)
     parser.add_argument("--model", type=str, default=DEFAULT_BASE_MODEL)
     parser.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS)
@@ -145,7 +153,7 @@ def main() -> None:
     if not args.no_upload:
         upload_weights(run_dir, args.run_id)
 
-    print(f"Training complete in {elapsed/60:.1f} min")
+    print(f"Training complete in {elapsed / 60:.1f} min")
 
 
 if __name__ == "__main__":

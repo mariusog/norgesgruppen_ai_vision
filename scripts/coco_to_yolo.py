@@ -19,6 +19,7 @@ OUTPUT_DIR = Path("/workspaces/norgesgruppen_ai_vision/training/data/yolo")
 TRAIN_RATIO = 0.85
 RANDOM_SEED = 42
 
+
 def main() -> None:
     print(f"Reading annotations from {ANNOTATIONS_PATH} ...")
     coco = json.loads(ANNOTATIONS_PATH.read_text())
@@ -27,7 +28,8 @@ def main() -> None:
     annotations = coco["annotations"]
     categories = coco["categories"]
 
-    print(f"  Found {len(images)} images, {len(annotations)} annotations, {len(categories)} categories")
+    n_img, n_ann, n_cat = len(images), len(annotations), len(categories)
+    print(f"  Found {n_img} images, {n_ann} annotations, {n_cat} categories")
 
     # Build lookup: image_id -> image info
     image_lookup: dict[int, dict] = {img["id"]: img for img in images}

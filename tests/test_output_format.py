@@ -7,13 +7,12 @@ Competition spec: JSON array where each entry contains:
   - bbox        ([x, y, width, height] — four floats/ints, xywh format)
   - score       (float, 0.0-1.0)
 """
+
 from __future__ import annotations
 
 import json
 from pathlib import Path
 from typing import Any
-
-import pytest
 
 
 def _is_valid_prediction(item: Any, index: int) -> list[str]:
@@ -150,4 +149,4 @@ class TestOutputFileFormat:
         all_errors: list[str] = []
         for i, item in enumerate(data):
             all_errors.extend(_is_valid_prediction(item, i))
-        assert all_errors == [], f"Schema violations:\n" + "\n".join(all_errors)
+        assert all_errors == [], "Schema violations:\n" + "\n".join(all_errors)

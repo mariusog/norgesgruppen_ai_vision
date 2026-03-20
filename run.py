@@ -1,5 +1,5 @@
 """
-NM i AI 2026 – NorgesGruppen Object Detection
+NM i AI 2026 - NorgesGruppen Object Detection
 Competition entry point.
 
 Usage:
@@ -8,6 +8,7 @@ Usage:
 Output: JSON array of {image_id, category_id, bbox, score} dicts.
         bbox format: [x, y, width, height] in pixels.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,6 +23,7 @@ from src.constants import (
     CONFIDENCE_THRESHOLD,
     IMAGE_EXTENSIONS,
     IMAGE_SIZE,
+    INFERENCE_BATCH_SIZE,
     IOU_THRESHOLD,
     MODEL_PATH,
 )
@@ -49,11 +51,9 @@ def collect_images(input_dir: Path) -> list[Path]:
 def run_inference(model: YOLO, image_paths: list[Path]) -> list[dict]:
     """Run detection on all images in batches, returning competition-format predictions."""
     predictions: list[dict] = []
-    batch_size = 16
-
     with torch.no_grad():
-        for i in range(0, len(image_paths), batch_size):
-            batch_paths = image_paths[i : i + batch_size]
+        for i in range(0, len(image_paths), INFERENCE_BATCH_SIZE):
+            batch_paths = image_paths[i : i + INFERENCE_BATCH_SIZE]
             batch_strs = [str(p) for p in batch_paths]
             batch_ids = [int(p.stem.split("_")[-1]) for p in batch_paths]
 

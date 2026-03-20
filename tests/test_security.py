@@ -7,6 +7,7 @@ The competition sandbox security scanner disqualifies any submission using:
 
 These tests catch violations before they reach the sandbox.
 """
+
 from __future__ import annotations
 
 import re
