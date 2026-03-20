@@ -25,8 +25,9 @@ COPY pyproject.toml ./
 COPY src/ src/
 COPY training/ training/
 
-# Install project and all dependencies
-RUN pip install --no-cache-dir -e ".[dev]"
+# Upgrade pip, then install project and all dependencies
+RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir ".[dev]"
 
 # Default command: run training with standard config
 CMD ["python", "training/train.py", "--data", "training/data.yaml"]
