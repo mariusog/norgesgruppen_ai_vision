@@ -41,9 +41,7 @@ def load_model() -> YOLO:
     elif weights.exists():
         model_path = weights
     else:
-        raise FileNotFoundError(
-            f"No model found at {engine} or {weights}"
-        )
+        raise FileNotFoundError(f"No model found at {engine} or {weights}")
 
     model = YOLO(str(model_path))
     model.to("cuda")
