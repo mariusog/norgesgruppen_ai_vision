@@ -44,6 +44,15 @@ class TestCollectImages:
         (tmp_path / "data.json").touch()
         assert collect_images(tmp_path) == []
 
+    def test_does_not_recurse_into_subdirs(self, tmp_path: Path) -> None:
+        subdir = tmp_path / "subdir"
+        subdir.mkdir()
+        (subdir / "img_00001.jpg").touch()
+        (tmp_path / "img_00002.jpg").touch()
+        result = collect_images(tmp_path)
+        assert len(result) == 1
+        assert result[0].name == "img_00002.jpg"
+
 
 class TestLoadModel:
     def test_load_model_file_not_found(self, tmp_path: Path) -> None:
@@ -209,6 +218,28 @@ class TestRunInference:
         assert len(preds) == 2
         assert preds[0]["image_id"] == 1
         assert preds[1]["image_id"] == 2
+
+    def test_run_inference_no_images(self) -> None:
+        """Empty image list produces empty predictions."""
+        model = MagicMock()
+        preds = run_inference(model, [])
+        assert preds == []
+        model.predict.assert_not_called()
+
+    def test_run_inference_bbox_is_xywh(self, tmp_path: Path) -> None:
+        """Verify bbox is [x, y, width, height], not [x1, y1, x2, y2]."""
+        img = tmp_path / "img_00005.jpg"
+        img.touch()
+        boxes = _make_mock_boxes([[100.0, 200.0, 350.0, 450.0]], [0], [0.5])
+        model = MagicMock()
+        model.predict.return_value = [_make_mock_result(boxes)]
+
+        preds = run_inference(model, [img])
+        bbox = preds[0]["bbox"]
+        assert bbox[0] == pytest.approx(100.0)  # x
+        assert bbox[1] == pytest.approx(200.0)  # y
+        assert bbox[2] == pytest.approx(250.0)  # width = 350 - 100
+        assert bbox[3] == pytest.approx(250.0)  # height = 450 - 200
 
     def test_run_inference_empty_boxes(self, tmp_path: Path) -> None:
         """Mock model returning empty boxes list, verify empty list."""
