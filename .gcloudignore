@@ -1,0 +1,11 @@
+# Ignore large data files for Cloud Build context
+training/data/
+weights/
+.git/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+docs/
+tests/
+.devcontainer/

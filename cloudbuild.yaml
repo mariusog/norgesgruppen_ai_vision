@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-f'
+      - 'training/Dockerfile'
+      - '-t'
+      - 'europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest'
+      - '.'
+images:
+  - 'europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest'

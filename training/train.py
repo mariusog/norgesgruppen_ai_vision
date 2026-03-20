@@ -41,16 +41,18 @@ def download_dataset(data_yaml: Path) -> None:
     if data_dir.exists() and any(data_dir.rglob("*.jpg")):
         print(f"Dataset already present at {data_dir}")
         return
-    print(f"Pulling dataset from gs://{GCS_BUCKET}/datasets/ → {data_dir}")
+    print(f"Pulling dataset from gs://{GCS_BUCKET}/datasets/yolo/ → {data_dir}")
     # Use google-cloud-storage SDK (no subprocess allowed in run.py but training runs in container)
     from google.cloud import storage  # type: ignore[import]
 
     client = storage.Client()
     bucket = client.bucket(GCS_BUCKET)
-    blobs = list(bucket.list_blobs(prefix="datasets/"))
+    blobs = list(bucket.list_blobs(prefix="datasets/yolo/"))
     data_dir.mkdir(parents=True, exist_ok=True)
     for blob in blobs:
-        dest = data_dir / Path(blob.name).relative_to("datasets")
+        if blob.name.endswith("/"):
+            continue
+        dest = data_dir / Path(blob.name).relative_to("datasets/yolo")
         dest.parent.mkdir(parents=True, exist_ok=True)
         blob.download_to_filename(str(dest))
     print(f"Downloaded {len(blobs)} files to {data_dir}")

@@ -80,3 +80,6 @@ submission*.zip
 # OS files
 .DS_Store
 Thumbs.db
+
+#Training data
+training/data/
