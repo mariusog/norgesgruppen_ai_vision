@@ -1,0 +1,4372 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Label Review Report</title>
+<style>
+body { font-family: sans-serif; margin: 20px; }
+h1 { color: #333; }
+.stats { margin: 10px 0 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+th { background: #444; color: #fff; position: sticky; top: 0; }
+tr:hover { outline: 2px solid #007bff; }
+.legend { display: flex; gap: 20px; margin: 10px 0; }
+.legend span { padding: 4px 12px; border-radius: 3px; font-size: 13px; }
+</style></head><body>
+<h1>Label Review Report</h1>
+<div class="stats">
+<b>Total flags:</b> 433 |
+<b>Wrong class:</b> 102 |
+<b>Missing annotation:</b> 229 |
+<b>Undetected GT:</b> 102
+</div>
+<div class="legend">
+<span style="background:#ffcccc">Wrong class (likely error)</span>
+<span style="background:#ffffcc">Missing annotation</span>
+<span style="background:#ffeecc">Undetected GT</span>
+</div>
+<table>
+<thead><tr>
+<th>Fix</th><th>Type</th><th>Image</th><th>GT Label</th><th>Predicted Label</th>
+<th>Confidence</th><th>IoU</th><th>GT BBox (xyxy)</th><th>Pred BBox (xyxy)</th>
+</tr></thead>
+<tbody>
+<tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb0"></td>
+<td>WRONG CLASS</td>
+<td>img_00072.jpg</td>
+<td title="ID 232">EGG ØKOLOGISK M/L/XL 6STK PRIOR</td>
+<td title="ID 275">EGG FRITTGÅENDE 18STK S/M FIRST PRICE</td>
+<td>0.959</td>
+<td>0.90</td>
+<td>[1262, 2555, 1649, 2684]</td>
+<td>[1268, 2561, 1648, 2679]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb1"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td>0.945</td>
+<td>0.71</td>
+<td>[549, 304, 600, 393]</td>
+<td>[558, 307, 603, 401]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb2"></td>
+<td>WRONG CLASS</td>
+<td>img_00007.jpg</td>
+<td title="ID 179">SJOKOLADEDRIKK 10X32G RETT I KOPPEN</td>
+<td title="ID 169">SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN</td>
+<td>0.937</td>
+<td>0.95</td>
+<td>[2844, 2601, 3024, 2906]</td>
+<td>[2845, 2608, 3023, 2913]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb3"></td>
+<td>WRONG CLASS</td>
+<td>img_00075.jpg</td>
+<td title="ID 104">SMØR USALTET 250G TINE</td>
+<td title="ID 275">EGG FRITTGÅENDE 18STK S/M FIRST PRICE</td>
+<td>0.935</td>
+<td>0.94</td>
+<td>[917, 522, 1074, 571]</td>
+<td>[918, 520, 1072, 570]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb4"></td>
+<td>WRONG CLASS</td>
+<td>img_00005.jpg</td>
+<td title="ID 352">PEPPERMINT&LICORICE URTETE 20POS PUKKA</td>
+<td title="ID 334">CHAI-TE ORIGINAL 20POS PUKKA</td>
+<td>0.930</td>
+<td>0.82</td>
+<td>[2930, 1174, 3083, 1357]</td>
+<td>[2926, 1177, 3078, 1380]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb5"></td>
+<td>WRONG CLASS</td>
+<td>img_00012.jpg</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.926</td>
+<td>0.84</td>
+<td>[2942, 1794, 3103, 1994]</td>
+<td>[2961, 1799, 3101, 1993]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb6"></td>
+<td>WRONG CLASS</td>
+<td>img_00031.jpg</td>
+<td title="ID 206">NESCAFE VANILLA LATTE 136G NESTLE</td>
+<td title="ID 64">TASSIMO EVERGOOD CLASSIC 16KAPSLER</td>
+<td>0.915</td>
+<td>0.67</td>
+<td>[3879, 305, 4000, 672]</td>
+<td>[3839, 279, 4000, 651]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb7"></td>
+<td>WRONG CLASS</td>
+<td>img_00006.jpg</td>
+<td title="ID 206">NESCAFE VANILLA LATTE 136G NESTLE</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.898</td>
+<td>0.75</td>
+<td>[1146, 1750, 1215, 1903]</td>
+<td>[1137, 1764, 1211, 1907]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb8"></td>
+<td>WRONG CLASS</td>
+<td>img_00055.jpeg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.895</td>
+<td>0.96</td>
+<td>[715, 1217, 843, 1466]</td>
+<td>[713, 1217, 840, 1464]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb9"></td>
+<td>WRONG CLASS</td>
+<td>img_00020.jpg</td>
+<td title="ID 133">ZOEGAS KAFFE SKÅNEROST 450G</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.894</td>
+<td>0.83</td>
+<td>[0, 3538, 130, 4004]</td>
+<td>[0, 3536, 111, 3994]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb10"></td>
+<td>WRONG CLASS</td>
+<td>img_00089.jpg</td>
+<td title="ID 220">MEIERISMØR 250G BORDPK TINE</td>
+<td title="ID 128">SMØREMYK LETT 400G ELDORADO</td>
+<td>0.894</td>
+<td>0.72</td>
+<td>[24, 122, 505, 306]</td>
+<td>[7, 117, 521, 356]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb11"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 339">ALI ORIGINAL KAFFEKAPSEL 16STK</td>
+<td title="ID 198">ALI ORIGINAL KAFFEPUTER 18STK</td>
+<td>0.892</td>
+<td>0.88</td>
+<td>[1164, 516, 1231, 568]</td>
+<td>[1167, 517, 1235, 567]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb12"></td>
+<td>WRONG CLASS</td>
+<td>img_00023.jpeg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.886</td>
+<td>0.88</td>
+<td>[683, 1293, 859, 1577]</td>
+<td>[675, 1288, 870, 1579]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb13"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID 178">NESCAFE GOLD ORGANIC&FAIRTRADE 100G</td>
+<td>0.886</td>
+<td>0.80</td>
+<td>[756, 967, 811, 1076]</td>
+<td>[760, 970, 815, 1081]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb14"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.885</td>
+<td>0.79</td>
+<td>[413, 177, 471, 272]</td>
+<td>[411, 176, 479, 278]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb15"></td>
+<td>WRONG CLASS</td>
+<td>img_00062.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.882</td>
+<td>0.89</td>
+<td>[151, 160, 221, 237]</td>
+<td>[153, 158, 222, 241]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb16"></td>
+<td>WRONG CLASS</td>
+<td>img_00004.jpg</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.873</td>
+<td>0.76</td>
+<td>[2029, 259, 2099, 358]</td>
+<td>[2024, 260, 2101, 342]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb17"></td>
+<td>WRONG CLASS</td>
+<td>img_00014.jpg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.873</td>
+<td>0.81</td>
+<td>[1509, 926, 1566, 1066]</td>
+<td>[1515, 930, 1570, 1066]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb18"></td>
+<td>WRONG CLASS</td>
+<td>img_00006.jpg</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td>0.864</td>
+<td>0.81</td>
+<td>[1817, 1532, 1924, 1692]</td>
+<td>[1827, 1539, 1924, 1682]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb19"></td>
+<td>WRONG CLASS</td>
+<td>img_00059.jpg</td>
+<td title="ID 144">FRIELE FROKOST KOKMALT 250G</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.860</td>
+<td>0.78</td>
+<td>[1104, 1326, 1176, 1442]</td>
+<td>[1099, 1325, 1184, 1452]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb20"></td>
+<td>WRONG CLASS</td>
+<td>img_00004.jpg</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.858</td>
+<td>0.76</td>
+<td>[2098, 270, 2178, 350]</td>
+<td>[2094, 258, 2175, 345]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb21"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 83">BLACK TEA PEACG&MANGO 20PS LIPTON</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.852</td>
+<td>0.79</td>
+<td>[1442, 897, 1510, 947]</td>
+<td>[1443, 887, 1509, 946]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb22"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td title="ID 200">EVERGOOD CLASSIC KAFFEKAPSEL 16STK</td>
+<td>0.820</td>
+<td>0.96</td>
+<td>[1155, 162, 1227, 212]</td>
+<td>[1156, 162, 1226, 212]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb23"></td>
+<td>WRONG CLASS</td>
+<td>img_00044.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.820</td>
+<td>0.89</td>
+<td>[1002, 1471, 1156, 1700]</td>
+<td>[1011, 1467, 1160, 1697]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb24"></td>
+<td>WRONG CLASS</td>
+<td>img_00055.jpeg</td>
+<td title="ID 147">ROOIBOS TE ØKOLOGISK 20PS</td>
+<td title="ID 238">KAMILLE TE ØKOLOGISK 24PK</td>
+<td>0.809</td>
+<td>0.97</td>
+<td>[1856, 308, 2009, 393]</td>
+<td>[1856, 307, 2012, 393]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb25"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td title="ID 355">unknown_product</td>
+<td>0.807</td>
+<td>0.77</td>
+<td>[1918, 1362, 2084, 1588]</td>
+<td>[1920, 1387, 2065, 1590]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb26"></td>
+<td>WRONG CLASS</td>
+<td>img_00012.jpg</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.790</td>
+<td>0.36</td>
+<td>[2030, 2172, 2203, 2436]</td>
+<td>[2116, 2175, 2252, 2413]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb27"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.775</td>
+<td>0.93</td>
+<td>[701, 183, 752, 278]</td>
+<td>[701, 181, 754, 279]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb28"></td>
+<td>WRONG CLASS</td>
+<td>img_00044.jpg</td>
+<td title="ID 184">EARL GREY TEA 200G TWININGS</td>
+<td title="ID 173">EARL GREY TEA 25POS TWININGS</td>
+<td>0.773</td>
+<td>0.95</td>
+<td>[955, 2558, 1241, 2747]</td>
+<td>[958, 2555, 1244, 2744]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb29"></td>
+<td>WRONG CLASS</td>
+<td>img_00014.jpg</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td>0.765</td>
+<td>0.90</td>
+<td>[2270, 733, 2398, 799]</td>
+<td>[2268, 735, 2393, 799]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb30"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td>0.759</td>
+<td>0.92</td>
+<td>[459, 306, 518, 399]</td>
+<td>[460, 306, 514, 399]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb31"></td>
+<td>WRONG CLASS</td>
+<td>img_00026.jpeg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.759</td>
+<td>0.88</td>
+<td>[1106, 284, 1150, 408]</td>
+<td>[1108, 280, 1153, 408]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb32"></td>
+<td>WRONG CLASS</td>
+<td>img_00006.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID 178">NESCAFE GOLD ORGANIC&FAIRTRADE 100G</td>
+<td>0.757</td>
+<td>0.78</td>
+<td>[1377, 898, 1468, 1056]</td>
+<td>[1370, 887, 1460, 1061]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb33"></td>
+<td>WRONG CLASS</td>
+<td>img_00025.jpeg</td>
+<td title="ID 1">COFFEE MATE 180G  NESTLE</td>
+<td title="ID 168">BRELETT 540G</td>
+<td>0.757</td>
+<td>0.92</td>
+<td>[1, 288, 151, 465]</td>
+<td>[0, 280, 154, 469]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb34"></td>
+<td>WRONG CLASS</td>
+<td>img_00061.jpg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td>0.757</td>
+<td>0.86</td>
+<td>[565, 689, 631, 812]</td>
+<td>[567, 689, 636, 816]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb35"></td>
+<td>WRONG CLASS</td>
+<td>img_00012.jpg</td>
+<td title="ID 178">NESCAFE GOLD ORGANIC&FAIRTRADE 100G</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.741</td>
+<td>0.73</td>
+<td>[1808, 1369, 1875, 1550]</td>
+<td>[1793, 1366, 1882, 1553]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb36"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.740</td>
+<td>0.95</td>
+<td>[984, 458, 1017, 524]</td>
+<td>[984, 456, 1017, 525]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb37"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.736</td>
+<td>0.77</td>
+<td>[954, 459, 983, 522]</td>
+<td>[951, 456, 985, 525]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb38"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 210">COTW ESPRESSO KAFFEKAPSEL 10STK</td>
+<td title="ID 320">EARL GREY TEA 50POS FIRST PRICE</td>
+<td>0.732</td>
+<td>0.78</td>
+<td>[1661, 127, 1726, 153]</td>
+<td>[1660, 131, 1724, 154]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb39"></td>
+<td>WRONG CLASS</td>
+<td>img_00004.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID 63">ALI MØRKBRENT FILTERMALT 250G</td>
+<td>0.726</td>
+<td>0.59</td>
+<td>[1476, 887, 1562, 1021]</td>
+<td>[1498, 879, 1577, 1019]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb40"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.719</td>
+<td>0.83</td>
+<td>[990, 796, 1137, 1006]</td>
+<td>[995, 796, 1117, 1009]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb41"></td>
+<td>WRONG CLASS</td>
+<td>img_00007.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.717</td>
+<td>0.83</td>
+<td>[1889, 3705, 2050, 3953]</td>
+<td>[1877, 3708, 2034, 3953]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb42"></td>
+<td>WRONG CLASS</td>
+<td>img_00006.jpg</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td title="ID 184">EARL GREY TEA 200G TWININGS</td>
+<td>0.711</td>
+<td>0.91</td>
+<td>[1643, 1314, 1804, 1456]</td>
+<td>[1644, 1318, 1799, 1459]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb43"></td>
+<td>WRONG CLASS</td>
+<td>img_00055.jpeg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.709</td>
+<td>0.83</td>
+<td>[1116, 49, 1221, 200]</td>
+<td>[1125, 45, 1216, 202]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb44"></td>
+<td>WRONG CLASS</td>
+<td>img_00012.jpg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.709</td>
+<td>0.89</td>
+<td>[1881, 1370, 1968, 1549]</td>
+<td>[1883, 1365, 1972, 1553]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb45"></td>
+<td>WRONG CLASS</td>
+<td>img_00023.jpeg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.708</td>
+<td>0.78</td>
+<td>[2069, 1712, 2175, 1931]</td>
+<td>[2070, 1719, 2156, 1934]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb46"></td>
+<td>WRONG CLASS</td>
+<td>img_00001.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.698</td>
+<td>0.89</td>
+<td>[1203, 4, 1287, 161]</td>
+<td>[1199, 4, 1291, 163]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb47"></td>
+<td>WRONG CLASS</td>
+<td>img_00058.jpeg</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.691</td>
+<td>0.94</td>
+<td>[641, 436, 721, 508]</td>
+<td>[641, 435, 723, 510]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb48"></td>
+<td>WRONG CLASS</td>
+<td>img_00036.jpg</td>
+<td title="ID 348">ALI ORIGINAL HELE BØNNER 250G</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td>0.691</td>
+<td>0.95</td>
+<td>[1585, 1943, 1722, 2214]</td>
+<td>[1583, 1950, 1723, 2210]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb49"></td>
+<td>WRONG CLASS</td>
+<td>img_00066.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.689</td>
+<td>0.87</td>
+<td>[1605, 516, 1682, 573]</td>
+<td>[1609, 518, 1686, 573]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb50"></td>
+<td>WRONG CLASS</td>
+<td>img_00015.jpg</td>
+<td title="ID 177">LEMON TEA GINGER 20POS PUKKA</td>
+<td title="ID 334">CHAI-TE ORIGINAL 20POS PUKKA</td>
+<td>0.686</td>
+<td>0.85</td>
+<td>[2115, 1305, 2238, 1475]</td>
+<td>[2122, 1290, 2239, 1478]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb51"></td>
+<td>WRONG CLASS</td>
+<td>img_00037.jpg</td>
+<td title="ID 184">EARL GREY TEA 200G TWININGS</td>
+<td title="ID 173">EARL GREY TEA 25POS TWININGS</td>
+<td>0.682</td>
+<td>0.53</td>
+<td>[1821, 1030, 2010, 1204]</td>
+<td>[1827, 1034, 2012, 1129]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb52"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.682</td>
+<td>0.86</td>
+<td>[572, 1278, 750, 1573]</td>
+<td>[572, 1301, 743, 1567]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb53"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID 151">FARMERS COFFEE FILTERMALT 250G</td>
+<td>0.679</td>
+<td>0.80</td>
+<td>[368, 811, 441, 951]</td>
+<td>[374, 813, 449, 947]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb54"></td>
+<td>WRONG CLASS</td>
+<td>img_00060.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td>0.676</td>
+<td>0.85</td>
+<td>[134, 881, 216, 997]</td>
+<td>[144, 883, 217, 997]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb55"></td>
+<td>WRONG CLASS</td>
+<td>img_00019.jpg</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.668</td>
+<td>0.92</td>
+<td>[2239, 2700, 2475, 3040]</td>
+<td>[2242, 2695, 2466, 3032]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb56"></td>
+<td>WRONG CLASS</td>
+<td>img_00014.jpg</td>
+<td title="ID 144">FRIELE FROKOST KOKMALT 250G</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.663</td>
+<td>0.95</td>
+<td>[629, 326, 729, 504]</td>
+<td>[631, 328, 730, 501]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb57"></td>
+<td>WRONG CLASS</td>
+<td>img_00072.jpg</td>
+<td title="ID 95">EGG M/L ØKOLOGISKE 10STK VILJE</td>
+<td title="ID 105">EGG ØKOLOGISK M/L 12STK VINGULMARK</td>
+<td>0.662</td>
+<td>0.96</td>
+<td>[1214, 1661, 1814, 1838]</td>
+<td>[1213, 1663, 1814, 1833]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb58"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 179">SJOKOLADEDRIKK 10X32G RETT I KOPPEN</td>
+<td title="ID 266">SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN</td>
+<td>0.661</td>
+<td>0.89</td>
+<td>[1771, 580, 1822, 658]</td>
+<td>[1769, 578, 1824, 659]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb59"></td>
+<td>WRONG CLASS</td>
+<td>img_00014.jpg</td>
+<td title="ID 352">PEPPERMINT&LICORICE URTETE 20POS PUKKA</td>
+<td title="ID 334">CHAI-TE ORIGINAL 20POS PUKKA</td>
+<td>0.653</td>
+<td>0.82</td>
+<td>[2688, 181, 2752, 293]</td>
+<td>[2686, 177, 2759, 295]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb60"></td>
+<td>WRONG CLASS</td>
+<td>img_00061.jpg</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.652</td>
+<td>0.92</td>
+<td>[1243, 845, 1309, 949]</td>
+<td>[1244, 849, 1308, 947]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb61"></td>
+<td>WRONG CLASS</td>
+<td>img_00055.jpeg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.651</td>
+<td>0.98</td>
+<td>[1027, 384, 1199, 452]</td>
+<td>[1027, 383, 1200, 452]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb62"></td>
+<td>WRONG CLASS</td>
+<td>img_00007.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.651</td>
+<td>0.82</td>
+<td>[1578, 3661, 1746, 3941]</td>
+<td>[1575, 3691, 1737, 3947]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb63"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.636</td>
+<td>0.82</td>
+<td>[871, 292, 935, 388]</td>
+<td>[878, 287, 934, 389]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb64"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 83">BLACK TEA PEACG&MANGO 20PS LIPTON</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.635</td>
+<td>0.95</td>
+<td>[1479, 144, 1549, 182]</td>
+<td>[1478, 144, 1550, 183]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb65"></td>
+<td>WRONG CLASS</td>
+<td>img_00064.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td>0.632</td>
+<td>0.80</td>
+<td>[66, 1594, 145, 1705]</td>
+<td>[76, 1598, 142, 1704]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb66"></td>
+<td>WRONG CLASS</td>
+<td>img_00036.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.629</td>
+<td>0.96</td>
+<td>[1079, 1896, 1274, 2195]</td>
+<td>[1078, 1901, 1275, 2198]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb67"></td>
+<td>WRONG CLASS</td>
+<td>img_00064.jpg</td>
+<td title="ID 248">COTW DARK ROAST KAFFEKAPSEL 10STK</td>
+<td title="ID 196">COTW LUNGO KAFFEKAPSEL 10STK</td>
+<td>0.625</td>
+<td>0.88</td>
+<td>[15, 611, 83, 727]</td>
+<td>[18, 612, 87, 729]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb68"></td>
+<td>WRONG CLASS</td>
+<td>img_00004.jpg</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td title="ID 287">ENGLISH BREAKFAST TEA 25POS TWININGS</td>
+<td>0.605</td>
+<td>0.75</td>
+<td>[1939, 421, 2051, 495]</td>
+<td>[1929, 428, 2052, 488]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb69"></td>
+<td>WRONG CLASS</td>
+<td>img_00004.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID 339">ALI ORIGINAL KAFFEKAPSEL 16STK</td>
+<td>0.601</td>
+<td>0.54</td>
+<td>[1590, 5, 1717, 167]</td>
+<td>[1592, 3, 1710, 100]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb70"></td>
+<td>WRONG CLASS</td>
+<td>img_00005.jpg</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td>0.601</td>
+<td>0.91</td>
+<td>[2381, 706, 2521, 934]</td>
+<td>[2383, 704, 2512, 936]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb71"></td>
+<td>WRONG CLASS</td>
+<td>img_00019.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.601</td>
+<td>0.94</td>
+<td>[981, 2214, 1152, 2554]</td>
+<td>[977, 2219, 1150, 2557]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb72"></td>
+<td>WRONG CLASS</td>
+<td>img_00036.jpg</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.599</td>
+<td>0.72</td>
+<td>[1246, 1588, 1447, 1876]</td>
+<td>[1245, 1585, 1405, 1852]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb73"></td>
+<td>WRONG CLASS</td>
+<td>img_00062.jpg</td>
+<td title="ID 20">GRØNN TE 20POS LIPTON</td>
+<td title="ID 24">GRØNN MINT TE 20POS LIPTON</td>
+<td>0.599</td>
+<td>0.94</td>
+<td>[889, 546, 951, 597]</td>
+<td>[890, 545, 949, 597]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb74"></td>
+<td>WRONG CLASS</td>
+<td>img_00050.jpg</td>
+<td title="ID 25">ALI MØRKBRENT KAFFEKAPSEL 16STK</td>
+<td title="ID 339">ALI ORIGINAL KAFFEKAPSEL 16STK</td>
+<td>0.594</td>
+<td>0.92</td>
+<td>[2148, 536, 2363, 663]</td>
+<td>[2154, 532, 2362, 666]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb75"></td>
+<td>WRONG CLASS</td>
+<td>img_00034.jpg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.588</td>
+<td>0.93</td>
+<td>[1039, 1484, 1222, 1840]</td>
+<td>[1037, 1495, 1218, 1842]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb76"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.577</td>
+<td>0.70</td>
+<td>[1137, 799, 1287, 1009]</td>
+<td>[1175, 799, 1296, 1009]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb77"></td>
+<td>WRONG CLASS</td>
+<td>img_00019.jpg</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td title="ID 127">FRIELE FROKOST HEL 500G</td>
+<td>0.568</td>
+<td>0.81</td>
+<td>[380, 2110, 635, 2555]</td>
+<td>[409, 2141, 639, 2557]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb78"></td>
+<td>WRONG CLASS</td>
+<td>img_00050.jpg</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td>0.564</td>
+<td>0.95</td>
+<td>[869, 1477, 1007, 1763]</td>
+<td>[868, 1486, 1008, 1762]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb79"></td>
+<td>WRONG CLASS</td>
+<td>img_00015.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.558</td>
+<td>0.85</td>
+<td>[1555, 1648, 1678, 1835]</td>
+<td>[1567, 1643, 1682, 1833]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb80"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 9">ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td title="ID 71">AMERICANO 16 KAPSLER DOLCE GUSTO</td>
+<td>0.556</td>
+<td>0.89</td>
+<td>[2130, 89, 2317, 295]</td>
+<td>[2118, 96, 2322, 295]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb81"></td>
+<td>WRONG CLASS</td>
+<td>img_00047.jpg</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td>0.555</td>
+<td>0.91</td>
+<td>[1471, 1280, 1792, 1437]</td>
+<td>[1452, 1275, 1793, 1437]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb82"></td>
+<td>WRONG CLASS</td>
+<td>img_00006.jpg</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.552</td>
+<td>0.81</td>
+<td>[2176, 1323, 2267, 1472]</td>
+<td>[2181, 1328, 2280, 1472]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb83"></td>
+<td>WRONG CLASS</td>
+<td>img_00061.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.552</td>
+<td>0.87</td>
+<td>[288, 521, 335, 626]</td>
+<td>[289, 511, 336, 624]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb84"></td>
+<td>WRONG CLASS</td>
+<td>img_00007.jpg</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td title="ID 245">ENGLISH BREAKFAST TEA 200G TWININGS</td>
+<td>0.548</td>
+<td>0.77</td>
+<td>[1615, 921, 1810, 1240]</td>
+<td>[1606, 936, 1785, 1232]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb85"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 83">BLACK TEA PEACG&MANGO 20PS LIPTON</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.547</td>
+<td>0.81</td>
+<td>[1481, 182, 1559, 214]</td>
+<td>[1482, 180, 1553, 212]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb86"></td>
+<td>WRONG CLASS</td>
+<td>img_00071.jpg</td>
+<td title="ID 110">BREMYKT 250G</td>
+<td title="ID 351">BREMYKT MYKERE 500G</td>
+<td>0.544</td>
+<td>0.87</td>
+<td>[1804, 878, 2045, 1022]</td>
+<td>[1803, 869, 2053, 1028]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb87"></td>
+<td>WRONG CLASS</td>
+<td>img_00059.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.544</td>
+<td>0.57</td>
+<td>[924, 906, 987, 1041]</td>
+<td>[948, 908, 991, 1040]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb88"></td>
+<td>WRONG CLASS</td>
+<td>img_00015.jpg</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td>0.538</td>
+<td>0.83</td>
+<td>[2565, 1405, 2722, 1497]</td>
+<td>[2575, 1401, 2723, 1489]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb89"></td>
+<td>WRONG CLASS</td>
+<td>img_00064.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.535</td>
+<td>0.91</td>
+<td>[1239, 873, 1385, 943]</td>
+<td>[1243, 870, 1386, 942]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb90"></td>
+<td>WRONG CLASS</td>
+<td>img_00031.jpg</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td>0.527</td>
+<td>0.92</td>
+<td>[637, 1144, 899, 1355]</td>
+<td>[625, 1146, 893, 1354]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb91"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.526</td>
+<td>0.85</td>
+<td>[763, 1133, 811, 1207]</td>
+<td>[763, 1122, 812, 1206]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb92"></td>
+<td>WRONG CLASS</td>
+<td>img_00034.jpg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.524</td>
+<td>0.91</td>
+<td>[2978, 607, 3105, 882]</td>
+<td>[2986, 606, 3102, 882]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb93"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 337">FEEL NEW URTETE ØKOLOGISK 20POS PUKKA</td>
+<td title="ID 355">unknown_product</td>
+<td>0.524</td>
+<td>0.88</td>
+<td>[1616, 458, 1678, 542]</td>
+<td>[1618, 457, 1681, 544]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb94"></td>
+<td>WRONG CLASS</td>
+<td>img_00018.jpg</td>
+<td title="ID 142">NESCAFÉ CAPPUCCINO 100G NESTLE</td>
+<td title="ID 355">unknown_product</td>
+<td>0.519</td>
+<td>0.69</td>
+<td>[2625, 1382, 2728, 1578]</td>
+<td>[2610, 1390, 2738, 1553]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb95"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.515</td>
+<td>0.93</td>
+<td>[1054, 456, 1089, 525]</td>
+<td>[1054, 458, 1089, 524]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb96"></td>
+<td>WRONG CLASS</td>
+<td>img_00031.jpg</td>
+<td title="ID 355">unknown_product</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.511</td>
+<td>0.62</td>
+<td>[2731, 2499, 2810, 2703]</td>
+<td>[2691, 2506, 2813, 2699]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb97"></td>
+<td>WRONG CLASS</td>
+<td>img_00058.jpeg</td>
+<td title="ID 111">NESCAFE BRASERO 100G</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.506</td>
+<td>0.84</td>
+<td>[984, 937, 1028, 1012]</td>
+<td>[983, 936, 1032, 1008]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb98"></td>
+<td>WRONG CLASS</td>
+<td>img_00054.jpeg</td>
+<td title="ID 174">EPLE&KANEL&ROSIN TE 25POS TWININGS</td>
+<td title="ID 287">ENGLISH BREAKFAST TEA 25POS TWININGS</td>
+<td>0.505</td>
+<td>0.98</td>
+<td>[1477, 354, 1556, 396]</td>
+<td>[1477, 354, 1556, 396]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb99"></td>
+<td>WRONG CLASS</td>
+<td>img_00019.jpg</td>
+<td title="ID 144">FRIELE FROKOST KOKMALT 250G</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.504</td>
+<td>0.75</td>
+<td>[0, 1470, 130, 1927]</td>
+<td>[0, 1501, 163, 1928]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb100"></td>
+<td>WRONG CLASS</td>
+<td>img_00017.jpg</td>
+<td title="ID 124">O'BOY MINDRE SUKKER 500G POSE FREIA</td>
+<td title="ID 298">O'BOY ORIGINAL 450G FREIA</td>
+<td>0.502</td>
+<td>0.68</td>
+<td>[1567, 1247, 1627, 1362]</td>
+<td>[1568, 1232, 1636, 1350]</td>
+</tr><tr style="background:#ffcccc">
+<td><input type="checkbox" id="cb101"></td>
+<td>WRONG CLASS</td>
+<td>img_00012.jpg</td>
+<td title="ID 124">O'BOY MINDRE SUKKER 500G POSE FREIA</td>
+<td title="ID 298">O'BOY ORIGINAL 450G FREIA</td>
+<td>0.502</td>
+<td>0.88</td>
+<td>[3238, 2068, 3393, 2317]</td>
+<td>[3239, 2074, 3382, 2322]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb102"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00062.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 103">EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA</td>
+<td>0.988</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[680, 496, 735, 599]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb103"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 306">NESCAFE GULL 100G REFILL</td>
+<td>0.983</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[995, 966, 1076, 1078]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb104"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 192">ICE COFFEE 8POS NESCAFE</td>
+<td>0.983</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 45, 64, 203]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb105"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 128">SMØREMYK LETT 400G ELDORADO</td>
+<td>0.981</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[467, 126, 1015, 396]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb106"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.970</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[746, 565, 822, 649]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb107"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 99">NESCAFE ORIGINAL 180G REFILL</td>
+<td>0.969</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[823, 959, 909, 1077]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb108"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00054.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td>0.941</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[996, 590, 1052, 708]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb109"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td>0.934</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1610, 948, 1786, 1235]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb110"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 266">SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN</td>
+<td>0.932</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1479, 1095, 1533, 1187]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb111"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 206">NESCAFE VANILLA LATTE 136G NESTLE</td>
+<td>0.932</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1803, 546, 1887, 653]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb112"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td>0.930</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[511, 307, 560, 399]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb113"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00050.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 341">EVERGOOD CLASSIC HELE BØNNER 500G</td>
+<td>0.929</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1301, 353, 1502, 647]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb114"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 324">NESCAFE LATTE 144G</td>
+<td>0.928</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1298, 1081, 1452, 1284]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb115"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 174">EPLE&KANEL&ROSIN TE 25POS TWININGS</td>
+<td>0.926</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2540, 1822, 2750, 1917]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb116"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 65">PULVERKAFFE INSTANT 200G FIRST PRICE</td>
+<td>0.922</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1288, 1265, 1340, 1362]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb117"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00078.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 224">SOFT FLORA LETT 540G</td>
+<td>0.917</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2076, 0, 2401, 84]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb118"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.917</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[272, 2669, 625, 2843]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb119"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 275">EGG FRITTGÅENDE 18STK S/M FIRST PRICE</td>
+<td>0.914</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1827, 2644, 2221, 2816]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb120"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.908</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1316, 1102, 1382, 1195]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb121"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 20">GRØNN TE 20POS LIPTON</td>
+<td>0.907</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2129, 842, 2290, 995]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb122"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.894</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 3184, 98, 3476]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb123"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.888</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2259, 837, 2421, 991]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb124"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.880</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[952, 1307, 1066, 1553]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb125"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 41">VITA HJERTEGO MYK PLANTEMARGARIN 370G</td>
+<td>0.879</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2718, 149, 2960]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb126"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00060.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td>0.878</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[327, 1238, 404, 1377]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb127"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 352">PEPPERMINT&LICORICE URTETE 20POS PUKKA</td>
+<td>0.877</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2684, 178, 2758, 296]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb128"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 169">SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN</td>
+<td>0.871</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1560, 2093, 1754, 2268]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb129"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 219">GREEN WORLD KAFFE ØKOL FILTERMALT 250G</td>
+<td>0.868</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[589, 165, 859, 653]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb130"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00078.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 269">Eldorado Egg fra Toten</td>
+<td>0.861</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1384, 1295, 1913, 1470]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb131"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.859</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1376, 1102, 1434, 1194]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb132"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 128">SMØREMYK LETT 400G ELDORADO</td>
+<td>0.858</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 1423, 222, 1621]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb133"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 9">ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td>0.858</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2118, 98, 2321, 297]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb134"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.853</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[977, 2219, 1149, 2557]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb135"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.853</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1053, 2274, 1569, 2390]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb136"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td>0.852</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2300, 617, 2450, 685]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb137"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00062.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 20">GRØNN TE 20POS LIPTON</td>
+<td>0.842</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[890, 544, 950, 596]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb138"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 144">FRIELE FROKOST KOKMALT 250G</td>
+<td>0.840</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 1500, 164, 1929]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb139"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.840</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1429, 1102, 1491, 1194]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb140"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td>0.829</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3473, 1116, 3660, 1250]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb141"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 67">SOFT FLORA ORIGINAL 230G</td>
+<td>0.826</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1780, 1914, 2007, 2024]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb142"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00058.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 314">CAFE AU LAIT 16KAPSLER DOLCE GUSTO</td>
+<td>0.821</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1019, 434, 1080, 524]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb143"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.813</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1070, 2356, 1574, 2534]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb144"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 337">FEEL NEW URTETE ØKOLOGISK 20POS PUKKA</td>
+<td>0.807</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1618, 457, 1682, 544]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb145"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 128">SMØREMYK LETT 400G ELDORADO</td>
+<td>0.802</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[22, 1, 518, 195]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb146"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.801</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3187, 1797, 3316, 1996]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb147"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00001.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.801</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1197, 1, 1294, 164]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb148"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td>0.800</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[837, 352, 895, 405]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb149"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00094.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.799</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2733, 1811, 3024, 1999]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb150"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.796</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[550, 556, 598, 647]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb151"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 347">EVERGOOD DARK ROAST PRESSMALT 250G</td>
+<td>0.796</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1035, 1494, 1218, 1838]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb152"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00032.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 83">BLACK TEA PEACG&MANGO 20PS LIPTON</td>
+<td>0.796</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1319, 1002, 1428, 1078]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb153"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00056.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 341">EVERGOOD CLASSIC HELE BØNNER 500G</td>
+<td>0.795</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[428, 449, 523, 612]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb154"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.794</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[987, 903, 1031, 1029]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb155"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.792</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1285, 886, 1373, 1058]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb156"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 122">NYPETE 24POS CONFECTA</td>
+<td>0.790</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2741, 900, 2942, 985]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb157"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 348">ALI ORIGINAL HELE BØNNER 250G</td>
+<td>0.784</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2730, 3336, 2879, 3629]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb158"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00038.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.780</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2040, 0, 2244, 183]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb159"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 110">BREMYKT 250G</td>
+<td>0.770</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1795, 989, 2047, 1126]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb160"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00015.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 107">FLAT WHITE 16KAPSLER DOLCE GUSTO</td>
+<td>0.767</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[271, 656, 507, 985]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb161"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00037.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 173">EARL GREY TEA 25POS TWININGS</td>
+<td>0.766</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1828, 1123, 2007, 1200]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb162"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td>0.765</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1978, 785, 2136, 865]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb163"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00038.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td>0.761</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2198, 2842, 2442, 3155]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb164"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00046.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.754</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[591, 883, 660, 989]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb165"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00015.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.752</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2772, 155, 3022]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb166"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 339">ALI ORIGINAL KAFFEKAPSEL 16STK</td>
+<td>0.751</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[90, 0, 289, 54]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb167"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.749</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[860, 1030, 967, 1226]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb168"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 337">FEEL NEW URTETE ØKOLOGISK 20POS PUKKA</td>
+<td>0.749</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1470, 534, 1566, 681]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb169"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 222">NESCAFÉ MOCHA 136G NESTLE</td>
+<td>0.748</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[539, 753, 629, 901]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb170"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 220">MEIERISMØR 250G BORDPK TINE</td>
+<td>0.747</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[5, 110, 529, 346]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb171"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00036.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td>0.745</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1243, 1587, 1403, 1850]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb172"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.743</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1260, 343, 1391, 525]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb173"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 128">SMØREMYK LETT 400G ELDORADO</td>
+<td>0.742</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 1679, 237, 1897]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb174"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00054.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.741</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[933, 591, 996, 704]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb175"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.738</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 339, 28, 531]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb176"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00050.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.736</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1601, 1932, 1794, 2050]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb177"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.736</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1195, 1265, 1247, 1382]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb178"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00013.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td>0.730</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1251, 1099, 1408, 1409]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb179"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 139">EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR</td>
+<td>0.725</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2527, 0, 2982, 244]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb180"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.723</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[726, 318, 815, 503]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb181"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00046.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.722</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[720, 1095, 784, 1207]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb182"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.721</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[695, 2540, 811, 2710]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb183"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.716</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3739, 2194, 3996, 2487]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb184"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.715</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2879, 2078, 3019, 2376]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb185"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.715</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[385, 294, 462, 483]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb186"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 348">ALI ORIGINAL HELE BØNNER 250G</td>
+<td>0.715</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[104, 304, 162, 397]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb187"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td>0.712</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1651, 1450, 1989, 1634]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb188"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 102">EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO</td>
+<td>0.707</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1443, 3214, 2170, 3592]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb189"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.706</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[864, 2221, 991, 2436]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb190"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 71">AMERICANO 16 KAPSLER DOLCE GUSTO</td>
+<td>0.705</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1930, 288, 2130, 467]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb191"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.704</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[202, 328, 283, 509]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb192"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00037.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td>0.704</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1546, 827, 1702, 911]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb193"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00075.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 80">FROKOSTEGG FRITTGÅENDE L 12STK PRIOR</td>
+<td>0.703</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[23, 567, 233, 621]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb194"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td>0.701</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1851, 505, 2011, 596]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb195"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00050.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.699</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[744, 2514, 833, 2734]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb196"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.696</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[884, 1225, 940, 1332]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb197"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td>0.694</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1332, 93, 1425, 207]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb198"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.693</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2076, 348, 2156, 457]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb199"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00094.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.693</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2727, 1961, 3023, 2140]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb200"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 41">VITA HJERTEGO MYK PLANTEMARGARIN 370G</td>
+<td>0.688</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2849, 164, 3111]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb201"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td>0.685</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1998, 604, 2151, 677]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb202"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td>0.681</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1380, 980, 1437, 1070]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb203"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00064.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 248">COTW DARK ROAST KAFFEKAPSEL 10STK</td>
+<td>0.680</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[17, 612, 88, 730]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb204"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 222">NESCAFÉ MOCHA 136G NESTLE</td>
+<td>0.672</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1067, 840, 1132, 935]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb205"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.672</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[411, 2139, 642, 2561]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb206"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.669</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1153, 2264, 1272, 2471]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb207"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.669</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[921, 697, 951, 763]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb208"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00058.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 111">NESCAFE BRASERO 100G</td>
+<td>0.669</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[982, 935, 1033, 1008]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb209"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td>0.668</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2458, 2705, 2679, 3034]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb210"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 334">CHAI-TE ORIGINAL 20POS PUKKA</td>
+<td>0.666</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3250, 784, 3350, 939]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb211"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td>0.666</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2532, 760, 2617, 878]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb212"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 172">FRIELE INSTANT GULL 100G REFILL</td>
+<td>0.663</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2707, 3604, 2991, 3958]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb213"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 339">ALI ORIGINAL KAFFEKAPSEL 16STK</td>
+<td>0.658</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1593, 96, 1707, 170]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb214"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00005.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td>0.657</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2599, 1884, 2737, 2105]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb215"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 110">BREMYKT 250G</td>
+<td>0.655</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2170, 377, 2343]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb216"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00073.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 301">Gårdsegg fra Fana 10stk</td>
+<td>0.655</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1618, 141, 1992, 269]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb217"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.655</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 168, 61, 338]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb218"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 177">LEMON TEA GINGER 20POS PUKKA</td>
+<td>0.654</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2947, 518, 3112, 709]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb219"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 126">GRANDE INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td>0.652</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1568, 306, 1778, 478]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb220"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00001.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.651</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1295, 276, 1413, 361]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb221"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.650</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1175, 1885, 1326, 2002]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb222"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00085.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.647</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[678, 796, 1182, 912]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb223"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 63">ALI MØRKBRENT FILTERMALT 250G</td>
+<td>0.644</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3787, 1242, 4000, 1569]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb224"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td>0.644</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3081, 999, 3267, 1100]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb225"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00075.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 232">EGG ØKOLOGISK M/L/XL 6STK PRIOR</td>
+<td>0.642</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1007, 194, 1088, 240]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb226"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 67">SOFT FLORA ORIGINAL 230G</td>
+<td>0.641</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1999, 1621, 2277, 1722]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb227"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00025.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 1">COFFEE MATE 180G  NESTLE</td>
+<td>0.639</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 281, 154, 472]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb228"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00046.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.638</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 883, 41, 1017]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb229"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00072.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 267">EGGEHVITE 500G ELDORADO</td>
+<td>0.637</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1824, 1757, 2452, 1967]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb230"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00072.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 267">EGGEHVITE 500G ELDORADO</td>
+<td>0.637</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[735, 551, 1081, 725]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb231"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00078.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 18">MELANGE MARGARIN U/MELK/SALT/SOYA 500G</td>
+<td>0.636</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[5, 737, 229, 880]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb232"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 249">COTW BREAKFAST BLEND KAFFEKAPSEL 10STK</td>
+<td>0.635</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[233, 882, 415, 1196]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb233"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00044.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.635</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[395, 2486, 681, 2646]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb234"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00075.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 213">EGG FRITTGÅENDE M/L 6PK PRIOR</td>
+<td>0.635</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[855, 190, 942, 238]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb235"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td>0.632</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3304, 1783, 3499, 1919]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb236"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 282">FILTERPOSER NR.4 200STK ALI</td>
+<td>0.630</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2838, 2682, 3003, 2855]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb237"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td>0.629</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[731, 289, 844, 442]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb238"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00021.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 309">FIRE RØDE FRUKTER 25POS TWININGS</td>
+<td>0.624</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1101, 836, 1200, 945]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb239"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.624</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2187, 1589, 2375, 1780]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb240"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 324">NESCAFE LATTE 144G</td>
+<td>0.622</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[210, 0, 352, 45]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb241"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.619</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1076, 1219, 1142, 1330]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb242"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.619</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2820, 3296, 3022, 3627]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb243"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.616</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1207, 381, 1382, 452]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb244"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td>0.610</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1672, 1612, 1803, 1851]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb245"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00095.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 80">FROKOSTEGG FRITTGÅENDE L 12STK PRIOR</td>
+<td>0.610</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[59, 477, 213, 501]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb246"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.610</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[399, 986, 449, 1095]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb247"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00032.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.609</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1399, 529, 1455, 675]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb248"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td>0.608</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1801, 2321, 1969, 2591]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb249"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00025.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 45">LADY GREY TEA 25POS TWININGS</td>
+<td>0.607</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1298, 1668, 1633, 1838]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb250"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00037.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.602</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[736, 1286, 795, 1485]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb251"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00020.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 142">NESCAFÉ CAPPUCCINO 100G NESTLE</td>
+<td>0.597</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 1688, 127, 2000]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb252"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00020.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.593</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 3534, 62, 3985]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb253"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.592</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[460, 308, 514, 400]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb254"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 122">NYPETE 24POS CONFECTA</td>
+<td>0.590</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2545, 909, 2736, 986]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb255"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 320">EARL GREY TEA 50POS FIRST PRICE</td>
+<td>0.590</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2916, 516, 2978, 637]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb256"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 45">LADY GREY TEA 25POS TWININGS</td>
+<td>0.590</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1831, 786, 1979, 860]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb257"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00018.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td>0.588</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[573, 1302, 742, 1568]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb258"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00037.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.588</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1178, 132, 1259, 303]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb259"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 196">COTW LUNGO KAFFEKAPSEL 10STK</td>
+<td>0.586</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1081, 197, 1126, 265]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb260"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00001.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 146">NESCAFE GULL 200G NESTLE</td>
+<td>0.585</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1124, 6, 1220, 167]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb261"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 71">AMERICANO 16 KAPSLER DOLCE GUSTO</td>
+<td>0.585</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1517, 313, 1629, 430]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb262"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 324">NESCAFE LATTE 144G</td>
+<td>0.583</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1305, 539, 1392, 652]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb263"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 334">CHAI-TE ORIGINAL 20POS PUKKA</td>
+<td>0.583</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1031, 0, 1213, 191]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb264"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 174">EPLE&KANEL&ROSIN TE 25POS TWININGS</td>
+<td>0.581</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2944, 1379, 3060, 1544]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb265"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00038.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.580</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1876, 0, 2057, 162]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb266"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00064.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 196">COTW LUNGO KAFFEKAPSEL 10STK</td>
+<td>0.580</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[83, 611, 155, 729]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb267"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00012.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 307">MAISKAKER OST 125G FRIGGS</td>
+<td>0.579</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3880, 437, 4000, 690]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb268"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00064.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td>0.576</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[650, 550, 755, 620]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb269"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00014.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 132">FRUKOST FULLKORN 320G WASA</td>
+<td>0.575</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2874, 901, 2978, 995]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb270"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.573</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2155, 1718, 2260, 1935]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb271"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.573</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3932, 2734, 4000, 2910]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb272"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00072.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 95">EGG M/L ØKOLOGISKE 10STK VILJE</td>
+<td>0.573</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1819, 1614, 2455, 1842]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb273"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 192">ICE COFFEE 8POS NESCAFE</td>
+<td>0.570</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2022, 1, 2232, 204]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb274"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00021.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.569</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[775, 1179, 973, 1287]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb275"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.568</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1135, 949, 1274, 1163]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb276"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td>0.567</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[847, 628, 939, 707]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb277"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 1">COFFEE MATE 180G  NESTLE</td>
+<td>0.567</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1710, 32, 1764, 109]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb278"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 232">EGG ØKOLOGISK M/L/XL 6STK PRIOR</td>
+<td>0.567</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1346, 826, 1561, 997]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb279"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 266">SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN</td>
+<td>0.566</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2951, 2127, 3024, 2486]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb280"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00015.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.564</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[353, 0, 675, 107]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb281"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 297">SOLBÆR TE 25POS TWININGS</td>
+<td>0.563</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1512, 850, 1604, 902]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb282"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00064.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td>0.563</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1245, 870, 1386, 942]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb283"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 200">EVERGOOD CLASSIC KAFFEKAPSEL 16STK</td>
+<td>0.562</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2959, 945, 3024, 1153]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb284"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00071.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 67">SOFT FLORA ORIGINAL 230G</td>
+<td>0.562</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1774, 1686, 2014, 1782]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb285"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00038.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.559</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2749, 3412, 2898, 3657]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb286"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 298">O'BOY ORIGINAL 450G FREIA</td>
+<td>0.559</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3729, 2577, 3972, 2948]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb287"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 355">unknown_product</td>
+<td>0.558</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[14, 2149, 209, 2383]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb288"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00005.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 272">EVERGOOD KOFFEINFRI FILTERMALT 250G</td>
+<td>0.557</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[806, 640, 929, 904]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb289"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 37">URTETE 200G RICOLA</td>
+<td>0.557</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1953, 334, 2037, 451]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb290"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00031.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 142">NESCAFÉ CAPPUCCINO 100G NESTLE</td>
+<td>0.557</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[336, 0, 497, 102]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb291"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00064.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.556</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[119, 1450, 188, 1567]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb292"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00094.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 283">GÅRDSEGG M/L 12STK ELDORADO</td>
+<td>0.556</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2732, 1646, 3024, 1820]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb293"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00044.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 173">EARL GREY TEA 25POS TWININGS</td>
+<td>0.552</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[680, 2477, 946, 2563]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb294"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00025.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td>0.552</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2172, 61, 2497]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb295"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 282">FILTERPOSER NR.4 200STK ALI</td>
+<td>0.550</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1687, 1665, 1781, 1778]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb296"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 142">NESCAFÉ CAPPUCCINO 100G NESTLE</td>
+<td>0.550</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2561, 0, 2772, 196]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb297"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00054.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 63">ALI MØRKBRENT FILTERMALT 250G</td>
+<td>0.548</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1174, 822, 1203, 911]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb298"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00062.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.543</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[107, 659, 188, 787]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb299"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.540</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[901, 919, 956, 1053]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb300"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td>0.540</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[797, 1520, 978, 1600]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb301"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00023.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td>0.540</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2680, 2330, 2819, 2517]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb302"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td>0.539</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2956, 2443, 3024, 2780]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb303"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00089.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 102">EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO</td>
+<td>0.538</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2100, 3139, 2618, 3427]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb304"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00005.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.537</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[76, 1113, 256, 1480]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb305"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00025.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 178">NESCAFE GOLD ORGANIC&FAIRTRADE 100G</td>
+<td>0.536</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[0, 2175, 66, 2498]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb306"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00005.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 250">LEKSANDS KNEKKE NORMALT STEKT 200G</td>
+<td>0.534</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3553, 1454, 3627, 1577]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb307"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00005.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 136">SJOKOLADEDRIKK 450G BOKS REGIA</td>
+<td>0.534</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2473, 1888, 2612, 2103]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb308"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00046.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.531</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[700, 874, 777, 987]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb309"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00075.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 80">FROKOSTEGG FRITTGÅENDE L 12STK PRIOR</td>
+<td>0.530</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[229, 594, 423, 649]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb310"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00019.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td>0.529</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2851, 1726, 3060, 1896]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb311"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00062.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 111">NESCAFE BRASERO 100G</td>
+<td>0.528</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[640, 357, 692, 443]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb312"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 200">EVERGOOD CLASSIC KAFFEKAPSEL 16STK</td>
+<td>0.522</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3878, 1192, 4031, 1355]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb313"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 344">EVERGOOD DARK ROAST KAFFEKAPSEL 16STK</td>
+<td>0.520</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2535, 938, 2729, 1133]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb314"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td>0.519</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[3059, 1253, 3308, 1372]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb315"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00034.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 340">EVERGOOD DARK ROAST HELE BØNNER 500G</td>
+<td>0.518</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1514, 1489, 1709, 1831]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb316"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00059.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 40">FRIELE FROKOST FILTERMALT 250G</td>
+<td>0.517</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1140, 1275, 1216, 1404]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb317"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00078.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 176">BORDMARGARIN 400G FIRST PRICE</td>
+<td>0.515</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[903, 0, 1237, 67]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb318"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00007.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 126">GRANDE INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td>0.515</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2198, 1002, 2505, 1261]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb319"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 249">COTW BREAKFAST BLEND KAFFEKAPSEL 10STK</td>
+<td>0.513</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1352, 773, 1466, 906]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb320"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00047.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 118">BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT</td>
+<td>0.510</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2907, 407, 3024, 661]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb321"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00017.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td>0.507</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[970, 1106, 1017, 1202]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb322"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 100">EVERGOOD CLASSIC FILTERMALT 250G</td>
+<td>0.507</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[226, 808, 272, 880]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb323"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00054.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 266">SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN</td>
+<td>0.507</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1640, 860, 1686, 931]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb324"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00004.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 287">ENGLISH BREAKFAST TEA 25POS TWININGS</td>
+<td>0.506</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1924, 374, 2034, 432]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb325"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00094.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 232">EGG ØKOLOGISK M/L/XL 6STK PRIOR</td>
+<td>0.505</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2969, 534, 3024, 755]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb326"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00066.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 210">COTW ESPRESSO KAFFEKAPSEL 10STK</td>
+<td>0.504</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1126, 197, 1170, 264]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb327"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00022.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 306">NESCAFE GULL 100G REFILL</td>
+<td>0.503</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[454, 283, 539, 480]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb328"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00055.jpeg</td>
+<td title="ID None">N/A</td>
+<td title="ID 83">BLACK TEA PEACG&MANGO 20PS LIPTON</td>
+<td>0.502</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[615, 586, 731, 690]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb329"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00060.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 177">LEMON TEA GINGER 20POS PUKKA</td>
+<td>0.502</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[1205, 584, 1266, 668]</td>
+</tr><tr style="background:#ffffcc">
+<td><input type="checkbox" id="cb330"></td>
+<td>MISSING ANNOTATION</td>
+<td>img_00006.jpg</td>
+<td title="ID None">N/A</td>
+<td title="ID 174">EPLE&KANEL&ROSIN TE 25POS TWININGS</td>
+<td>0.501</td>
+<td>0.00</td>
+<td>N/A</td>
+<td>[2152, 599, 2306, 683]</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb331"></td>
+<td>UNDETECTED GT</td>
+<td>img_00001.jpg</td>
+<td title="ID 58">COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.05</td>
+<td>[893, 1088, 969, 1260]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb332"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[1134, 207, 1223, 360]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb333"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 56">SJOKOLADEDRIKK 10PK 320G REGIA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2162, 1164, 2264, 1278]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb334"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 160">ALI ORIGINAL KOKMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[1901, 1208, 1979, 1284]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb335"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 282">FILTERPOSER NR.4 200STK ALI</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2069, 1194, 2148, 1263]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb336"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[1901, 754, 1999, 824]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb337"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2061, 429, 2167, 496]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb338"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1361, 761, 1418, 842]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb339"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 355">unknown_product</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2213, 771, 2311, 817]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb340"></td>
+<td>UNDETECTED GT</td>
+<td>img_00004.jpg</td>
+<td title="ID 355">unknown_product</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2214, 721, 2311, 772]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb341"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 247">MOUNT KENYA FILTERMALT 200G JACOBS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.10</td>
+<td>[41, 168, 172, 375]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb342"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 58">COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.24</td>
+<td>[1250, 506, 1356, 648]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb343"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 304">EVERGOOD CLASSIC KOKMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[562, 516, 685, 653]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb344"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 352">PEPPERMINT&LICORICE URTETE 20POS PUKKA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[0, 501, 64, 641]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb345"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 248">COTW DARK ROAST KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[1, 644, 68, 861]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb346"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.07</td>
+<td>[1399, 1097, 1488, 1245]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb347"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 292">NESCAFE AZERA AMERICANO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.13</td>
+<td>[1543, 1097, 1632, 1245]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb348"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 190">EARL GREY TEA ØKOLOGISK 15POS JACOBS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.07</td>
+<td>[2083, 1118, 2189, 1252]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb349"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 147">ROOIBOS TE ØKOLOGISK 20PS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2291, 1134, 2356, 1264]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb350"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 238">KAMILLE TE ØKOLOGISK 24PK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2195, 1130, 2290, 1196]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb351"></td>
+<td>UNDETECTED GT</td>
+<td>img_00006.jpg</td>
+<td title="ID 238">KAMILLE TE ØKOLOGISK 24PK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2190, 1208, 2290, 1267]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb352"></td>
+<td>UNDETECTED GT</td>
+<td>img_00007.jpg</td>
+<td title="ID 299">KAMILLE TE 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.13</td>
+<td>[326, 3019, 642, 3355]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb353"></td>
+<td>UNDETECTED GT</td>
+<td>img_00007.jpg</td>
+<td title="ID 24">GRØNN MINT TE 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1194, 2525, 1392, 2675]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb354"></td>
+<td>UNDETECTED GT</td>
+<td>img_00007.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2952, 1270, 3024, 1371]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb355"></td>
+<td>UNDETECTED GT</td>
+<td>img_00012.jpg</td>
+<td title="ID 203">ROOIBOS TE 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.13</td>
+<td>[3072, 830, 3093, 938]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb356"></td>
+<td>UNDETECTED GT</td>
+<td>img_00013.jpg</td>
+<td title="ID 58">COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1, 2800, 163, 2937]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb357"></td>
+<td>UNDETECTED GT</td>
+<td>img_00013.jpg</td>
+<td title="ID 19">MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1798, 281, 1832, 331]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb358"></td>
+<td>UNDETECTED GT</td>
+<td>img_00013.jpg</td>
+<td title="ID 141">EVERGOOD CLASSIC PRESSMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.13</td>
+<td>[1584, 1926, 1667, 2139]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb359"></td>
+<td>UNDETECTED GT</td>
+<td>img_00013.jpg</td>
+<td title="ID 27">YELLOW LABEL TEA 50POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.13</td>
+<td>[1791, 1865, 2001, 1972]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb360"></td>
+<td>UNDETECTED GT</td>
+<td>img_00014.jpg</td>
+<td title="ID 355">unknown_product</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[2390, 736, 2513, 800]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb361"></td>
+<td>UNDETECTED GT</td>
+<td>img_00014.jpg</td>
+<td title="ID 319">LIPTON ICETEA PEACH PULVER 50G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[707, 200, 806, 285]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb362"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 178">NESCAFE GOLD ORGANIC&FAIRTRADE 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.05</td>
+<td>[1252, 1645, 1369, 1848]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb363"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[1463, 1643, 1573, 1839]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb364"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.19</td>
+<td>[2024, 1953, 2052, 2182]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb365"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 9">ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[2553, 1482, 2598, 1523]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb366"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 9">ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[2599, 1482, 2693, 1522]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb367"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 337">FEEL NEW URTETE ØKOLOGISK 20POS PUKKA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[2630, 1008, 2802, 1200]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb368"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 74">NESCAFE BRASERO REFILL 180G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[2633, 728, 2689, 750]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb369"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.20</td>
+<td>[2408, 850, 2513, 888]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb370"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.17</td>
+<td>[1797, 972, 1839, 1122]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb371"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.05</td>
+<td>[2219, 2669, 2306, 2710]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb372"></td>
+<td>UNDETECTED GT</td>
+<td>img_00015.jpg</td>
+<td title="ID 184">EARL GREY TEA 200G TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1670, 1560, 1887, 1694]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb373"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 299">KAMILLE TE 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[1569, 304, 1651, 394]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb374"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[1653, 274, 1747, 395]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb375"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 111">NESCAFE BRASERO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1194, 826, 1280, 936]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb376"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[1604, 984, 1653, 1071]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb377"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1582, 592, 1685, 643]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb378"></td>
+<td>UNDETECTED GT</td>
+<td>img_00017.jpg</td>
+<td title="ID 89">FOREST FRUIT TEA 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1587, 641, 1686, 681]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb379"></td>
+<td>UNDETECTED GT</td>
+<td>img_00018.jpg</td>
+<td title="ID 49">EVERGOOD DARK ROAST FILTERMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1880, 2006, 1965, 2209]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb380"></td>
+<td>UNDETECTED GT</td>
+<td>img_00018.jpg</td>
+<td title="ID 169">SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.06</td>
+<td>[3226, 2357, 3373, 2473]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb381"></td>
+<td>UNDETECTED GT</td>
+<td>img_00019.jpg</td>
+<td title="ID 247">MOUNT KENYA FILTERMALT 200G JACOBS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.05</td>
+<td>[1124, 852, 1374, 1215]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb382"></td>
+<td>UNDETECTED GT</td>
+<td>img_00022.jpeg</td>
+<td title="ID 74">NESCAFE BRASERO REFILL 180G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.17</td>
+<td>[408, 815, 466, 1078]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb383"></td>
+<td>UNDETECTED GT</td>
+<td>img_00023.jpeg</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[3085, 1660, 3245, 1806]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb384"></td>
+<td>UNDETECTED GT</td>
+<td>img_00023.jpeg</td>
+<td title="ID 287">ENGLISH BREAKFAST TEA 25POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[3258, 1671, 3466, 1795]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb385"></td>
+<td>UNDETECTED GT</td>
+<td>img_00023.jpeg</td>
+<td title="ID 99">NESCAFE ORIGINAL 180G REFILL</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.14</td>
+<td>[2331, 2156, 2518, 2176]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb386"></td>
+<td>UNDETECTED GT</td>
+<td>img_00034.jpg</td>
+<td title="ID 198">ALI ORIGINAL KAFFEPUTER 18STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2030, 1506, 2226, 1546]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb387"></td>
+<td>UNDETECTED GT</td>
+<td>img_00036.jpg</td>
+<td title="ID 355">unknown_product</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.22</td>
+<td>[3755, 1013, 3994, 1241]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb388"></td>
+<td>UNDETECTED GT</td>
+<td>img_00036.jpg</td>
+<td title="ID 126">GRANDE INTENSO 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2483, 1372, 2722, 1584]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb389"></td>
+<td>UNDETECTED GT</td>
+<td>img_00037.jpg</td>
+<td title="ID 199">GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1193, 614, 1277, 641]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb390"></td>
+<td>UNDETECTED GT</td>
+<td>img_00037.jpg</td>
+<td title="ID 133">ZOEGAS KAFFE SKÅNEROST 450G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1373, 617, 1457, 641]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb391"></td>
+<td>UNDETECTED GT</td>
+<td>img_00037.jpg</td>
+<td title="ID 133">ZOEGAS KAFFE SKÅNEROST 450G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1558, 618, 1644, 640]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb392"></td>
+<td>UNDETECTED GT</td>
+<td>img_00037.jpg</td>
+<td title="ID 282">FILTERPOSER NR.4 200STK ALI</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1662, 618, 1705, 640]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb393"></td>
+<td>UNDETECTED GT</td>
+<td>img_00038.jpeg</td>
+<td title="ID 225">EVERGOOD CLASSIC KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[2905, 2662, 3024, 2785]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb394"></td>
+<td>UNDETECTED GT</td>
+<td>img_00044.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[1531, 1877, 1699, 1889]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb395"></td>
+<td>UNDETECTED GT</td>
+<td>img_00046.jpeg</td>
+<td title="ID 249">COTW BREAKFAST BLEND KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.09</td>
+<td>[92, 751, 169, 857]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb396"></td>
+<td>UNDETECTED GT</td>
+<td>img_00047.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[2431, 2041, 2624, 2412]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb397"></td>
+<td>UNDETECTED GT</td>
+<td>img_00047.jpg</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[2284, 2062, 2470, 2422]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb398"></td>
+<td>UNDETECTED GT</td>
+<td>img_00047.jpg</td>
+<td title="ID 46">GRØNN TE SITRON 25POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.08</td>
+<td>[1575, 2057, 1897, 2356]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb399"></td>
+<td>UNDETECTED GT</td>
+<td>img_00047.jpg</td>
+<td title="ID 189">YELLOW LABEL TEA 25POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1291, 2075, 1638, 2362]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb400"></td>
+<td>UNDETECTED GT</td>
+<td>img_00047.jpg</td>
+<td title="ID 171">ALI ORIGINAL FILTERMALT 250G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.10</td>
+<td>[661, 3930, 840, 3977]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb401"></td>
+<td>UNDETECTED GT</td>
+<td>img_00050.jpg</td>
+<td title="ID 306">NESCAFE GULL 100G REFILL</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.09</td>
+<td>[226, 770, 253, 1004]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb402"></td>
+<td>UNDETECTED GT</td>
+<td>img_00050.jpg</td>
+<td title="ID 133">ZOEGAS KAFFE SKÅNEROST 450G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.10</td>
+<td>[2463, 1879, 2632, 1908]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb403"></td>
+<td>UNDETECTED GT</td>
+<td>img_00054.jpeg</td>
+<td title="ID 245">ENGLISH BREAKFAST TEA 200G TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1565, 368, 1608, 431]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb404"></td>
+<td>UNDETECTED GT</td>
+<td>img_00054.jpeg</td>
+<td title="ID 245">ENGLISH BREAKFAST TEA 200G TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1611, 368, 1649, 432]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb405"></td>
+<td>UNDETECTED GT</td>
+<td>img_00054.jpeg</td>
+<td title="ID 281">GRANDE 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1278, 309, 1317, 323]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb406"></td>
+<td>UNDETECTED GT</td>
+<td>img_00054.jpeg</td>
+<td title="ID 281">GRANDE 16KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1356, 309, 1395, 323]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb407"></td>
+<td>UNDETECTED GT</td>
+<td>img_00054.jpeg</td>
+<td title="ID 87">SPICY INDIAN CHAI TEA 20POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[1604, 154, 1652, 215]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb408"></td>
+<td>UNDETECTED GT</td>
+<td>img_00055.jpeg</td>
+<td title="ID 16">CAPPUCCINO 8KAPSLER DOLCE GUSTO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[545, 786, 702, 920]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb409"></td>
+<td>UNDETECTED GT</td>
+<td>img_00055.jpeg</td>
+<td title="ID 137">NESCAFE AZERA ESPRESSO 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[1956, 769, 2016, 895]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb410"></td>
+<td>UNDETECTED GT</td>
+<td>img_00055.jpeg</td>
+<td title="ID 174">EPLE&KANEL&ROSIN TE 25POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[1223, 264, 1380, 296]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb411"></td>
+<td>UNDETECTED GT</td>
+<td>img_00056.jpeg</td>
+<td title="ID 332">COTW LUNGO DARK KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.11</td>
+<td>[711, 916, 770, 1005]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb412"></td>
+<td>UNDETECTED GT</td>
+<td>img_00056.jpeg</td>
+<td title="ID 332">COTW LUNGO DARK KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.08</td>
+<td>[764, 918, 816, 1003]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb413"></td>
+<td>UNDETECTED GT</td>
+<td>img_00058.jpeg</td>
+<td title="ID 259">REGIA KAKAO ORIGINAL 260G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.20</td>
+<td>[723, 855, 795, 929]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb414"></td>
+<td>UNDETECTED GT</td>
+<td>img_00059.jpg</td>
+<td title="ID 344">EVERGOOD DARK ROAST KAFFEKAPSEL 16STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[-0, 425, 56, 478]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb415"></td>
+<td>UNDETECTED GT</td>
+<td>img_00059.jpg</td>
+<td title="ID 215">BLUE FRUIT TE PYRAMIDE 20POS LIPTON</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1212, 526, 1278, 635]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb416"></td>
+<td>UNDETECTED GT</td>
+<td>img_00059.jpg</td>
+<td title="ID 106">NESCAFE GOLD KOFFEINFRI 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.16</td>
+<td>[725, 1532, 747, 1679]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb417"></td>
+<td>UNDETECTED GT</td>
+<td>img_00060.jpg</td>
+<td title="ID 248">COTW DARK ROAST KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[869, 354, 935, 451]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb418"></td>
+<td>UNDETECTED GT</td>
+<td>img_00060.jpg</td>
+<td title="ID 249">COTW BREAKFAST BLEND KAFFEKAPSEL 10STK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[674, 360, 736, 453]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb419"></td>
+<td>UNDETECTED GT</td>
+<td>img_00061.jpg</td>
+<td title="ID 173">EARL GREY TEA 25POS TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.03</td>
+<td>[1278, 161, 1364, 219]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb420"></td>
+<td>UNDETECTED GT</td>
+<td>img_00061.jpg</td>
+<td title="ID 319">LIPTON ICETEA PEACH PULVER 50G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1382, 139, 1431, 219]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb421"></td>
+<td>UNDETECTED GT</td>
+<td>img_00062.jpg</td>
+<td title="ID 28">LADY GREY TE 200G TWININGS</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.10</td>
+<td>[1119, 611, 1185, 724]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb422"></td>
+<td>UNDETECTED GT</td>
+<td>img_00064.jpg</td>
+<td title="ID 255">LIPTON ICETEA MANGO PULVER 50G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[0, 870, 98, 964]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb423"></td>
+<td>UNDETECTED GT</td>
+<td>img_00064.jpg</td>
+<td title="ID 310">LIPTON ICETEA LEMON PULVER 50G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.08</td>
+<td>[195, 888, 289, 967]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb424"></td>
+<td>UNDETECTED GT</td>
+<td>img_00064.jpg</td>
+<td title="ID 325">NESCAFE GULL 100G</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.01</td>
+<td>[383, 1131, 436, 1221]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb425"></td>
+<td>UNDETECTED GT</td>
+<td>img_00066.jpg</td>
+<td title="ID 103">EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[762, 494, 822, 532]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb426"></td>
+<td>UNDETECTED GT</td>
+<td>img_00066.jpg</td>
+<td title="ID 125">SJOKOLADEDRIKK 512G RETT I KOPPEN</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.05</td>
+<td>[1501, 707, 1554, 770]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb427"></td>
+<td>UNDETECTED GT</td>
+<td>img_00066.jpg</td>
+<td title="ID 114">CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.04</td>
+<td>[1694, 200, 1741, 232]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb428"></td>
+<td>UNDETECTED GT</td>
+<td>img_00066.jpg</td>
+<td title="ID 238">KAMILLE TE ØKOLOGISK 24PK</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.00</td>
+<td>[1331, 240, 1398, 267]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb429"></td>
+<td>UNDETECTED GT</td>
+<td>img_00075.jpg</td>
+<td title="ID 80">FROKOSTEGG FRITTGÅENDE L 12STK PRIOR</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.26</td>
+<td>[636, 896, 785, 919]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb430"></td>
+<td>UNDETECTED GT</td>
+<td>img_00078.jpg</td>
+<td title="ID 267">EGGEHVITE 500G ELDORADO</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.06</td>
+<td>[597, 5, 917, 80]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb431"></td>
+<td>UNDETECTED GT</td>
+<td>img_00085.jpg</td>
+<td title="ID 80">FROKOSTEGG FRITTGÅENDE L 12STK PRIOR</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.29</td>
+<td>[1240, 982, 1630, 1056]</td>
+<td>N/A</td>
+</tr><tr style="background:#ffeecc">
+<td><input type="checkbox" id="cb432"></td>
+<td>UNDETECTED GT</td>
+<td>img_00085.jpg</td>
+<td title="ID 138">Økologiske Egg 10stk</td>
+<td title="ID None">N/A</td>
+<td>0.000</td>
+<td>0.02</td>
+<td>[1564, 269, 1817, 352]</td>
+<td>N/A</td>
+</tr>
+</tbody></table>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const count = document.querySelectorAll('input[type=checkbox]:checked').length;
+    document.title = 'Label Review (' + count + ' selected)';
+  });
+});
+</script>
+</body></html>

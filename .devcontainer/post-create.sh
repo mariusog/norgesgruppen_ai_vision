@@ -28,6 +28,14 @@ echo "  gcloud project: $(gcloud config get-value project 2>/dev/null || echo 'n
 echo "  node version: $(node --version 2>/dev/null || echo 'not found')"
 echo ""
 echo "Next steps:"
-echo "  1. Run: gcloud auth application-default login"
+
+if ! gcloud auth application-default print-access-token --quiet &>/dev/null; then
+  echo "  1. 🔴 Authenticate with Google Cloud:"
+  echo "     Run the following command in the terminal to log in:"
+  echo "     gcloud auth application-default login"
+else
+  echo "  1. ✅ Authenticated with Google Cloud."
+fi
+
 echo "  2. Download training data: bash scripts/download_dataset.sh"
 echo "  3. Run tests: python -m pytest tests/ -q --tb=line 2>&1 | tail -20"
