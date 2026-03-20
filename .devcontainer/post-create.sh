@@ -10,4 +10,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 pip install --upgrade pip
 pip install -e ".[dev]"
 
-echo "DevContainer ready — bun $(bun --version), python $(python --version)"
+echo "DevContainer ready — node $(node --version), bun $(bun --version), python $(python --version)"
