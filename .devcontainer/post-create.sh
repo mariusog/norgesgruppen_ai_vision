@@ -10,36 +10,9 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.clou
   | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
 sudo apt-get update -qq && sudo apt-get install -y -q google-cloud-cli
 
-# Install Python dev tools + competition packages
+# Install project + all dependencies in one pass (pyproject.toml is the single source of truth)
 pip install --upgrade pip
-
-# Dev tooling
-pip install pytest pytest-cov ruff mypy bandit pip-audit
-
-# Competition packages — pinned to exact sandbox versions to catch version-mismatch bugs early.
-# CPU variants used locally (sandbox uses CUDA builds, but all Python APIs are identical).
-pip install \
-  ultralytics==8.1.0 \
-  torch==2.6.0 \
-  torchvision==0.21.0 \
-  onnxruntime==1.20.0 \
-  opencv-python-headless==4.9.0.80 \
-  albumentations==1.3.1 \
-  Pillow==10.2.0 \
-  "numpy<2.0" \
-  scipy==1.12.0 \
-  scikit-learn==1.4.0 \
-  pycocotools==2.0.7 \
-  ensemble-boxes==1.0.9 \
-  timm==0.9.12 \
-  supervision==0.18.0 \
-  safetensors==0.4.2
-
-# GCP client library (for training/train.py dataset download)
-pip install google-cloud-storage==2.14.0
-
-# Install project in editable mode
-pip install -e "." 2>/dev/null || true
+pip install -e ".[dev]"
 
 # Authenticate gcloud using Application Default Credentials
 # (VS Code will prompt on first use, or run: gcloud auth application-default login)
@@ -52,6 +25,7 @@ echo "  Python: $(python --version)"
 echo "  PyTorch: $(python -c 'import torch; print(torch.__version__)' 2>/dev/null || echo 'not found')"
 echo "  Ultralytics: $(python -c 'import ultralytics; print(ultralytics.__version__)' 2>/dev/null || echo 'not found')"
 echo "  gcloud project: $(gcloud config get-value project 2>/dev/null || echo 'not configured')"
+echo "  node version: $(node --version 2>/dev/null || echo 'not found')"
 echo ""
 echo "Next steps:"
 echo "  1. Run: gcloud auth application-default login"
