@@ -303,6 +303,7 @@ class TestMain:
         ):
             main()
 
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="requires CUDA")
     def test_main_end_to_end(self, tmp_path: Path) -> None:
         """main() writes valid JSON output with mocked model."""
         import json

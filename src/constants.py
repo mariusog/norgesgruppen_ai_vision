@@ -53,7 +53,15 @@ MODEL_ENGINE_PATH = "weights/model.engine"
 
 # List of weight paths to load (empty = single model mode using MODEL_PATH).
 # When populated, predictions from all models are merged with WBF.
-ENSEMBLE_WEIGHTS: list[str] = []
+ENSEMBLE_WEIGHTS: list[str] = [
+    "weights/yolov8l-1280-aug.pt",
+    "weights/yolov8l-640-aug.pt",
+    "weights/yolov8m-640-aug.pt",
+]
+
+# Per-model input resolution for mixed-resolution ensembles.
+# Must be same length as ENSEMBLE_WEIGHTS. If empty, all models use IMAGE_SIZE.
+ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 640, 640]
 
 # WBF IoU threshold — boxes with IoU above this are fused together
 WBF_IOU_THRESHOLD = 0.55
@@ -69,30 +77,37 @@ WBF_SKIP_BOX_THRESHOLD = 0.001
 
 CLASSIFIER_PATH = "weights/classifier.pt"
 CLASSIFIER_MODEL_NAME = "efficientnet_b3"
-CLASSIFIER_INPUT_SIZE = 224
+# EfficientNet-B3 native resolution is 300px; larger crops = better fine-grained accuracy
+CLASSIFIER_INPUT_SIZE = 300
 USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
+
+# Only override YOLO's category when classifier softmax confidence exceeds this.
+# Prevents low-confidence classifier predictions from overriding correct YOLO labels.
+CLASSIFIER_CONFIDENCE_GATE = 0.15
 
 # ---------------------------------------------------------------------------
 # Competition: inference tuning
 # ---------------------------------------------------------------------------
 
 # Minimum confidence to include a detection in output
-# Lower = more detections (better recall), higher = fewer false positives
-# Tune against validation mAP; start at 0.25
-CONFIDENCE_THRESHOLD = 0.25
+# Lower = more detections (better recall) for mAP evaluation
+# Competition mAP benefits from high recall; very low threshold lets the
+# precision-recall curve be computed over the full range
+CONFIDENCE_THRESHOLD = 0.01
 
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
 IOU_THRESHOLD = 0.45
 
 # Test-Time Augmentation -- runs predict on flipped/scaled variants and merges
-# Improves accuracy ~1-3% but ~2-3x slower. Enable only if within 300s budget.
-USE_TTA = False
+# Improves accuracy ~1-3% but ~2-3x slower. Within 300s budget at 640 with ensemble.
+USE_TTA = True
 
 # Batch size for inference -- balances GPU utilization vs memory on L4 (24 GB)
 INFERENCE_BATCH_SIZE = 16
 
-# Max detections per image -- L4 has plenty of memory, but cap for safety
-MAX_DETECTIONS_PER_IMAGE = 300
+# Max detections per image -- shelf images can have 200+ products; with low
+# confidence threshold we need headroom for the full precision-recall curve
+MAX_DETECTIONS_PER_IMAGE = 1000
 
 # ---------------------------------------------------------------------------
 # Competition: submission constraints

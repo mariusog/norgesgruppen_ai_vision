@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label Monkey 🐵</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; min-height: 100vh; }
+
+.header { background: #16213e; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f3460; }
+.header h1 { font-size: 18px; color: #e94560; }
+.progress { font-size: 14px; color: #a0a0a0; }
+.progress .done { color: #4ecca3; font-weight: bold; }
+
+.main { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+
+.card { background: #16213e; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.card-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.badge { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+.badge.wrong { background: #e94560; color: white; }
+.badge.missing { background: #f0a500; color: #1a1a2e; }
+.badge.suspicious { background: #7b68ee; color: white; }
+.reasons { padding: 0 16px 8px; text-align: center; }
+.reason-tag { display: inline-block; padding: 3px 8px; margin: 2px; border-radius: 3px; font-size: 11px; background: #2a2a4a; color: #b0b0d0; }
+.file-name { font-size: 13px; color: #a0a0a0; }
+
+.crop-container { display: flex; justify-content: center; padding: 16px; background: #0f3460; }
+.crop-container img { max-height: 300px; max-width: 100%; border-radius: 4px; image-rendering: auto; }
+
+.labels { padding: 16px; display: flex; gap: 16px; justify-content: center; }
+.label-box { flex: 1; max-width: 300px; padding: 12px; border-radius: 8px; text-align: center; }
+.label-box.gt { background: #1b4332; border: 2px solid #4ecca3; }
+.label-box.pred { background: #3d1f1f; border: 2px solid #e94560; }
+.label-box .label-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.label-box.gt .label-title { color: #4ecca3; }
+.label-box.pred .label-title { color: #e94560; }
+.label-box .label-name { font-size: 15px; font-weight: 600; }
+.label-box .label-id { font-size: 12px; color: #888; margin-top: 2px; }
+.label-box .label-conf { font-size: 12px; color: #f0a500; margin-top: 4px; }
+
+.actions { padding: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn { padding: 10px 24px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
+.btn:hover { transform: scale(1.03); }
+.btn:active { transform: scale(0.97); }
+.btn-gt { background: #4ecca3; color: #1a1a2e; }
+.btn-pred { background: #e94560; color: white; }
+.btn-other { background: #533483; color: white; }
+.btn-skip { background: #333; color: #999; }
+.btn-unknown { background: #f0a500; color: #1a1a2e; }
+
+.search-container { padding: 0 16px 16px; display: none; }
+.search-container.active { display: block; }
+.search-input { width: 100%; padding: 10px 14px; border-radius: 6px; border: 2px solid #533483; background: #0f3460; color: #e0e0e0; font-size: 14px; outline: none; }
+.search-input:focus { border-color: #e94560; }
+.search-results { max-height: 250px; overflow-y: auto; margin-top: 8px; border-radius: 6px; background: #0f3460; }
+.search-item { padding: 8px 12px; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #16213e; }
+.search-item:hover { background: #16213e; }
+.search-item .cat-name { font-size: 13px; }
+.search-item .cat-id { font-size: 12px; color: #888; }
+
+.stats { display: flex; gap: 20px; justify-content: center; padding: 16px; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat .num { font-size: 24px; font-weight: bold; }
+.stat .lbl { font-size: 11px; color: #888; text-transform: uppercase; }
+.stat.kept .num { color: #4ecca3; }
+.stat.changed .num { color: #e94560; }
+.stat.skipped .num { color: #888; }
+
+.keyboard-hint { text-align: center; padding: 8px; font-size: 12px; color: #555; }
+kbd { background: #333; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+
+.load-section { text-align: center; padding: 60px 20px; }
+.load-section h2 { margin-bottom: 16px; color: #e94560; }
+.load-section p { color: #888; margin-bottom: 20px; font-size: 14px; }
+.load-section input[type=file] { display: none; }
+.load-section label { display: inline-block; padding: 12px 32px; background: #e94560; color: white; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.load-section label:hover { opacity: 0.9; }
+
+.done-section { text-align: center; padding: 60px 20px; }
+.done-section h2 { color: #4ecca3; margin-bottom: 16px; }
+.export-btn { padding: 12px 32px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Label Monkey</h1>
+  <div class="progress" id="progress"></div>
+</div>
+
+<div class="main" id="app">
+  <div class="load-section" id="load-section">
+    <h2>Load label tasks</h2>
+    <p>Generate tasks first:<br><code>python scripts/generate_label_tasks.py</code><br>Then load <code>docs/label_tasks.json</code></p>
+    <label for="file-input">Choose label_tasks.json</label>
+    <input type="file" id="file-input" accept=".json">
+    <p style="margin-top: 20px; font-size: 12px; color: #555;">Or drag &amp; drop the file anywhere on this page</p>
+  </div>
+</div>
+
+<script>
+const app = document.getElementById('app');
+const progress = document.getElementById('progress');
+
+let data = null;       // { categories, tasks }
+let current = 0;       // current task index
+let decisions = [];    // { taskId, decision, newClass? }
+let searchOpen = false;
+
+// Stats
+let stats = { kept: 0, changed: 0, skipped: 0 };
+
+// Load file
+document.getElementById('file-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadFile(file);
+});
+
+// Auto-load label_tasks.json if served from same directory
+fetch('label_tasks.json').then(r => r.ok ? r.json() : null).then(d => {
+  if (d && d.tasks) { data = d; render(); }
+}).catch(() => {});
+
+// Drag & drop
+document.addEventListener('dragover', (e) => e.preventDefault());
+document.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) loadFile(file);
+});
+
+function loadFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      data = JSON.parse(e.target.result);
+      // Restore progress from localStorage
+      const saved = localStorage.getItem('label_monkey_progress');
+      if (saved) {
+        const s = JSON.parse(saved);
+        if (s.taskCount === data.tasks.length) {
+          decisions = s.decisions;
+          current = s.current;
+          stats = s.stats;
+        }
+      }
+      render();
+    } catch (err) {
+      alert('Invalid JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function saveProgress() {
+  localStorage.setItem('label_monkey_progress', JSON.stringify({
+    taskCount: data.tasks.length,
+    decisions,
+    current,
+    stats
+  }));
+}
+
+function render() {
+  if (current >= data.tasks.length) {
+    renderDone();
+    return;
+  }
+
+  const task = data.tasks[current];
+  progress.innerHTML = `<span class="done">${current}</span> / ${data.tasks.length} · ✓${stats.kept} ✏${stats.changed} ⏭${stats.skipped}`;
+
+  const isWrong = task.type === 'wrong_class';
+  const isSuspicious = task.type === 'suspicious_annotation';
+  const badgeClass = isWrong ? 'wrong' : (isSuspicious ? 'suspicious' : 'missing');
+  const badgeText = isWrong ? 'Wrong Class' : (isSuspicious ? 'Check This' : 'Missing Annotation');
+
+  let labelsHtml = '';
+  if (isSuspicious) {
+    labelsHtml = `
+      <div class="label-box gt">
+        <div class="label-title">Current Label</div>
+        <div class="label-name">${esc(task.gt_name)}</div>
+        <div class="label-id">ID ${task.gt_class}</div>
+      </div>`;
+  } else if (isWrong) {
+    labelsHtml = `
+      <div class="label-box gt">
+        <div class="label-title">Ground Truth</div>
+        <div class="label-name">${esc(task.gt_name)}</div>
+        <div class="label-id">ID ${task.gt_class}</div>
+      </div>
+      <div class="label-box pred">
+        <div class="label-title">Model Says</div>
+        <div class="label-name">${esc(task.pred_name)}</div>
+        <div class="label-id">ID ${task.pred_class}</div>
+        <div class="label-conf">${(task.conf * 100).toFixed(0)}% conf · ${(task.iou * 100).toFixed(0)}% IoU</div>
+      </div>`;
+  } else {
+    labelsHtml = `
+      <div class="label-box pred">
+        <div class="label-title">Model Detected (no GT)</div>
+        <div class="label-name">${esc(task.pred_name)}</div>
+        <div class="label-id">ID ${task.pred_class}</div>
+        <div class="label-conf">${(task.conf * 100).toFixed(0)}% confident</div>
+      </div>`;
+  }
+
+  let reasonsHtml = '';
+  if (task.reasons && task.reasons.length) {
+    reasonsHtml = `<div class="reasons">${task.reasons.map(r => `<span class="reason-tag">${esc(r)}</span>`).join('')}</div>`;
+  }
+
+  let actionsHtml = '';
+  if (isSuspicious) {
+    actionsHtml = `
+      <button class="btn btn-gt" onclick="decide('keep_gt')" title="[1] Label is correct">① Looks correct</button>
+      <button class="btn btn-other" onclick="toggleSearch()" title="[2] Wrong label, pick correct one">② Wrong label</button>
+      <button class="btn btn-unknown" onclick="decide('mark_unknown')" title="[U] Mark as unknown_product">Ⓤ Unknown</button>
+      <button class="btn btn-skip" onclick="decide('delete_annotation')" title="[D] Delete this annotation">✕ Delete</button>
+      <button class="btn btn-skip" onclick="decide('skip')" title="[S] Skip">⏭ Skip</button>`;
+  } else if (isWrong) {
+    actionsHtml = `
+      <button class="btn btn-gt" onclick="decide('keep_gt')" title="[1] Keep ground truth label">① GT is correct</button>
+      <button class="btn btn-pred" onclick="decide('use_pred')" title="[2] Model is right, fix the label">② Model is right</button>
+      <button class="btn btn-other" onclick="toggleSearch()" title="[3] Neither is right">③ Other class</button>
+      <button class="btn btn-unknown" onclick="decide('mark_unknown')" title="[U] Mark as unknown_product">Ⓤ Unknown</button>
+      <button class="btn btn-skip" onclick="decide('skip')" title="[S] Skip">⏭ Skip</button>`;
+  } else {
+    actionsHtml = `
+      <button class="btn btn-pred" onclick="decide('confirm_pred')" title="[1] Model is right, add annotation">① Correct detection</button>
+      <button class="btn btn-other" onclick="toggleSearch()" title="[2] Right box, wrong class">② Wrong class</button>
+      <button class="btn btn-skip" onclick="decide('false_positive')" title="[3] False positive, ignore">③ False positive</button>
+      <button class="btn btn-skip" onclick="decide('skip')" title="[S] Skip">⏭ Skip</button>`;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span class="badge ${badgeClass}">${badgeText}</span>
+        <span class="file-name">${task.file}</span>
+      </div>
+      <div class="crop-container">
+        <img src="data:image/jpeg;base64,${task.crop}" alt="crop">
+      </div>
+      <div class="labels">${labelsHtml}</div>
+      ${reasonsHtml}
+      <div class="actions">${actionsHtml}</div>
+      <div class="search-container" id="search-container">
+        <input class="search-input" id="search-input" type="text" placeholder="Type to search categories..." oninput="filterCategories(this.value)">
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+    <div class="keyboard-hint">
+      <kbd>1</kbd>-<kbd>3</kbd> buttons · <kbd>S</kbd> skip · <kbd>U</kbd> unknown · <kbd>D</kbd> delete · <kbd>Z</kbd> undo · <kbd>/</kbd> search
+    </div>`;
+  searchOpen = false;
+}
+
+function renderDone() {
+  progress.innerHTML = `<span class="done">Done!</span> ${data.tasks.length} tasks reviewed`;
+
+  app.innerHTML = `
+    <div class="done-section">
+      <h2>All done!</h2>
+      <div class="stats">
+        <div class="stat kept"><div class="num">${stats.kept}</div><div class="lbl">Kept GT</div></div>
+        <div class="stat changed"><div class="num">${stats.changed}</div><div class="lbl">Changed</div></div>
+        <div class="stat skipped"><div class="num">${stats.skipped}</div><div class="lbl">Skipped</div></div>
+      </div>
+      <button class="export-btn" onclick="exportCorrections()">Export corrections JSON</button>
+      <p style="margin-top: 12px; font-size: 13px; color: #888;">Downloads a JSON file with your corrections.<br>Use it to fix YOLO label files before retraining.</p>
+    </div>`;
+}
+
+function decide(decision, newClass) {
+  const task = data.tasks[current];
+  const entry = { taskId: task.id, type: task.type, file: task.file, decision };
+
+  if (decision === 'use_pred') {
+    entry.newClass = task.pred_class;
+    entry.bbox = task.gt_bbox;
+    stats.changed++;
+  } else if (decision === 'keep_gt' || decision === 'confirm_pred') {
+    stats.kept++;
+  } else if (decision === 'other') {
+    entry.newClass = newClass;
+    entry.bbox = task.gt_bbox || task.pred_bbox;
+    stats.changed++;
+  } else if (decision === 'mark_unknown') {
+    entry.newClass = 355; // unknown_product
+    entry.bbox = task.gt_bbox || task.pred_bbox;
+    stats.changed++;
+  } else if (decision === 'delete_annotation') {
+    entry.deleteGtBbox = task.gt_bbox;
+    stats.changed++;
+  } else if (decision === 'false_positive') {
+    entry.removePredBbox = task.pred_bbox;
+    stats.skipped++;
+  } else {
+    stats.skipped++;
+  }
+
+  decisions.push(entry);
+  current++;
+  saveProgress();
+  render();
+}
+
+function toggleSearch() {
+  const container = document.getElementById('search-container');
+  searchOpen = !searchOpen;
+  container.classList.toggle('active', searchOpen);
+  if (searchOpen) {
+    const input = document.getElementById('search-input');
+    input.value = '';
+    input.focus();
+    filterCategories('');
+  }
+}
+
+function filterCategories(query) {
+  const results = document.getElementById('search-results');
+  const q = query.toLowerCase();
+  const cats = Object.entries(data.categories);
+  const matches = q
+    ? cats.filter(([id, name]) => name.toLowerCase().includes(q) || id === q).slice(0, 30)
+    : cats.slice(0, 30);
+
+  results.innerHTML = matches.map(([id, name]) =>
+    `<div class="search-item" onclick="decide('other', ${id})">
+      <span class="cat-name">${esc(name)}</span>
+      <span class="cat-id">${id}</span>
+    </div>`
+  ).join('');
+}
+
+function exportCorrections() {
+  const actionable = decisions.filter(d => d.decision !== 'skip' && d.decision !== 'keep_gt');
+  const blob = new Blob([JSON.stringify(actionable, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'label_corrections.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function undo() {
+  if (current === 0 || decisions.length === 0) return;
+  const last = decisions.pop();
+  current--;
+  // Undo stats
+  if (last.decision === 'keep_gt' || last.decision === 'confirm_pred') stats.kept--;
+  else if (last.decision === 'skip' || last.decision === 'false_positive') stats.skipped--;
+  else stats.changed--;
+  saveProgress();
+  render();
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (!data || current >= data.tasks.length) return;
+
+  // If search is open and typing, don't intercept
+  if (searchOpen && e.target.id === 'search-input' && e.key !== 'Escape') return;
+
+  const task = data.tasks[current];
+  const isWrong = task.type === 'wrong_class';
+  const isSuspicious = task.type === 'suspicious_annotation';
+
+  switch (e.key) {
+    case '1':
+      e.preventDefault();
+      if (isSuspicious) decide('keep_gt');
+      else if (isWrong) decide('keep_gt');
+      else decide('confirm_pred');
+      break;
+    case '2':
+      e.preventDefault();
+      if (isSuspicious) toggleSearch();
+      else if (isWrong) decide('use_pred');
+      else toggleSearch();
+      break;
+    case '3':
+      e.preventDefault();
+      if (isSuspicious) decide('skip');
+      else if (isWrong) toggleSearch();
+      else decide('false_positive');
+      break;
+    case 'd': case 'D':
+      e.preventDefault();
+      decide('delete_annotation');
+      break;
+    case 's': case 'S':
+      e.preventDefault();
+      decide('skip');
+      break;
+    case 'u': case 'U':
+      e.preventDefault();
+      decide('mark_unknown');
+      break;
+    case 'z': case 'Z':
+      e.preventDefault();
+      undo();
+      break;
+    case '/':
+      e.preventDefault();
+      toggleSearch();
+      break;
+    case 'Escape':
+      if (searchOpen) toggleSearch();
+      break;
+  }
+});
+
+function esc(s) {
+  if (!s) return 'N/A';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>

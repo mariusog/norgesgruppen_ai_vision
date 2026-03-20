@@ -28,10 +28,12 @@ from torchvision import transforms  # noqa: E402
 from ultralytics import YOLO  # noqa: E402
 
 from src.constants import (  # noqa: E402
+    CLASSIFIER_CONFIDENCE_GATE,
     CLASSIFIER_INPUT_SIZE,
     CLASSIFIER_MODEL_NAME,
     CLASSIFIER_PATH,
     CONFIDENCE_THRESHOLD,
+    ENSEMBLE_IMAGE_SIZES,
     ENSEMBLE_WEIGHTS,
     HALF_PRECISION,
     IMAGE_EXTENSIONS,
@@ -171,18 +173,22 @@ def classify_crops(
     # Free cached images
     image_cache.clear()
 
-    # Run classifier in batches
+    # Run classifier in batches with confidence gating
     all_class_ids: list[int] = []
+    all_confidences: list[float] = []
     with torch.no_grad():
         for i in range(0, len(crop_tensors), batch_size):
             batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
             logits = classifier(batch)
-            class_ids = logits.argmax(dim=1).cpu().tolist()
-            all_class_ids.extend(class_ids)
+            probs = torch.nn.functional.softmax(logits, dim=1)
+            max_probs, class_ids = probs.max(dim=1)
+            all_class_ids.extend(class_ids.cpu().tolist())
+            all_confidences.extend(max_probs.cpu().tolist())
 
-    # Update predictions with classifier results
-    for pred, cls_id in zip(predictions, all_class_ids, strict=True):
-        pred["category_id"] = int(cls_id)
+    # Only override YOLO category when classifier confidence exceeds gate
+    for pred, cls_id, conf in zip(predictions, all_class_ids, all_confidences, strict=True):
+        if conf >= CLASSIFIER_CONFIDENCE_GATE:
+            pred["category_id"] = int(cls_id)
 
     return predictions
 
@@ -253,13 +259,19 @@ def run_ensemble_inference(models: list[YOLO], image_paths: list[Path]) -> list[
             img_h: int = 0
             img_w: int = 0
 
-            for model in models:
+            for model_idx, model in enumerate(models):
+                # Use per-model resolution if configured, else fall back to IMAGE_SIZE
+                model_imgsz = (
+                    ENSEMBLE_IMAGE_SIZES[model_idx]
+                    if ENSEMBLE_IMAGE_SIZES and model_idx < len(ENSEMBLE_IMAGE_SIZES)
+                    else IMAGE_SIZE
+                )
                 results = model.predict(
                     img_str,
                     verbose=False,
                     conf=CONFIDENCE_THRESHOLD,
                     iou=IOU_THRESHOLD,
-                    imgsz=IMAGE_SIZE,
+                    imgsz=model_imgsz,
                     half=HALF_PRECISION,
                     augment=USE_TTA,
                     max_det=MAX_DETECTIONS_PER_IMAGE,
@@ -275,12 +287,14 @@ def run_ensemble_inference(models: list[YOLO], image_paths: list[Path]) -> list[
                     for box in result.boxes:
                         x1, y1, x2, y2 = box.xyxy[0].tolist()
                         # Normalize to [0, 1] for WBF
-                        model_boxes.append([
-                            x1 / img_w,
-                            y1 / img_h,
-                            x2 / img_w,
-                            y2 / img_h,
-                        ])
+                        model_boxes.append(
+                            [
+                                x1 / img_w,
+                                y1 / img_h,
+                                x2 / img_w,
+                                y2 / img_h,
+                            ]
+                        )
                         model_scores.append(float(box.conf[0].item()))
                         model_labels.append(int(box.cls[0].item()))
 

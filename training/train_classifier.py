@@ -20,13 +20,14 @@ from __future__ import annotations
 import argparse
 import functools
 import time
+from collections import Counter
 from pathlib import Path
 
 import timm
 import torch
 import torch.nn as nn
 from PIL import Image
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 from torchvision import transforms
 
 # PyTorch 2.6 defaults torch.load(weights_only=True) which breaks
@@ -44,10 +45,10 @@ GCS_WEIGHTS_NAME = "classifier_efficientnet_b3.pt"
 LOCAL_WEIGHTS_PATH = Path("weights/classifier.pt")
 
 NUM_CLASSES = 356
-INPUT_SIZE = 224
+INPUT_SIZE = 300  # EfficientNet-B3 native resolution; was 224 (too small for fine-grained)
 BATCH_SIZE = 64
-NUM_EPOCHS = 30
-LEARNING_RATE = 1e-3
+NUM_EPOCHS = 50
+LEARNING_RATE = 3e-4  # Lower LR for better fine-tuning convergence
 NUM_WORKERS = 4
 
 # Dataset paths (relative to data root)
@@ -127,8 +128,7 @@ class ProductClassificationDataset(Dataset):
         self._collect_reference_images()
         self._collect_shelf_crops()
 
-        print(f"[{split}] Total samples: {len(self.samples)} "
-              f"(ref + shelf crops)")
+        print(f"[{split}] Total samples: {len(self.samples)} (ref + shelf crops)")
 
     def _collect_reference_images(self) -> None:
         """Collect reference product images from the YOLO train split.
@@ -213,22 +213,29 @@ class ProductClassificationDataset(Dataset):
 
 
 def get_train_transforms() -> transforms.Compose:
-    return transforms.Compose([
-        transforms.RandomResizedCrop(INPUT_SIZE, scale=(0.7, 1.0)),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.05),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
+    return transforms.Compose(
+        [
+            transforms.RandomResizedCrop(INPUT_SIZE, scale=(0.6, 1.0)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
+            transforms.RandomRotation(15),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.3),
+            transforms.ToTensor(),
+            transforms.RandomErasing(p=0.2),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
 
 
 def get_val_transforms() -> transforms.Compose:
-    return transforms.Compose([
-        transforms.Resize(int(INPUT_SIZE * 1.14)),  # 256
-        transforms.CenterCrop(INPUT_SIZE),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
+    return transforms.Compose(
+        [
+            transforms.Resize(int(INPUT_SIZE * 1.14)),  # 256
+            transforms.CenterCrop(INPUT_SIZE),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -323,8 +330,10 @@ def train_one_epoch(
         correct += predicted.eq(targets).sum().item()
 
         if (batch_idx + 1) % 20 == 0:
-            print(f"  Epoch {epoch} | Batch {batch_idx + 1}/{len(loader)} | "
-                  f"Loss: {loss.item():.4f} | Acc: {100.0 * correct / total:.1f}%")
+            print(
+                f"  Epoch {epoch} | Batch {batch_idx + 1}/{len(loader)} | "
+                f"Loss: {loss.item():.4f} | Acc: {100.0 * correct / total:.1f}%"
+            )
 
     avg_loss = running_loss / total
     accuracy = 100.0 * correct / total
@@ -390,10 +399,17 @@ def main() -> None:
         data_root, split="val", transform=get_val_transforms()
     )
 
+    # Weighted sampling: oversample rare classes for balanced training
+    class_counts = Counter(cls_id for _, cls_id, _ in train_dataset.samples)
+    sample_weights = [1.0 / max(class_counts[cls_id], 1) for _, cls_id, _ in train_dataset.samples]
+    sampler = WeightedRandomSampler(
+        sample_weights, num_samples=len(sample_weights), replacement=True
+    )
+
     train_loader = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
-        shuffle=True,
+        sampler=sampler,
         num_workers=NUM_WORKERS,
         pin_memory=True,
         drop_last=True,
@@ -431,9 +447,9 @@ def main() -> None:
 
     for epoch in range(1, args.epochs + 1):
         lr = optimizer.param_groups[0]["lr"]
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"Epoch {epoch}/{args.epochs} | LR: {lr:.6f}")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
 
         train_loss, train_acc = train_one_epoch(
             model, train_loader, criterion, optimizer, device, epoch
@@ -454,11 +470,11 @@ def main() -> None:
             print(f"  -> New best! Saved to {save_path} ({size_mb:.1f} MB)")
 
     elapsed = time.perf_counter() - t_start
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Training complete in {elapsed / 60:.1f} min")
     print(f"Best validation accuracy: {best_val_acc:.1f}%")
     print(f"Weights saved to: {save_path}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     # Upload to GCS
     if not args.no_upload:
