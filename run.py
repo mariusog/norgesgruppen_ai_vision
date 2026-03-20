@@ -45,11 +45,16 @@ from src.constants import (  # noqa: E402
     MODEL_ENGINE_PATH,
     MODEL_PATH,
     NUM_CLASSES,
+    PROTOTYPE_CONFIDENCE_THRESHOLD,
+    PROTOTYPE_PATH,
+    PROTOTYPE_SIMILARITY_THRESHOLD,
     USE_CLASSIFIER,
+    USE_PROTOTYPE_MATCHING,
     USE_TTA,
     WBF_IOU_THRESHOLD,
     WBF_SKIP_BOX_THRESHOLD,
 )
+from src.prototype_matcher import load_prototypes, match_prototypes  # noqa: E402
 
 
 def load_model() -> YOLO:
@@ -174,9 +179,17 @@ def classify_crops(
     # Free cached images
     image_cache.clear()
 
-    # Run classifier in batches with confidence gating
+    # Load prototypes if available
+    prototypes = None
+    proto_path = Path(PROTOTYPE_PATH)
+    if USE_PROTOTYPE_MATCHING and proto_path.exists():
+        prototypes = load_prototypes(proto_path)
+        prototypes["embeddings"] = prototypes["embeddings"].to("cuda")
+
+    # Run classifier in batches with confidence gating + prototype fallback
     all_class_ids: list[int] = []
     all_confidences: list[float] = []
+    all_features: list[torch.Tensor] = []
     with torch.no_grad():
         for i in range(0, len(crop_tensors), batch_size):
             batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
@@ -186,10 +199,31 @@ def classify_crops(
             all_class_ids.extend(class_ids.cpu().tolist())
             all_confidences.extend(max_probs.cpu().tolist())
 
-    # Only override YOLO category when classifier confidence exceeds gate
-    for pred, cls_id, conf in zip(predictions, all_class_ids, all_confidences, strict=True):
+            # Extract features for prototype matching if needed
+            if prototypes is not None:
+                feats = classifier.forward_features(batch)
+                if feats.dim() == 4:
+                    feats = feats.mean(dim=[2, 3])
+                feats = torch.nn.functional.normalize(feats, dim=1)
+                all_features.append(feats.cpu())
+
+    # Override YOLO category using classifier + prototype fallback
+    for idx, (pred, cls_id, conf) in enumerate(
+        zip(predictions, all_class_ids, all_confidences, strict=True)
+    ):
         if conf >= CLASSIFIER_CONFIDENCE_GATE:
             pred["category_id"] = int(cls_id)
+
+            # For mid-confidence predictions, try prototype matching
+            if prototypes is not None and conf < PROTOTYPE_CONFIDENCE_THRESHOLD:
+                feat_idx = idx
+                batch_idx = feat_idx // batch_size
+                within_batch = feat_idx % batch_size
+                if batch_idx < len(all_features):
+                    feat = all_features[batch_idx][within_batch : within_batch + 1].to("cuda")
+                    sims, proto_ids = match_prototypes(feat, prototypes)
+                    if sims[0, 0].item() >= PROTOTYPE_SIMILARITY_THRESHOLD:
+                        pred["category_id"] = int(proto_ids[0, 0].item())
 
     return predictions
 

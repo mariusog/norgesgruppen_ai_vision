@@ -87,6 +87,18 @@ USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
 CLASSIFIER_CONFIDENCE_GATE = 0.15
 
 # ---------------------------------------------------------------------------
+# Prototype matching — cosine similarity against reference product embeddings
+# Falls back to prototype matching when classifier confidence is low.
+# ---------------------------------------------------------------------------
+
+PROTOTYPE_PATH = "weights/prototypes.pt"
+USE_PROTOTYPE_MATCHING = True
+# Use prototype matching when classifier softmax is below this threshold
+PROTOTYPE_CONFIDENCE_THRESHOLD = 0.5
+# Minimum cosine similarity to trust a prototype match
+PROTOTYPE_SIMILARITY_THRESHOLD = 0.6
+
+# ---------------------------------------------------------------------------
 # Competition: inference tuning
 # ---------------------------------------------------------------------------
 
