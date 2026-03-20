@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Competition Context
 
 **NM i AI 2026 – NorgesGruppen Object Detection** (deadline March 22, 2026).
-Task: detect and classify grocery products from **357 categories** (IDs 0–356; ID 356 = `unknown_product`) in shelf images.
+Task: detect and classify grocery products from **356 categories** (IDs 0–355; ID 355 = `unknown_product`) in shelf images.
 Scoring: **70% detection mAP** (bbox IoU ≥ 0.5, category ignored) + **30% classification mAP** (IoU ≥ 0.5 AND correct category_id). Detection-only baseline scores up to 0.70.
 Submission limits: **3 per day**, 2 in-flight at once.
 
@@ -32,6 +32,12 @@ bash scripts/validate_submission.sh
 # Download dataset from GCS
 bash scripts/download_dataset.sh
 
+# Build submission zip
+python scripts/create_submission.py
+
+# Pre-compute prototype embeddings from reference images
+python scripts/precompute_prototypes.py
+
 # Launch Vertex AI training job (see model-agent.md for full command)
 gcloud ai custom-jobs create --region=europe-west4 ...
 ```
@@ -40,9 +46,15 @@ gcloud ai custom-jobs create --region=europe-west4 ...
 
 ### Inference pipeline (`run.py` + `src/`)
 
-`run.py` is the competition entry point. Flow: parse args → `load_model()` → `collect_images()` → `run_inference()` → write JSON. All file ops use `pathlib.Path`. All inference is wrapped in `torch.no_grad()`.
+`run.py` is the competition entry point and contains all inference logic (no separate `src/inference.py` or `src/postprocess.py`). Flow: parse args → load models → `collect_images()` → detect → classify → write JSON. All file ops use `pathlib.Path`. All inference is wrapped in `torch.no_grad()`.
 
-`src/constants.py` is the single source of truth for all tuning parameters: `CONFIDENCE_THRESHOLD`, `IOU_THRESHOLD`, `IMAGE_SIZE`, `MODEL_PATH`, and GCP config. Change thresholds here, not in calling code.
+Key pipeline stages in `run.py`:
+- **WBF ensemble**: `run_ensemble_inference()` runs 3 YOLO models at different resolutions (1280, 640, 640) and merges detections with Weighted Box Fusion.
+- **Two-stage classifier**: `classify_crops()` crops each detection, runs through a timm classifier (EfficientNet-B3) with optional TTA (horizontal flip averaging) and classifier ensemble support.
+- **Score fusion**: blends YOLO detection confidence with classifier softmax (`SCORE_FUSION_ALPHA`).
+- **Prototype matching**: `src/prototype_matcher.py` provides cosine-similarity matching against pre-computed reference embeddings as a fallback for mid-confidence classifier predictions.
+
+`src/constants.py` is the single source of truth for all tuning parameters: confidence thresholds, ensemble weights, classifier config, prototype matching config, and GCP settings. Change thresholds here, not in calling code.
 
 ### Training pipeline (`training/`)
 
@@ -55,7 +67,7 @@ gcloud ai custom-jobs create --region=europe-west4 ...
 | Agent | Owns |
 |-------|------|
 | `model-agent` | `training/`, `weights/`, tuning params in `src/constants.py` |
-| `inference-agent` | `run.py`, `src/inference.py`, `src/postprocess.py`, `src/dataset.py` |
+| `inference-agent` | `run.py`, `src/prototype_matcher.py` |
 | `qa-agent` | `tests/`, `docs/benchmark_results.md` |
 | `lead-agent` | `TASKS.md`, `CLAUDE.md`, `.claude/agents/`, cross-cutting changes |
 
@@ -100,7 +112,7 @@ The `security-imports.sh` PostToolUse hook blocks any edit that introduces these
   - `bbox` is `[x_topleft, y_topleft, width, height]` in pixels (xywh, **not** xyxy)
   - `score` must be Python `float`, `category_id` and `image_id` must be Python `int`
   - `image_id` comes from `int(img_path.stem.split("_")[-1])` — filenames are `img_00042.jpg` → `42`
-- Max weight files: **420 MB** total
+- Max weight files: **420 MB** total, **3 weight files** max
 - Timeout: **300 seconds** for the entire test set on an NVIDIA L4 (24 GB VRAM, 8 GB RAM)
 - Pre-installed: Python 3.11, ultralytics 8.1.0, PyTorch 2.6.0+cu124, onnxruntime-gpu 1.20.0
 - No `pip install` at runtime
