@@ -22,9 +22,11 @@ COPY training/ training/
 COPY scripts/ scripts/
 
 # Install what's NOT in the base image
+# Pin coverage<7 to avoid numba/coverage.types.Tracer conflict in base image
 RUN pip install --no-cache-dir \
     "google-cloud-storage==2.14.0" \
     "timm==0.9.12" \
+    "coverage<7" \
     "pycocotools==2.0.8" \
     "ensemble-boxes==1.0.9"
 
