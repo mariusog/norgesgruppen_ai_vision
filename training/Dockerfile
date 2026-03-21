@@ -21,8 +21,10 @@ COPY src/ src/
 COPY training/ training/
 COPY scripts/ scripts/
 
+# Fix numba/coverage conflict in base image (numba needs coverage.types.Tracer)
+RUN pip install --no-cache-dir "coverage==6.5.0"
+
 # Install what's NOT in the base image
-# Pin coverage<7 to avoid numba/coverage.types.Tracer conflict in base image
 RUN pip install --no-cache-dir \
     "google-cloud-storage==2.14.0" \
     "timm==0.9.12" \
