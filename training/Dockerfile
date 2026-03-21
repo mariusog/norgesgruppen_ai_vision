@@ -16,13 +16,17 @@ WORKDIR /workspace
 
 # Copy project files
 COPY pyproject.toml ./
+COPY run.py ./
 COPY src/ src/
 COPY training/ training/
+COPY scripts/ scripts/
 
 # Install what's NOT in the base image
 RUN pip install --no-cache-dir \
     "google-cloud-storage==2.14.0" \
-    "timm==0.9.12"
+    "timm==0.9.12" \
+    "pycocotools==2.0.8" \
+    "ensemble-boxes==1.0.9"
 
 # Default command: run training with standard config
 CMD ["python", "training/train.py", "--data", "training/data.yaml"]
