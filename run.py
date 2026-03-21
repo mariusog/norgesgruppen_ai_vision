@@ -77,13 +77,31 @@ def load_model() -> YOLO:
 
 
 def load_ensemble_models() -> list[YOLO]:
-    """Load multiple YOLO models for ensemble inference."""
+    """Load multiple YOLO models for ensemble inference.
+
+    Handles bundle files: if a weight path matches BUNDLE_WEIGHT_PATH,
+    extracts the YOLO bytes to a temp file before loading.
+    """
+    from src.constants import BUNDLE_WEIGHT_PATH
+
     models: list[YOLO] = []
     for weight_path in ENSEMBLE_WEIGHTS:
         p = Path(weight_path)
         if not p.exists():
             raise FileNotFoundError(f"Ensemble weight not found: {p}")
-        model = YOLO(str(p))
+
+        if BUNDLE_WEIGHT_PATH and str(p) == BUNDLE_WEIGHT_PATH:
+            # Extract YOLO bytes from bundle to temp file
+            bundle = torch.load(str(p), map_location="cpu")
+            # Write to /tmp which is always writable
+            tmp_yolo = Path("/tmp/_tmp_yolo.pt")  # noqa: S108
+            tmp_yolo.write_bytes(bundle["yolo_bytes"])
+            del bundle["yolo_bytes"]  # Free memory immediately
+            model = YOLO(str(tmp_yolo))
+            tmp_yolo.unlink()  # Clean up temp file
+        else:
+            model = YOLO(str(p))
+
         model.to("cuda")
         models.append(model)
     return models
@@ -116,11 +134,28 @@ def load_classifier() -> list[torch.nn.Module] | None:
             model.eval()
             models.append(model)
     else:
+        from src.constants import BUNDLE_WEIGHT_PATH
+
+        # Try loading from bundle first
+        bundle_path = Path(BUNDLE_WEIGHT_PATH) if BUNDLE_WEIGHT_PATH else None
         classifier_path = Path(CLASSIFIER_PATH)
-        if not classifier_path.exists():
+
+        state_dict = None
+        model_name = CLASSIFIER_MODEL_NAME
+
+        if bundle_path and bundle_path.exists():
+            bundle = torch.load(str(bundle_path), map_location="cpu")
+            if "classifier_state_dict" in bundle:
+                state_dict = bundle["classifier_state_dict"]
+                model_name = bundle.get("classifier_model_name", CLASSIFIER_MODEL_NAME)
+                del bundle
+        elif classifier_path.exists():
+            state_dict = torch.load(str(classifier_path), map_location="cpu")
+
+        if state_dict is None:
             return None
-        model = timm.create_model(CLASSIFIER_MODEL_NAME, num_classes=NUM_CLASSES)
-        state_dict = torch.load(str(classifier_path), map_location="cpu")
+
+        model = timm.create_model(model_name, num_classes=NUM_CLASSES)
         model.load_state_dict(state_dict)
         model.to("cuda")
         model.eval()

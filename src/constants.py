@@ -56,15 +56,20 @@ MODEL_ENGINE_PATH = "weights/model.engine"
 # When populated, predictions from all models are merged with WBF.
 ENSEMBLE_WEIGHTS: list[str] = [
     "weights/yolov8l-1280-corrected.pt",
+    "weights/yolov8x-1280-corrected.pt",
     "weights/yolov8l-640-aug.pt",
 ]
 
 # Per-model input resolution for mixed-resolution ensembles.
 # Must be same length as ENSEMBLE_WEIGHTS. If empty, all models use IMAGE_SIZE.
-ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 640]
+ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 1280, 640]
+
+# Bundle: one weight file contains both YOLO + classifier weights
+# Set to the ensemble weight path that contains the bundle, or empty string to disable
+BUNDLE_WEIGHT_PATH = ""
 
 # WBF IoU threshold — boxes with IoU above this are fused together
-WBF_IOU_THRESHOLD = 0.55
+WBF_IOU_THRESHOLD = 0.50  # Lowered from 0.55: fuse more aggressively for dense shelves
 
 # WBF minimum score to keep a box before fusion
 WBF_SKIP_BOX_THRESHOLD = 0.001
@@ -87,7 +92,7 @@ CLASSIFIER_ENSEMBLE: list[tuple[str, str]] = [
 ]
 # EfficientNet-B3 native resolution is 300px; larger crops = better fine-grained accuracy
 CLASSIFIER_INPUT_SIZE = 300
-USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
+USE_CLASSIFIER = False  # Disabled: 3-file limit prevents including classifier with 3 YOLO models
 
 # Only override YOLO's category when classifier softmax confidence exceeds this.
 # Prevents low-confidence classifier predictions from overriding correct YOLO labels.
@@ -124,18 +129,18 @@ PROTOTYPE_SIMILARITY_THRESHOLD = 0.6
 CONFIDENCE_THRESHOLD = 0.01
 
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
-IOU_THRESHOLD = 0.45
+IOU_THRESHOLD = 0.50  # Raised from 0.45: keep more overlapping boxes on dense shelves
 
 # Test-Time Augmentation -- runs predict on flipped/scaled variants and merges
 # Improves accuracy ~1-3% but ~2-3x slower. Within 300s budget at 640 with ensemble.
-USE_TTA = False  # Disabled: OOM with classifier + TTA on 8GB RAM
+USE_TTA = True
 
 # Batch size for inference -- balances GPU utilization vs memory on L4 (24 GB)
 INFERENCE_BATCH_SIZE = 16
 
 # Max detections per image -- shelf images can have 200+ products; with low
 # confidence threshold we need headroom for the full precision-recall curve
-MAX_DETECTIONS_PER_IMAGE = 500  # Balanced: enough for mAP recall, safe on 8GB RAM
+MAX_DETECTIONS_PER_IMAGE = 1000
 
 # ---------------------------------------------------------------------------
 # Competition: submission constraints
