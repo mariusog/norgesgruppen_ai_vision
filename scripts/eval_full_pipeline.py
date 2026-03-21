@@ -621,9 +621,7 @@ def main() -> None:
 
     # --- Step 8: Save structured results ---
     result_record = {
-        "timestamp": datetime.datetime.now(
-            datetime.timezone.utc
-        ).isoformat(),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "det_map50": metrics["det_map50"],
         "cls_map50": metrics["cls_map50"],
         "score": metrics["score"],
