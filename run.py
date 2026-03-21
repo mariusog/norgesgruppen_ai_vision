@@ -164,43 +164,6 @@ def classify_crops(
         std=[0.229, 0.224, 0.225],
     )
 
-    # Cache opened images to avoid re-reading the same file
-    image_cache: dict[int, Image.Image] = {}
-
-    # Prepare all crops
-    crop_tensors: list[torch.Tensor] = []
-    for pred in predictions:
-        img_id = pred["image_id"]
-        if img_id not in image_cache:
-            img_path = id_to_path[img_id]
-            image_cache[img_id] = Image.open(str(img_path)).convert("RGB")
-        img = image_cache[img_id]
-
-        # bbox is [x, y, width, height] in pixels
-        bx, by, bw, bh = pred["bbox"]
-        # Add 10% padding for better classifier context
-        pad_w = bw * 0.10
-        pad_h = bh * 0.10
-        img_w, img_h = img.size
-        left = max(0, int(bx - pad_w))
-        upper = max(0, int(by - pad_h))
-        right = min(img_w, int(bx + bw + pad_w))
-        lower = min(img_h, int(by + bh + pad_h))
-
-        crop = img.crop((left, upper, right, lower))
-        crop = crop.resize(
-            (CLASSIFIER_INPUT_SIZE, CLASSIFIER_INPUT_SIZE),
-            Image.BILINEAR,
-        )
-
-        # Convert to tensor [C, H, W] in [0, 1] range, then normalize
-        tensor = transforms.functional.to_tensor(crop)
-        tensor = normalize(tensor)
-        crop_tensors.append(tensor)
-
-    # Free cached images
-    image_cache.clear()
-
     # Load prototypes if available
     prototypes = None
     proto_path = Path(PROTOTYPE_PATH)
@@ -208,45 +171,93 @@ def classify_crops(
         prototypes = load_prototypes(proto_path)
         prototypes["embeddings"] = prototypes["embeddings"].to("cuda")
 
-    # Run classifier in batches with optional TTA + prototype features
+    # Process crops per-image to minimize RAM usage (stream, don't cache all)
     all_class_ids: list[int] = []
     all_confidences: list[float] = []
     all_features: list[torch.Tensor] = []
+
+    # Group predictions by image_id for efficient image loading
+    preds_by_image: dict[int, list[int]] = {}
+    for idx, pred in enumerate(predictions):
+        preds_by_image.setdefault(pred["image_id"], []).append(idx)
+
     with torch.no_grad():
-        for i in range(0, len(crop_tensors), batch_size):
-            batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
+        # Pre-fill results arrays
+        all_class_ids = [0] * len(predictions)
+        all_confidences = [0.0] * len(predictions)
 
-            # Average softmax across all classifiers (ensemble)
-            probs_sum: torch.Tensor = torch.zeros(batch.size(0), NUM_CLASSES, device=batch.device)
-            num_passes = 0
-            for clf in classifiers:
-                logits = clf(batch)
-                cls_prob = torch.nn.functional.softmax(logits, dim=1)
-                if USE_CLASSIFIER_TTA:
-                    cls_prob_flip = torch.nn.functional.softmax(
-                        clf(torch.flip(batch, dims=[3])), dim=1
-                    )
-                    cls_prob = (cls_prob + cls_prob_flip) / 2.0
-                probs_sum = probs_sum + cls_prob
-                num_passes += 1
-            probs = probs_sum / num_passes
+        for img_id, pred_indices in preds_by_image.items():
+            img_path = id_to_path[img_id]
+            img = Image.open(str(img_path)).convert("RGB")
+            img_w, img_h = img.size
 
-            max_probs, class_ids = probs.max(dim=1)
-            all_class_ids.extend(class_ids.cpu().tolist())
-            all_confidences.extend(max_probs.cpu().tolist())
+            # Crop all detections for this image
+            crop_tensors: list[torch.Tensor] = []
+            for pi in pred_indices:
+                bx, by, bw, bh = predictions[pi]["bbox"]
+                pad_w, pad_h = bw * 0.10, bh * 0.10
+                left = max(0, int(bx - pad_w))
+                upper = max(0, int(by - pad_h))
+                right = min(img_w, int(bx + bw + pad_w))
+                lower = min(img_h, int(by + bh + pad_h))
+                crop = img.crop((left, upper, right, lower))
+                crop = crop.resize(
+                    (CLASSIFIER_INPUT_SIZE, CLASSIFIER_INPUT_SIZE),
+                    Image.BILINEAR,
+                )
+                tensor = transforms.functional.to_tensor(crop)
+                tensor = normalize(tensor)
+                crop_tensors.append(tensor)
 
-            # Extract features for prototype matching (use first classifier)
-            if prototypes is not None:
-                feats = classifiers[0].forward_features(batch)  # type: ignore[operator]
-                if feats.dim() == 4:
-                    feats = feats.mean(dim=[2, 3])
-                feats = torch.nn.functional.normalize(feats, dim=1)
-                all_features.append(feats.cpu())
+            img.close()  # Free image immediately
+
+            # Run classifier in batches for this image's crops
+            for i in range(0, len(crop_tensors), batch_size):
+                batch_indices = pred_indices[i : i + batch_size]
+                batch = torch.stack(crop_tensors[i : i + batch_size]).to("cuda")
+
+                probs_sum: torch.Tensor = torch.zeros(
+                    batch.size(0), NUM_CLASSES, device=batch.device
+                )
+                num_passes = 0
+                for clf in classifiers:
+                    logits = clf(batch)
+                    cls_prob = torch.nn.functional.softmax(logits, dim=1)
+                    if USE_CLASSIFIER_TTA:
+                        cls_prob_flip = torch.nn.functional.softmax(
+                            clf(torch.flip(batch, dims=[3])), dim=1
+                        )
+                        cls_prob = (cls_prob + cls_prob_flip) / 2.0
+                    probs_sum = probs_sum + cls_prob
+                    num_passes += 1
+                probs = probs_sum / num_passes
+
+                max_probs, class_ids = probs.max(dim=1)
+                for j, bi in enumerate(batch_indices):
+                    all_class_ids[bi] = class_ids[j].item()
+                    all_confidences[bi] = max_probs[j].item()
+
+                if prototypes is not None:
+                    feats = classifiers[0].forward_features(batch)  # type: ignore[operator]
+                    if feats.dim() == 4:
+                        feats = feats.mean(dim=[2, 3])
+                    feats = torch.nn.functional.normalize(feats, dim=1)
+                    all_features.append((batch_indices, feats.cpu()))
+
+            del crop_tensors  # Free immediately
+
+    # Build feature lookup for prototype matching
+    feat_lookup: dict[int, torch.Tensor] = {}
+    if prototypes is not None:
+        for batch_indices, feats in all_features:
+            for j, bi in enumerate(batch_indices):
+                feat_lookup[bi] = feats[j : j + 1]
 
     # Override YOLO category using classifier + prototype fallback
-    for idx, (pred, cls_id, conf) in enumerate(
-        zip(predictions, all_class_ids, all_confidences, strict=True)
-    ):
+    for idx, pred in enumerate(predictions):
+        cls_id = all_class_ids[idx]
+        conf = all_confidences[idx]
+
         if conf >= CLASSIFIER_CONFIDENCE_GATE:
             pred["category_id"] = int(cls_id)
             # Blend YOLO detection score with classifier confidence
@@ -257,15 +268,15 @@ def classify_crops(
                 )
 
             # For mid-confidence predictions, try prototype matching
-            if prototypes is not None and conf < PROTOTYPE_CONFIDENCE_THRESHOLD:
-                feat_idx = idx
-                batch_idx = feat_idx // batch_size
-                within_batch = feat_idx % batch_size
-                if batch_idx < len(all_features):
-                    feat = all_features[batch_idx][within_batch : within_batch + 1].to("cuda")
-                    sims, proto_ids = match_prototypes(feat, prototypes)
-                    if sims[0, 0].item() >= PROTOTYPE_SIMILARITY_THRESHOLD:
-                        pred["category_id"] = int(proto_ids[0, 0].item())
+            if (
+                prototypes is not None
+                and conf < PROTOTYPE_CONFIDENCE_THRESHOLD
+                and idx in feat_lookup
+            ):
+                feat = feat_lookup[idx].to("cuda")
+                sims, proto_ids = match_prototypes(feat, prototypes)
+                if sims[0, 0].item() >= PROTOTYPE_SIMILARITY_THRESHOLD:
+                    pred["category_id"] = int(proto_ids[0, 0].item())
 
     return predictions
 

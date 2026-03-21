@@ -94,7 +94,7 @@ USE_CLASSIFIER = True  # Set False to disable two-stage even if weights exist
 CLASSIFIER_CONFIDENCE_GATE = 0.15
 
 # Classifier TTA: run crops through classifier with augmentations and average softmax
-USE_CLASSIFIER_TTA = True
+USE_CLASSIFIER_TTA = True  # Re-enabled: only ~100MB extra for h-flip
 
 # Score fusion: blend YOLO detection confidence with classifier confidence
 # final_score = SCORE_FUSION_ALPHA * yolo_score + (1 - alpha) * classifier_conf
@@ -128,14 +128,14 @@ IOU_THRESHOLD = 0.45
 
 # Test-Time Augmentation -- runs predict on flipped/scaled variants and merges
 # Improves accuracy ~1-3% but ~2-3x slower. Within 300s budget at 640 with ensemble.
-USE_TTA = True
+USE_TTA = False  # Disabled: OOM with classifier + TTA on 8GB RAM
 
 # Batch size for inference -- balances GPU utilization vs memory on L4 (24 GB)
 INFERENCE_BATCH_SIZE = 16
 
 # Max detections per image -- shelf images can have 200+ products; with low
 # confidence threshold we need headroom for the full precision-recall curve
-MAX_DETECTIONS_PER_IMAGE = 1000
+MAX_DETECTIONS_PER_IMAGE = 500  # Balanced: enough for mAP recall, safe on 8GB RAM
 
 # ---------------------------------------------------------------------------
 # Competition: submission constraints
