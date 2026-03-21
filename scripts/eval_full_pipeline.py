@@ -36,7 +36,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import copy
 import datetime
 import functools
 import json
@@ -173,12 +172,38 @@ def load_coco_annotations(ann_path: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _compute_iou(box_a: list[float], box_b: list[float]) -> float:
+    """Compute IoU between two xywh boxes."""
+    ax, ay, aw, ah = box_a
+    bx, by, bw, bh = box_b
+    x1 = max(ax, bx)
+    y1 = max(ay, by)
+    x2 = min(ax + aw, bx + bw)
+    y2 = min(ay + ah, by + bh)
+    inter = max(0, x2 - x1) * max(0, y2 - y1)
+    union = aw * ah + bw * bh - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _compute_ap(precisions: list[float], recalls: list[float]) -> float:
+    """Compute Average Precision from precision-recall curve (11-point interpolation)."""
+    if not precisions:
+        return 0.0
+    ap = 0.0
+    for t in np.arange(0, 1.1, 0.1):
+        p_at_r = [p for p, r in zip(precisions, recalls, strict=True) if r >= t]
+        ap += max(p_at_r) if p_at_r else 0.0
+    return ap / 11.0
+
+
 def compute_maps(
     gt_annotations: dict,
     predictions: list[dict],
     val_image_ids: set[int],
 ) -> dict[str, float]:
-    """Compute detection mAP@0.5 and classification mAP@0.5 using pycocotools.
+    """Compute detection mAP@0.5 and classification mAP@0.5.
+
+    Uses manual AP computation (no pycocotools dependency).
 
     Args:
         gt_annotations: Full COCO-format annotation dict.
@@ -188,63 +213,79 @@ def compute_maps(
     Returns:
         Dict with det_map50, cls_map50, and estimated competition score.
     """
-    from pycocotools.coco import COCO
-    from pycocotools.cocoeval import COCOeval
+    # Filter to val images
+    gt_anns = [a for a in gt_annotations["annotations"] if a["image_id"] in val_image_ids]
+    preds = [p for p in predictions if p["image_id"] in val_image_ids]
 
-    # Filter GT to only include val images
-    gt_filtered = copy.deepcopy(gt_annotations)
-    gt_filtered["images"] = [img for img in gt_filtered["images"] if img["id"] in val_image_ids]
-    gt_filtered["annotations"] = [
-        ann for ann in gt_filtered["annotations"] if ann["image_id"] in val_image_ids
-    ]
-
-    # Filter predictions to only include val images
-    pred_filtered = [p for p in predictions if p["image_id"] in val_image_ids]
-
-    if not pred_filtered:
+    if not preds:
         print("WARNING: No predictions for validation images!")
         return {"det_map50": 0.0, "cls_map50": 0.0, "score": 0.0}
 
-    # --- Classification mAP@0.5 (standard: category must match) ---
-    print("\n--- Computing classification mAP@0.5 ---")
-    coco_gt = COCO()
-    coco_gt.dataset = gt_filtered
-    coco_gt.createIndex()
+    # Sort predictions by score descending
+    preds_sorted = sorted(preds, key=lambda x: -x["score"])
 
-    coco_dt = coco_gt.loadRes(pred_filtered)
-    coco_eval = COCOeval(coco_gt, coco_dt, "bbox")
-    coco_eval.params.iouThrs = np.array([0.5])  # Only IoU=0.5
-    coco_eval.params.maxDets = [1000]
-    coco_eval.evaluate()
-    coco_eval.accumulate()
-    coco_eval.summarize()
-    cls_map50 = float(coco_eval.stats[0])  # AP@IoU=0.5
+    # Group GT by image_id
+    gt_by_image: dict[int, list[dict]] = {}
+    for ann in gt_anns:
+        gt_by_image.setdefault(ann["image_id"], []).append(ann)
 
-    # --- Detection mAP@0.5 (category-agnostic: all predictions mapped to cat 1) ---
+    total_gt = len(gt_anns)
+
+    # --- Detection mAP@0.5 (category-agnostic) ---
     print("\n--- Computing detection mAP@0.5 (category-agnostic) ---")
-    gt_single_cls = copy.deepcopy(gt_filtered)
-    for ann in gt_single_cls["annotations"]:
-        ann["category_id"] = 1
-    gt_single_cls["categories"] = [{"id": 1, "name": "object"}]
+    matched_gt_det: set[int] = set()
+    tp_det, fp_det = [], []
+    for pred in preds_sorted:
+        img_id = pred["image_id"]
+        best_iou, best_gt_id = 0.0, -1
+        for gt in gt_by_image.get(img_id, []):
+            iou = _compute_iou(pred["bbox"], gt["bbox"])
+            if iou > best_iou:
+                best_iou = iou
+                best_gt_id = gt["id"]
+        if best_iou >= 0.5 and best_gt_id not in matched_gt_det:
+            tp_det.append(1)
+            fp_det.append(0)
+            matched_gt_det.add(best_gt_id)
+        else:
+            tp_det.append(0)
+            fp_det.append(1)
 
-    pred_single_cls = copy.deepcopy(pred_filtered)
-    for p in pred_single_cls:
-        p["category_id"] = 1
+    tp_cum = np.cumsum(tp_det)
+    fp_cum = np.cumsum(fp_det)
+    recalls_det = (tp_cum / total_gt).tolist()
+    precisions_det = (tp_cum / (tp_cum + fp_cum)).tolist()
+    det_map50 = _compute_ap(precisions_det, recalls_det)
+    print(f"  Detection mAP@0.5: {det_map50:.4f}")
 
-    coco_gt_det = COCO()
-    coco_gt_det.dataset = gt_single_cls
-    coco_gt_det.createIndex()
+    # --- Classification mAP@0.5 (category must match) ---
+    print("\n--- Computing classification mAP@0.5 ---")
+    matched_gt_cls: set[int] = set()
+    tp_cls, fp_cls = [], []
+    for pred in preds_sorted:
+        img_id = pred["image_id"]
+        best_iou, best_gt_id, cat_match = 0.0, -1, False
+        for gt in gt_by_image.get(img_id, []):
+            iou = _compute_iou(pred["bbox"], gt["bbox"])
+            if iou > best_iou:
+                best_iou = iou
+                best_gt_id = gt["id"]
+                cat_match = pred["category_id"] == gt["category_id"]
+        if best_iou >= 0.5 and cat_match and best_gt_id not in matched_gt_cls:
+            tp_cls.append(1)
+            fp_cls.append(0)
+            matched_gt_cls.add(best_gt_id)
+        else:
+            tp_cls.append(0)
+            fp_cls.append(1)
 
-    coco_dt_det = coco_gt_det.loadRes(pred_single_cls)
-    coco_eval_det = COCOeval(coco_gt_det, coco_dt_det, "bbox")
-    coco_eval_det.params.iouThrs = np.array([0.5])
-    coco_eval_det.params.maxDets = [1000]
-    coco_eval_det.evaluate()
-    coco_eval_det.accumulate()
-    coco_eval_det.summarize()
-    det_map50 = float(coco_eval_det.stats[0])
+    tp_cum_cls = np.cumsum(tp_cls)
+    fp_cum_cls = np.cumsum(fp_cls)
+    recalls_cls = (tp_cum_cls / total_gt).tolist()
+    precisions_cls = (tp_cum_cls / (tp_cum_cls + fp_cum_cls)).tolist()
+    cls_map50 = _compute_ap(precisions_cls, recalls_cls)
+    print(f"  Classification mAP@0.5: {cls_map50:.4f}")
 
-    # Competition score
     score = 0.7 * det_map50 + 0.3 * cls_map50
 
     return {

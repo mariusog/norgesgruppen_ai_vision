@@ -26,8 +26,6 @@ COPY scripts/ scripts/
 RUN pip install --no-cache-dir \
     "google-cloud-storage==2.14.0" \
     "timm==0.9.12" \
-    "coverage<7" \
-    "pycocotools==2.0.8" \
     "ensemble-boxes==1.0.9"
 
 # Default command: run training with standard config
