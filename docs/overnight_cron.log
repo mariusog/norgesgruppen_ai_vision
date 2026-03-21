@@ -214,3 +214,63 @@ MORNING PLAN: Submit current (option A) first, then try option C with ConvNeXt
 --- Sat Mar 21 08:31:27 AM CET 2026 --- Running:5 GCS_cls:1
 --- Sat Mar 21 08:46:42 AM CET 2026 --- Running:5 GCS_cls:1
 --- Sat Mar 21 09:01:22 AM CET 2026 --- Running:5 GCS_cls:1
+--- Sat Mar 21 09:16:23 AM CET 2026 --- Running:5 GCS_cls:1
+--- Sat Mar 21 09:31:24 AM CET 2026 --- Running:5 GCS_cls:1
+--- Sat Mar 21 09:46:29 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 10:01:31 AM CET 2026 --- Running:3 GCS_cls:3
+
+=== HOURLY CHECK Sat Mar 21 10:08:06 AM CET 2026 ===
+CRITICAL: Swin-Tiny is 106MB NOT 28MB!
+Swin bundle budget: 85+132+(85+106)=408MB — FITS with 12MB spare
+Focal bundle: 85+132+(85+44)=346MB — safer option
+
+Swin: epoch 43/50, best 91.0%, ~45min to finish
+V2S: epoch 43/50, 90.8%
+ConvNeXt DONE: 91.0%, 190MB (downloaded)
+Focal DONE: 89.9%, 44MB (downloaded)
+
+PLAN: Wait for Swin, create bundle, test locally, then submit
+FALLBACK: Use Focal (44MB) if Swin bundle exceeds 420MB
+
+--- Sat Mar 21 10:16:36 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 10:31:24 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 10:46:32 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 11:01:26 AM CET 2026 --- Running:3 GCS_cls:3
+
+=== HOURLY CHECK Sat Mar 21 11:08:08 AM CET 2026 ===
+V2S hit 91.0%! Only ~46MB — BEST bundle candidate!
+Budget: 85+132+(85+46)=348MB — safe with 72MB spare
+Swin: 91.0% but 106MB (tight bundle at 408MB)
+V2S at epoch 46/50 — ~30min to finish
+Swin at epoch 47/50 — ~20min to finish
+
+DECISION: Use whichever finishes first (V2S or Swin)
+V2S preferred: same accuracy, safer weight budget
+
+--- Sat Mar 21 11:16:38 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 11:31:25 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 11:46:34 AM CET 2026 --- Running:3 GCS_cls:3
+--- Sat Mar 21 12:01:24 PM CET 2026 --- Running:3 GCS_cls:3
+
+=== HOURLY CHECK Sat Mar 21 12:09:41 PM CET 2026 ===
+SWIN FINISHED: downloaded (107MB), bundle created (233MB)
+Swin bundle too big with x-1280: 450MB > 420MB
+USING FOCAL BUNDLE instead: l-1280(85)+x-1280(132)+l-640-focal(170)=387MB
+Focal classifier: 89.9% accuracy
+Submission built: 385MB, 3 files, ready to upload
+V2S still running at epoch 50/50
+
+--- Sat Mar 21 12:16:33 PM CET 2026 --- Running:2 GCS_cls:4
+--- Sat Mar 21 12:31:18 PM CET 2026 --- Running:1
+--- Sat Mar 21 12:46:31 PM CET 2026 --- Running:1
+--- Sat Mar 21 01:01:20 PM CET 2026 --- Running:1
+
+=== HOURLY CHECK Sat Mar 21 01:07:52 PM CET 2026 ===
+ALL TRAINING COMPLETE! No more running jobs.
+5 classifiers downloaded. 5 bundles created.
+Current submission: V2S bundle (91.0%), 370MB, 3 files
+READY TO UPLOAD — waiting for user
+
+--- Sat Mar 21 02:07:41 PM CET 2026 --- All complete. Waiting for user. Running:1
+--- Sat Mar 21 03:07:42 PM CET 2026 --- Hourly: no action needed. Running:1
+--- Sat Mar 21 04:07:27 PM CET 2026 --- User back. Submitting V2S bundle. All training complete.

@@ -91,20 +91,20 @@ CLASSIFIER_ENSEMBLE: list[tuple[str, str]] = [
     # ("weights/classifier2.pt", "convnext_small.fb_in22k_ft_in1k"),
 ]
 # EfficientNet-B3 native resolution is 300px; larger crops = better fine-grained accuracy
-CLASSIFIER_INPUT_SIZE = 300
-USE_CLASSIFIER = False  # Disabled: 3-file limit prevents including classifier with 3 YOLO models
+CLASSIFIER_INPUT_SIZE = 384  # Must match classifier training resolution
+USE_CLASSIFIER = False  # Disabled: bugs in integration hurt score (see hail_mary_plan.md)
 
 # Only override YOLO's category when classifier softmax confidence exceeds this.
 # Prevents low-confidence classifier predictions from overriding correct YOLO labels.
-CLASSIFIER_CONFIDENCE_GATE = 0.15
+CLASSIFIER_CONFIDENCE_GATE = 0.70  # High gate: only override when classifier is very confident
 
 # Classifier TTA: run crops through classifier with augmentations and average softmax
-USE_CLASSIFIER_TTA = True  # Re-enabled: only ~100MB extra for h-flip
+USE_CLASSIFIER_TTA = False  # Disabled: h-flip makes text unreadable on grocery products
 
 # Score fusion: blend YOLO detection confidence with classifier confidence
 # final_score = SCORE_FUSION_ALPHA * yolo_score + (1 - alpha) * classifier_conf
 # Set to 1.0 to disable (keep YOLO score only)
-SCORE_FUSION_ALPHA = 0.7
+SCORE_FUSION_ALPHA = 1.0  # 1.0 = no fusion (keep YOLO score). Was 0.7 which hurt detection mAP.
 
 # ---------------------------------------------------------------------------
 # Prototype matching — cosine similarity against reference product embeddings
@@ -126,7 +126,7 @@ PROTOTYPE_SIMILARITY_THRESHOLD = 0.6
 # Lower = more detections (better recall) for mAP evaluation
 # Competition mAP benefits from high recall; very low threshold lets the
 # precision-recall curve be computed over the full range
-CONFIDENCE_THRESHOLD = 0.01
+CONFIDENCE_THRESHOLD = 0.005  # Lowered from 0.01 for better recall on P-R curve
 
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
 IOU_THRESHOLD = 0.50  # Raised from 0.45: keep more overlapping boxes on dense shelves
