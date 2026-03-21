@@ -21,8 +21,8 @@ COPY src/ src/
 COPY training/ training/
 COPY scripts/ scripts/
 
-# Fix numba/coverage conflict in base image (numba needs coverage.types.Tracer)
-RUN pip install --no-cache-dir "coverage==6.5.0"
+# Fix numba/coverage conflict: uninstall numba entirely (not needed for our code)
+RUN pip uninstall -y numba llvmlite 2>/dev/null; true
 
 # Install what's NOT in the base image
 RUN pip install --no-cache-dir \
