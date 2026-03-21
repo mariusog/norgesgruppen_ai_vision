@@ -55,14 +55,13 @@ MODEL_ENGINE_PATH = "weights/model.engine"
 # List of weight paths to load (empty = single model mode using MODEL_PATH).
 # When populated, predictions from all models are merged with WBF.
 ENSEMBLE_WEIGHTS: list[str] = [
-    "weights/yolov8l-1280-aug.pt",
+    "weights/yolov8l-1280-corrected.pt",
     "weights/yolov8l-640-aug.pt",
-    "weights/yolov8m-640-aug.pt",
 ]
 
 # Per-model input resolution for mixed-resolution ensembles.
 # Must be same length as ENSEMBLE_WEIGHTS. If empty, all models use IMAGE_SIZE.
-ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 640, 640]
+ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 640]
 
 # WBF IoU threshold — boxes with IoU above this are fused together
 WBF_IOU_THRESHOLD = 0.55

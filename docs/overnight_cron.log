@@ -1,0 +1,214 @@
+--- Sat Mar 21 01:31:31 AM CET 2026 ---
+v1: JOB_STATE_RUNNING | Val   Loss: 1.4003 | Val   Acc: 89.9%
+ConvNeXt: Val   Loss: 1.3551 | Val   Acc: 90.1%
+v2: Val   Loss: 1.3884 | Val   Acc: 89.4%
+GCS classifier: none
+Active jobs:
+Using endpoint [https://us-central1-aiplatform.googleapis.com/]
+DISPLAY_NAME                          STATE
+swin-tiny-224px-v3                    JOB_STATE_RUNNING
+effnetv2-s-384px-v2                   JOB_STATE_RUNNING
+convnext-small-384px-v2               JOB_STATE_RUNNING
+effnet-b3-384px-focal-v2              JOB_STATE_RUNNING
+classifier-effnet-b3-v2-300px         JOB_STATE_RUNNING
+classifier-effnet-b3-20260320-140351  JOB_STATE_RUNNING
+
+--- Sat Mar 21 01:46:30 AM CET 2026 ---
+v1: JOB_STATE_RUNNING | Val   Loss: 1.3956 | Val   Acc: 90.1%
+GCS cls: none
+Active:
+Using endpoint [https://us-central1-aiplatform.googleapis.com/]
+DISPLAY_NAME                          STATE
+swin-tiny-224px-v3                    JOB_STATE_RUNNING
+effnetv2-s-384px-v2                   JOB_STATE_RUNNING
+convnext-small-384px-v2               JOB_STATE_RUNNING
+effnet-b3-384px-focal-v2              JOB_STATE_RUNNING
+classifier-effnet-b3-v2-300px         JOB_STATE_RUNNING
+classifier-effnet-b3-20260320-140351  JOB_STATE_RUNNING
+
+--- Sat Mar 21 02:01:22 AM CET 2026 ---
+v1: JOB_STATE_RUNNING | Val   Loss: 1.3956 | Val   Acc: 90.1%
+GCS cls: none
+
+
+=== HOURLY STRATEGIC CHECK Sat Mar 21 02:08:34 AM CET 2026 ===
+V1 classifier: epoch 30/30, finishing! Best: 90.1%
+ConvNeXt: 90.4% best, still running
+V2: 90.0% best, still running
+Focal: 89.5% best, still running
+No classifier weights in GCS yet (v1 uploading soon)
+Launched 2 eval jobs with fixed container: eval-sub4-v2, eval-no-tta-v3
+All previous eval jobs failed (old container without scripts/)
+
+--- Sat Mar 21 02:16:31 AM CET 2026 --- v1:JOB_STATE_RUNNING cls:none
+
+!!! CLASSIFIER V1 WEIGHTS DOWNLOADED AT Sat Mar 21 02:29:19 AM CET 2026 !!!
+File: weights/classifier.pt (44 MB, 90.1% val acc)
+Submission built: submission.zip (317 MB, 4 weight files)
+Config: l-1280-corrected + x-1280-corrected + l-640 + classifier
+READY FOR UPLOAD
+
+--- Sat Mar 21 02:31:27 AM CET 2026 --- v1:JOB_STATE_SUCCEEDED
+GCS classifiers: gs://ai-nm26osl-1792-nmiai/weights/classifier_efficientnet_b3.pt
+Active: 5 running
+
+--- Sat Mar 21 02:46:34 AM CET 2026 ---
+Running: 5 | New GCS cls: 0
+ConvNeXt: Val   Loss: 1.3826 | Val   Acc: 89.6%
+V2: Val   Loss: 1.3737 | Val   Acc: 90.1%
+Focal: Val   Loss: 0.8402 | Val   Acc: 89.5%
+
+--- Sat Mar 21 03:01:24 AM CET 2026 --- Running:5 NewCls:0
+CN: Val   Loss: 1.3498 | Val   Acc: 90.4% | V2: Val   Loss: 1.3714 | Val   Acc: 90.3%
+
+
+=== HOURLY STRATEGIC CHECK Sat Mar 21 03:11:45 AM CET 2026 ===
+ACTIONS TAKEN:
+- Fixed datetime.UTC -> datetime.timezone.utc for Python 3.11 compat
+- Added UP017 ignore for scripts/ in pyproject.toml
+- Committed and pushed
+- Container rebuild launched
+- Will relaunch eval jobs after container builds
+
+CLASSIFIER STATUS:
+- V1: SUCCEEDED, weights downloaded (90.1% best)
+- ConvNeXt: running, 90.4% best
+- V2: running, 90.0% best
+- Focal: running, 90.1% best
+- Swin: running, 89.9%
+- EfficientNetV2-S: running, 88.4%
+
+--- Sat Mar 21 03:16:27 AM CET 2026 --- Running:5 GCS_cls:1 New:0
+CN: Val   Loss: 1.3498 | Val   Acc: 90.4%
+FL: Val   Loss: 0.8338 | Val   Acc: 89.9%
+
+--- Sat Mar 21 03:31:23 AM CET 2026 --- Running:7 GCS_cls:1 New:0
+--- Sat Mar 21 03:46:49 AM CET 2026 --- Running:5 GCS_cls:1 New:0
+--- Sat Mar 21 04:01:19 AM CET 2026 --- Running:6 GCS_cls:1 New:0
+EVAL RESULTS CHECKED Sat Mar 21 04:01:29 AM CET 2026
+
+=== HOURLY STRATEGIC CHECK Sat Mar 21 04:09:03 AM CET 2026 ===
+ACTIONS:
+- Uploaded all weight files to GCS with matching names (fixing eval download)
+- Relaunched 2 eval jobs: eval-baseline-v5, eval-with-classifier-v3
+- Previous evals failed: EOFError from GCS name mismatch (now fixed)
+
+CLASSIFIER LEADERBOARD:
+- V1 EffNet-B3 224px: DONE, 90.1% best
+- EfficientNetV2-S 384px: 90.1% (running)
+- ConvNeXt-Small 384px: 90.4% best (running)
+- Swin-Tiny 224px: 90.0% (running)
+- Focal EffNet-B3 384px: 90.1% best (running)
+- V2 EffNet-B3 300px: 90.0% best (running)
+
+NEXT: Wait for eval results (~15 min)
+
+--- Sat Mar 21 04:16:32 AM CET 2026 --- Running:5 GCS_cls:2
+--- Sat Mar 21 04:31:23 AM CET 2026 --- Running:7
+--- Sat Mar 21 04:46:26 AM CET 2026 --- Running:6
+--- Sat Mar 21 05:01:21 AM CET 2026 --- Running:8
+EVAL CHECK Sat Mar 21 05:02:18 AM CET 2026
+
+=== HOURLY STRATEGIC CHECK Sat Mar 21 05:10:58 AM CET 2026 ===
+ACTIONS:
+- Eval v6 failed: numba/coverage conflict from pycocotools
+- FIXED: Replaced pycocotools with manual mAP computation
+- Removed pycocotools from Dockerfile
+- Container rebuilding (4th attempt)
+- Will auto-launch eval when ready
+
+CLASSIFIER STATUS (all at ~90%):
+- ConvNeXt 90.4% best (latest 90.1%)
+- V1 EffNet 90.1% DONE
+- Focal 90.1%
+- V2S 90.1%
+- V2 90.0%
+- Swin 90.0%
+- 5 still running
+
+--- Sat Mar 21 05:16:20 AM CET 2026 --- Running:6
+--- Sat Mar 21 05:31:21 AM CET 2026 --- Running:8 NewCls:0
+EVAL RESULTS Sat Mar 21 05:41:23 AM CET 2026
+--- Sat Mar 21 05:46:22 AM CET 2026 --- Running:6
+--- Sat Mar 21 06:01:23 AM CET 2026 --- Running:8 GCS: gs://ai-nm26osl-1792-nmiai/weights/classifier_efficientnet_b3.pt 
+
+=== HOURLY CHECK Sat Mar 21 06:08:12 AM CET 2026 ===
+EVAL JOBS RUNNING! Coverage fix worked!
+V2 classifier hit 90.3% (new best for V2)
+7 jobs running: 5 classifiers + 2 evals
+Waiting for eval results...
+
+
+=== Sat Mar 21 06:15:41 AM CET 2026 ===
+Eval attempt 6: UNINSTALL numba entirely
+Previous coverage==6.5.0 fix didn't work (coverage.types module doesn't exist in v6)
+Nuclear option: pip uninstall numba llvmlite
+Building container + launching evals
+
+--- Sat Mar 21 06:16:20 AM CET 2026 --- Running:6
+--- Sat Mar 21 06:31:20 AM CET 2026 --- Running:8
+=== EVAL ATTEMPT 6 RESULTS Sat Mar 21 06:45:25 AM CET 2026 ===
+--- Sat Mar 21 06:46:23 AM CET 2026 --- Running:6 GCS_cls:1
+
+=== Sat Mar 21 06:56:13 AM CET 2026 ===
+EVAL PIPELINE: ABANDONED after 6 attempts
+Root cause: numba/coverage conflict in ultralytics base image
+pip uninstall numba doesn't persist (reinstalled by dependencies)
+
+PLAN FOR MORNING:
+1. Skip eval simulation - just submit with classifier and see real score
+2. We have classifier.pt (90.1% val acc) ready
+3. submission.zip already built with classifier
+4. 5 classifiers still training overnight
+5. Upload submission.zip as first action
+
+ALTERNATIVE EVAL: Use ultralytics built-in model.val() which works
+in the container (training jobs use it). But that only tests single
+models, not the full ensemble pipeline.
+
+--- Sat Mar 21 07:01:24 AM CET 2026 --- Running:6 GCS_cls:1
+
+=== HOURLY CHECK Sat Mar 21 07:08:14 AM CET 2026 ===
+MAJOR UPDATES:
+- ConvNeXt hit 90.6%! Best classifier overall!
+- V2 at epoch 49/50 — finishing any minute
+- All 5 classifiers at 90%+
+
+DECISION: Wait for ConvNeXt (90.6%) to finish before next submission
+It's at epoch 42/50, ~2h to go. ConvNeXt > V1 (90.1%)
+BUT if V2 finishes first and its weights are good, could try classifier ensemble
+
+EVAL PIPELINE: Abandoned (numba conflict). Will submit directly.
+
+--- Sat Mar 21 07:16:32 AM CET 2026 --- Running:6 GCS_cls:1
+--- Sat Mar 21 07:31:24 AM CET 2026 --- Running:5 GCS_cls:1
+
+=== Sat Mar 21 07:32:09 AM CET 2026 ===
+V2 CLASSIFIER FINISHED (90.2%, 300px, weighted sampling)
+Downloaded and rebuilt submission.zip
+V2 overwrote V1 in GCS (same filename)
+Saved V2 copy as weights/classifier_v2.pt
+submission.zip now has V2 classifier (300px > 224px)
+
+4 classifiers still running:
+- ConvNeXt: 90.6% at epoch 42/50 (~1.5h to go)
+- Focal: 90.0% at epoch 42/50
+- Swin: 90.0% at epoch 33/50
+- V2S: 90.2% at epoch 33/50
+
+--- Sat Mar 21 07:46:31 AM CET 2026 --- Running:5 GCS_cls:1
+--- Sat Mar 21 08:01:21 AM CET 2026 --- Running:5 GCS_cls:1
+
+=== HOURLY CHECK Sat Mar 21 08:08:06 AM CET 2026 ===
+ConvNeXt: 90.7%! Epoch 45/50, finishes in ~50 min
+V2S: 90.5%, Swin: 90.3%, Focal: 89.9%
+
+WEIGHT BUDGET OPTIONS (420MB max):
+A) V2 cls (44MB) + 3 YOLO (300MB) = 344MB [current]
+B) ConvNeXt (190MB) + l-1280 (85MB) + l-640 (85MB) = 360MB
+C) ConvNeXt (190MB) + l-1280 (85MB) + m-640 (51MB) = 326MB
+
+MORNING PLAN: Submit current (option A) first, then try option C with ConvNeXt
+
+--- Sat Mar 21 08:16:32 AM CET 2026 --- Running:5 GCS_cls:1
+--- Sat Mar 21 08:31:27 AM CET 2026 --- Running:5 GCS_cls:1

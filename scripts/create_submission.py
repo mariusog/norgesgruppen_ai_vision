@@ -35,14 +35,12 @@ REQUIRED_FILES: list[str] = [
     "run.py",
     "src/__init__.py",
     "src/constants.py",
+    "src/prototype_matcher.py",
 ]
 
-# Ensemble weight files (must match ENSEMBLE_WEIGHTS in src/constants.py)
-ENSEMBLE_WEIGHT_FILES: list[str] = [
-    "weights/yolov8l-1280-aug.pt",
-    "weights/yolov8l-640-aug.pt",
-    "weights/yolov8m-640-aug.pt",
-]
+# Read ensemble weights dynamically from constants.py
+sys.path.insert(0, str(REPO_ROOT))
+from src.constants import ENSEMBLE_WEIGHTS as ENSEMBLE_WEIGHT_FILES  # noqa: E402
 
 # Optional classifier weight
 CLASSIFIER_PATH = "weights/classifier.pt"
