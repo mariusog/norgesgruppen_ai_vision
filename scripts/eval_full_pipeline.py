@@ -416,7 +416,8 @@ def main() -> None:
 
     print("=" * 70)
     print("  Full Pipeline Offline Evaluation")
-    print(f"  {datetime.datetime.now(datetime.UTC).isoformat()}")
+    now = datetime.datetime.now(datetime.timezone.utc)
+    print(f"  {now.isoformat()}")
     print("=" * 70)
 
     # --- Step 1: Download data if on Vertex AI ---
@@ -579,7 +580,9 @@ def main() -> None:
 
     # --- Step 8: Save structured results ---
     result_record = {
-        "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
+        "timestamp": datetime.datetime.now(
+            datetime.timezone.utc
+        ).isoformat(),
         "det_map50": metrics["det_map50"],
         "cls_map50": metrics["cls_map50"],
         "score": metrics["score"],

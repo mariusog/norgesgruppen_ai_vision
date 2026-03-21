@@ -160,7 +160,9 @@ def evaluate(
         "score": score,
         "elapsed_s": round(elapsed, 1),
         "worst_categories": worst_categories,
-        "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
+        "timestamp": datetime.datetime.now(
+            datetime.timezone.utc
+        ).isoformat(),
     }
 
 

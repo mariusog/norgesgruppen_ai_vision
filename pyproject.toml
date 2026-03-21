@@ -59,6 +59,7 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]  # assert is expected in test files
+"scripts/**" = ["UP017"]  # datetime.UTC requires Python 3.12+, container runs 3.11
 
 [tool.ruff.lint.isort]
 known-first-party = ["src"]
