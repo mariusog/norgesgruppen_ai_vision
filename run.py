@@ -429,14 +429,15 @@ def run_ensemble_inference(models: list[YOLO], image_paths: list[Path]) -> list[
             if all(len(b) == 0 for b in boxes_list):
                 continue
 
+            from src.constants import WBF_MODEL_WEIGHTS
+
             fused_boxes, fused_scores, fused_labels = weighted_boxes_fusion(
                 boxes_list,
                 scores_list,
                 labels_list,
-                weights=None,
+                weights=WBF_MODEL_WEIGHTS,
                 iou_thr=WBF_IOU_THRESHOLD,
                 skip_box_thr=WBF_SKIP_BOX_THRESHOLD,
-                conf_type="max",  # Preserve scores for single-model detections
             )
 
             for box, score, label in zip(fused_boxes, fused_scores, fused_labels, strict=True):

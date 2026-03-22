@@ -68,8 +68,13 @@ ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 1280, 640]
 # Set to the ensemble weight path that contains the bundle, or empty string to disable
 BUNDLE_WEIGHT_PATH = ""
 
+# WBF model weights — controls how much each model contributes to fused boxes.
+# None = equal weights. Higher weight = model's predictions count more.
+# Order must match ENSEMBLE_WEIGHTS.
+WBF_MODEL_WEIGHTS: list[float] | None = [2.0, 1.5, 1.0]  # Favor l-1280 (best model)
+
 # WBF IoU threshold — boxes with IoU above this are fused together
-WBF_IOU_THRESHOLD = 0.50  # Lowered from 0.55: fuse more aggressively for dense shelves
+WBF_IOU_THRESHOLD = 0.55
 
 # WBF minimum score to keep a box before fusion
 WBF_SKIP_BOX_THRESHOLD = 0.001
@@ -92,7 +97,7 @@ CLASSIFIER_ENSEMBLE: list[tuple[str, str]] = [
 ]
 # EfficientNet-B3 native resolution is 300px; larger crops = better fine-grained accuracy
 CLASSIFIER_INPUT_SIZE = 384  # Must match classifier training resolution
-USE_CLASSIFIER = False  # Disabled: bugs in integration hurt score (see hail_mary_plan.md)
+USE_CLASSIFIER = False
 
 # Only override YOLO's category when classifier softmax confidence exceeds this.
 # Prevents low-confidence classifier predictions from overriding correct YOLO labels.
@@ -126,10 +131,10 @@ PROTOTYPE_SIMILARITY_THRESHOLD = 0.6
 # Lower = more detections (better recall) for mAP evaluation
 # Competition mAP benefits from high recall; very low threshold lets the
 # precision-recall curve be computed over the full range
-CONFIDENCE_THRESHOLD = 0.005  # Lowered from 0.01 for better recall on P-R curve
+CONFIDENCE_THRESHOLD = 0.01
 
 # NMS IoU threshold -- detections with IoU > this are suppressed as duplicates
-IOU_THRESHOLD = 0.50  # Raised from 0.45: keep more overlapping boxes on dense shelves
+IOU_THRESHOLD = 0.45
 
 # Test-Time Augmentation -- runs predict on flipped/scaled variants and merges
 # Improves accuracy ~1-3% but ~2-3x slower. Within 300s budget at 640 with ensemble.
