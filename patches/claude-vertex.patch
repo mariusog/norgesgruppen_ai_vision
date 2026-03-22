@@ -1,0 +1,13 @@
+--- a/.devcontainer/devcontainer.json
++++ b/.devcontainer/devcontainer.json
+@@ -1,5 +1,14 @@
+ {
++  "features": {
++    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
++  },
++  "containerEnv": {
++    "CLAUDE_CODE_USE_VERTEX": "1",
++    "CLOUD_ML_REGION": "us-east5",
++    "ANTHROPIC_VERTEX_PROJECT_ID": "ai-nm26osl-1792"
++  }
+ }
