@@ -91,14 +91,27 @@ def load_ensemble_models() -> list[YOLO]:
             raise FileNotFoundError(f"Ensemble weight not found: {p}")
 
         if BUNDLE_WEIGHT_PATH and str(p) == BUNDLE_WEIGHT_PATH:
-            # Extract YOLO bytes from bundle to temp file
+            # Extract YOLO bytes from bundle to temp file(s)
             bundle = torch.load(str(p), map_location="cpu")
-            # Write to /tmp which is always writable
             tmp_yolo = Path("/tmp/_tmp_yolo.pt")  # noqa: S108
             tmp_yolo.write_bytes(bundle["yolo_bytes"])
-            del bundle["yolo_bytes"]  # Free memory immediately
+            del bundle["yolo_bytes"]
             model = YOLO(str(tmp_yolo))
-            tmp_yolo.unlink()  # Clean up temp file
+            tmp_yolo.unlink()
+            model.to("cuda")
+            models.append(model)
+
+            # Load second YOLO if present in bundle
+            if "yolo2_bytes" in bundle:
+                tmp_yolo2 = Path("/tmp/_tmp_yolo2.pt")  # noqa: S108
+                tmp_yolo2.write_bytes(bundle["yolo2_bytes"])
+                del bundle["yolo2_bytes"]
+                model2 = YOLO(str(tmp_yolo2))
+                tmp_yolo2.unlink()
+                model2.to("cuda")
+                models.append(model2)
+            del bundle
+            continue  # Already appended
         else:
             model = YOLO(str(p))
 

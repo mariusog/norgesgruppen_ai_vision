@@ -56,22 +56,22 @@ MODEL_ENGINE_PATH = "weights/model.engine"
 # When populated, predictions from all models are merged with WBF.
 ENSEMBLE_WEIGHTS: list[str] = [
     "weights/yolov8l-1280-corrected.pt",
-    "weights/yolov8x-1280-corrected.pt",
-    "weights/yolov8l-640-aug.pt",
+    "weights/yolov8x-1280-aug.pt",
+    "weights/yolov8-mixed-bundle.pt",
 ]
 
 # Per-model input resolution for mixed-resolution ensembles.
-# Must be same length as ENSEMBLE_WEIGHTS. If empty, all models use IMAGE_SIZE.
-ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 1280, 640]
+# When bundle expands to 2 models, sizes must cover all 4 models total.
+ENSEMBLE_IMAGE_SIZES: list[int] = [1280, 1280, 640, 1280]
 
 # Bundle: one weight file contains both YOLO + classifier weights
 # Set to the ensemble weight path that contains the bundle, or empty string to disable
-BUNDLE_WEIGHT_PATH = ""
+BUNDLE_WEIGHT_PATH = "weights/yolov8-mixed-bundle.pt"
 
 # WBF model weights — controls how much each model contributes to fused boxes.
 # None = equal weights. Higher weight = model's predictions count more.
 # Order must match ENSEMBLE_WEIGHTS.
-WBF_MODEL_WEIGHTS: list[float] | None = [2.0, 1.5, 1.0]  # Favor l-1280 (best model)
+WBF_MODEL_WEIGHTS: list[float] | None = None
 
 # WBF IoU threshold — boxes with IoU above this are fused together
 WBF_IOU_THRESHOLD = 0.55
