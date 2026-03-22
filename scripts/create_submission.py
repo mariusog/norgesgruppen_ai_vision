@@ -40,10 +40,9 @@ REQUIRED_FILES: list[str] = [
 
 # Read ensemble weights dynamically from constants.py
 sys.path.insert(0, str(REPO_ROOT))
-from src.constants import ENSEMBLE_WEIGHTS as ENSEMBLE_WEIGHT_FILES  # noqa: E402
-
 # Optional classifier weight (only include if classifier is enabled and not bundled)
 from src.constants import BUNDLE_WEIGHT_PATH, USE_CLASSIFIER  # noqa: E402
+from src.constants import ENSEMBLE_WEIGHTS as ENSEMBLE_WEIGHT_FILES  # noqa: E402
 
 CLASSIFIER_PATH = ""
 if USE_CLASSIFIER and not BUNDLE_WEIGHT_PATH:
