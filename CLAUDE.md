@@ -4,10 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Competition Context
 
-**NM i AI 2026 – NorgesGruppen Object Detection** (deadline March 22, 2026).
+**NM i AI 2026 – NorgesGruppen Object Detection** (completed March 22, 2026).
+**Final result: 0.9121 mAP, rank #61 out of 349 teams.**
+
 Task: detect and classify grocery products from **356 categories** (IDs 0–355; ID 355 = `unknown_product`) in shelf images.
-Scoring: **70% detection mAP** (bbox IoU ≥ 0.5, category ignored) + **30% classification mAP** (IoU ≥ 0.5 AND correct category_id). Detection-only baseline scores up to 0.70.
-Submission limits: **3 per day**, 2 in-flight at once.
+Scoring: **70% detection mAP** (bbox IoU ≥ 0.5, category ignored) + **30% classification mAP** (IoU ≥ 0.5 AND correct category_id).
+Solution: 4-model WBF ensemble (YOLOv8l + YOLOv8x at mixed resolutions) with TTA and dual bundle packing.
 
 ## Commands
 
