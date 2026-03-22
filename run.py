@@ -436,6 +436,7 @@ def run_ensemble_inference(models: list[YOLO], image_paths: list[Path]) -> list[
                 weights=None,
                 iou_thr=WBF_IOU_THRESHOLD,
                 skip_box_thr=WBF_SKIP_BOX_THRESHOLD,
+                conf_type="max",  # Preserve scores for single-model detections
             )
 
             for box, score, label in zip(fused_boxes, fused_scores, fused_labels, strict=True):
