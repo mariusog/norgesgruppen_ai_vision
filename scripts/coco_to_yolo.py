@@ -13,9 +13,9 @@ from collections import defaultdict
 from pathlib import Path
 
 # --- Config ---
-ANNOTATIONS_PATH = Path("/workspaces/norgesgruppen_ai_vision/training/data/train/annotations.json")
-SOURCE_IMAGES_DIR = Path("/workspaces/norgesgruppen_ai_vision/training/data/train/images")
-OUTPUT_DIR = Path("/workspaces/norgesgruppen_ai_vision/training/data/yolo")
+ANNOTATIONS_PATH = Path("./training/data/train/annotations.json")
+SOURCE_IMAGES_DIR = Path("./training/data/train/images")
+OUTPUT_DIR = Path("./training/data/yolo")
 TRAIN_RATIO = 0.85
 RANDOM_SEED = 42
 

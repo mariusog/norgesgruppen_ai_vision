@@ -66,7 +66,7 @@ terraform.tfstate*
 .claude/settings.local.json
 .claude/worktrees/
 
-# Competition model weights (stored in GCS: gs://ai-nm26osl-1792-nmiai/weights/)
+# Competition model weights (stored in GCS: gs://YOUR_GCS_BUCKET/weights/)
 weights/
 *.pt
 *.pth
