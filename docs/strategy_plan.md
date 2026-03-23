@@ -148,7 +148,7 @@ Rationale:
 #### 3.1 Download classifier weights
 - **File**: `weights/classifier.pt`
 - **Action**: Check if EfficientNet-B3 training has completed on A100 in us-central1. Download if ready.
-- **Command**: `gsutil cp gs://ai-nm26osl-1792-nmiai/weights/classifier*.pt weights/`
+- **Command**: `gsutil cp gs://YOUR_GCS_BUCKET/weights/classifier*.pt weights/`
 - **Note**: classifier.pt does NOT count toward the 3 weight file limit IF the validate script only counts `.pt` files in `weights/` that match YOLO patterns. Check this.
 
 #### 3.2 Test classifier impact

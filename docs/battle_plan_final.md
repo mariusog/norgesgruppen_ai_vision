@@ -44,7 +44,7 @@ The EfficientNet-B3 v1 at 88.7% val accuracy is ready or nearly ready. Even at t
 **Actions:**
 1. Download the best checkpoint from GCS:
    ```bash
-   gsutil cp gs://ai-nm26osl-1792-nmiai/weights/classifier_efficientnet_b3.pt weights/classifier.pt
+   gsutil cp gs://YOUR_GCS_BUCKET/weights/classifier_efficientnet_b3.pt weights/classifier.pt
    ```
 2. Verify `USE_CLASSIFIER = True` and `CLASSIFIER_CONFIDENCE_GATE = 0.15` in `src/constants.py`
 3. The classifier overrides YOLO category_id only when its softmax confidence exceeds the gate. At 0.15 with 356 classes (random baseline = 0.28%), this is appropriately aggressive.

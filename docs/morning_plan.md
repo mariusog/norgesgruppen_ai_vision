@@ -38,10 +38,10 @@ Run immediately upon waking:
 
 ```bash
 # Check which training jobs completed
-bash /workspaces/norgesgruppen_ai_vision/scripts/check_jobs.sh
+bash ./scripts/check_jobs.sh
 
 # List all available classifier weights on GCS
-gcloud storage ls gs://ai-nm26osl-1792-nmiai/weights/ | grep classifier
+gcloud storage ls gs://YOUR_GCS_BUCKET/weights/ | grep classifier
 ```
 
 **Expected overnight results (assumptions for this plan):**
@@ -62,13 +62,13 @@ gcloud storage ls gs://ai-nm26osl-1792-nmiai/weights/ | grep classifier
 ## STEP 1: Download Best Classifier Weights (10 minutes)
 
 ```bash
-cd /workspaces/norgesgruppen_ai_vision
+cd .
 
 # Download ConvNeXt-Small (expected best, ~83MB)
-gsutil cp gs://ai-nm26osl-1792-nmiai/weights/classifier_convnext_small.pt weights/classifier.pt
+gsutil cp gs://YOUR_GCS_BUCKET/weights/classifier_convnext_small.pt weights/classifier.pt
 
 # Download EfficientNet-B3 v1 for ensemble (~46MB)
-gsutil cp gs://ai-nm26osl-1792-nmiai/weights/classifier_efficientnet_b3.pt weights/classifier2.pt
+gsutil cp gs://YOUR_GCS_BUCKET/weights/classifier_efficientnet_b3.pt weights/classifier2.pt
 ```
 
 **Note:** The filenames on GCS may differ. Adjust based on what `gcloud storage ls` shows. The key is:
@@ -145,7 +145,7 @@ Then update `load_classifier()` and `load_prototypes()` to extract from the comb
 
 ## STEP 3: Update constants.py for Config A (10 minutes)
 
-**File:** `/workspaces/norgesgruppen_ai_vision/src/constants.py`
+**File:** `./src/constants.py`
 
 Changes needed:
 
@@ -181,17 +181,17 @@ Launch eval jobs on Vertex AI to compare configs. Run these in parallel:
 
 ```bash
 # Eval A: 2 YOLO corrected + ConvNeXt classifier (our target config)
-bash /workspaces/norgesgruppen_ai_vision/scripts/launch_eval.sh \
+bash ./scripts/launch_eval.sh \
     "eval-2yolo-convnext" \
     "--ensemble-weights weights/yolov8l-1280-corrected.pt,weights/yolov8x-1280-corrected.pt --ensemble-sizes 1280,1280 --classifier weights/classifier.pt --classifier-model convnext_small.fb_in22k_ft_in1k --classifier-input-size 384 --classifier-gate 0.10"
 
 # Eval B: Same but without classifier (to measure classifier delta)
-bash /workspaces/norgesgruppen_ai_vision/scripts/launch_eval.sh \
+bash ./scripts/launch_eval.sh \
     "eval-2yolo-noclassifier" \
     "--ensemble-weights weights/yolov8l-1280-corrected.pt,weights/yolov8x-1280-corrected.pt --ensemble-sizes 1280,1280 --no-classifier"
 
 # Eval C: Current config (3 YOLO, no classifier) as baseline
-bash /workspaces/norgesgruppen_ai_vision/scripts/launch_eval.sh \
+bash ./scripts/launch_eval.sh \
     "eval-3yolo-baseline" \
     "--ensemble-weights weights/yolov8l-1280-corrected.pt,weights/yolov8x-1280-corrected.pt,weights/yolov8l-640-aug.pt --ensemble-sizes 1280,1280,640 --no-classifier"
 ```
@@ -205,7 +205,7 @@ bash /workspaces/norgesgruppen_ai_vision/scripts/launch_eval.sh \
 Even if we don't use prototypes in submission 1, precompute them now so they're ready.
 
 ```bash
-cd /workspaces/norgesgruppen_ai_vision
+cd .
 
 python scripts/precompute_prototypes.py \
     --classifier-path weights/classifier.pt \
@@ -224,18 +224,18 @@ Check the output size: `ls -lh weights/prototypes.pt` (should be ~2MB).
 1. Verify constants.py matches Config A from Step 3
 2. Ensure only the right weight files are in `weights/`:
    ```bash
-   cd /workspaces/norgesgruppen_ai_vision/weights
+   cd ./weights
    # Keep only: yolov8l-1280-corrected.pt, yolov8x-1280-corrected.pt, classifier.pt
    # Move others out temporarily:
    mkdir -p /tmp/weight_backup
    mv model.pt yolov8l-1280-aug.pt yolov8l-640-aug.pt yolov8m-* yolov8x-1280-aug.pt yolov8x-640-aug.pt /tmp/weight_backup/
-   ls -lh /workspaces/norgesgruppen_ai_vision/weights/
+   ls -lh ./weights/
    ```
 3. Fix `create_submission.sh` (add `src/prototype_matcher.py` -- see CRITICAL BUG above)
 4. Validate and create submission:
    ```bash
-   bash /workspaces/norgesgruppen_ai_vision/scripts/validate_submission.sh
-   bash /workspaces/norgesgruppen_ai_vision/scripts/create_submission.sh
+   bash ./scripts/validate_submission.sh
+   bash ./scripts/create_submission.sh
    ```
 5. Submit the zip
 
@@ -247,7 +247,7 @@ Check the output size: `ls -lh weights/prototypes.pt` (should be ~2MB).
 
 Check eval job results:
 ```bash
-gcloud ai custom-jobs list --region=us-central1 --project=ai-nm26osl-1792 --limit=5 --format='table(displayName,state)'
+gcloud ai custom-jobs list --region=us-central1 --project=YOUR_GCP_PROJECT_ID --limit=5 --format='table(displayName,state)'
 ```
 
 Stream logs of completed jobs to read mAP scores.
@@ -383,7 +383,7 @@ This would mean YOLO's classification is already good for the test distribution.
 
 ## EXACT CONSTANTS.PY FOR FIRST SUBMISSION
 
-Reference: `/workspaces/norgesgruppen_ai_vision/src/constants.py`
+Reference: `./src/constants.py`
 
 ```python
 # Line 57-61 -- 2-model ensemble
@@ -422,12 +422,12 @@ All other constants remain unchanged from current values.
 
 ## KEY FILES
 
-- `/workspaces/norgesgruppen_ai_vision/src/constants.py` -- all tuning parameters
-- `/workspaces/norgesgruppen_ai_vision/run.py` -- inference pipeline
-- `/workspaces/norgesgruppen_ai_vision/src/prototype_matcher.py` -- prototype matching module
-- `/workspaces/norgesgruppen_ai_vision/scripts/create_submission.sh` -- zip builder (NEEDS FIX)
-- `/workspaces/norgesgruppen_ai_vision/scripts/validate_submission.sh` -- pre-flight checks
-- `/workspaces/norgesgruppen_ai_vision/scripts/launch_eval.sh` -- Vertex AI eval launcher
-- `/workspaces/norgesgruppen_ai_vision/scripts/eval_full_pipeline.py` -- offline eval script
-- `/workspaces/norgesgruppen_ai_vision/scripts/precompute_prototypes.py` -- prototype builder
-- `/workspaces/norgesgruppen_ai_vision/scripts/check_jobs.sh` -- training job status
+- `./src/constants.py` -- all tuning parameters
+- `./run.py` -- inference pipeline
+- `./src/prototype_matcher.py` -- prototype matching module
+- `./scripts/create_submission.sh` -- zip builder (NEEDS FIX)
+- `./scripts/validate_submission.sh` -- pre-flight checks
+- `./scripts/launch_eval.sh` -- Vertex AI eval launcher
+- `./scripts/eval_full_pipeline.py` -- offline eval script
+- `./scripts/precompute_prototypes.py` -- prototype builder
+- `./scripts/check_jobs.sh` -- training job status

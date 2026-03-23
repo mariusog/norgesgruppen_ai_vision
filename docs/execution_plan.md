@@ -365,7 +365,7 @@ if USE_PROTOTYPE_MATCHING:
 - **Agent:** model-agent
 
 **Actions:**
-1. `gsutil cp gs://ai-nm26osl-1792-nmiai/weights/classifier_efficientnet_b3.pt weights/classifier.pt`
+1. `gsutil cp gs://YOUR_GCS_BUCKET/weights/classifier_efficientnet_b3.pt weights/classifier.pt`
 2. Verify `USE_CLASSIFIER = True` in `src/constants.py`
 3. Set `CLASSIFIER_CONFIDENCE_GATE = 0.10` (aggressive, since classifier >> YOLO for classification)
 4. Run `python run.py --input training/data/yolo/val/images --output /tmp/val_preds.json`

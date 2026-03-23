@@ -38,7 +38,7 @@ Top teams at 0.92 likely have:
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8l-1280-corrected-labels" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--data,training/data.yaml,--model,yolov8l.pt,--imgsz,1280,--batch,4,--epochs,150,--run-id,yolov8l-1280-corrected"
 ```
 
@@ -53,7 +53,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8x-1280-corrected-labels" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--data,training/data.yaml,--model,yolov8x.pt,--imgsz,1280,--batch,2,--epochs,150,--run-id,yolov8x-1280-corrected"
 ```
 
@@ -79,7 +79,7 @@ For now, use the existing script with modified args. The `timm` library in the c
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="convnext-small-384px-classifier" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--epochs,50,--batch-size,48,--lr,2e-4,--model-name,convnext_small.fb_in22k_ft_in1k,--input-size,384,--gcs-name,classifier_convnext_small_384.pt,--run-id,convnext-small-384"
 ```
 
@@ -99,7 +99,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="effnet-b3-384px-focal" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--epochs,50,--batch-size,48,--lr,2e-4,--model-name,efficientnet_b3,--input-size,384,--use-focal-loss,--gcs-name,classifier_effnet_b3_384_focal.pt,--run-id,effnet-b3-384-focal"
 ```
 
@@ -114,7 +114,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="swin-tiny-384px-classifier" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--epochs,50,--batch-size,48,--lr,2e-4,--model-name,swin_tiny_patch4_window7_224,--input-size,384,--gcs-name,classifier_swin_tiny_384.pt,--run-id,swin-tiny-384"
 ```
 
@@ -129,7 +129,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8m-1280-corrected-labels" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--data,training/data.yaml,--model,yolov8m.pt,--imgsz,1280,--batch,8,--epochs,150,--run-id,yolov8m-1280-corrected"
 ```
 
@@ -150,7 +150,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8l-1280-copypaste" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--data,training/data.yaml,--model,yolov8l.pt,--imgsz,1280,--batch,4,--epochs,150,--run-id,yolov8l-1280-copypaste,--copy-paste,0.5"
 ```
 
@@ -165,7 +165,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="effnetv2-s-384px-classifier" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--epochs,50,--batch-size,48,--lr,2e-4,--model-name,tf_efficientnetv2_s.in21k_ft_in1k,--input-size,384,--gcs-name,classifier_effnetv2_s_384.pt,--run-id,effnetv2-s-384"
 ```
 
@@ -180,7 +180,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8l-1600-highres" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--data,training/data.yaml,--model,yolov8l.pt,--imgsz,1600,--batch,2,--epochs,100,--run-id,yolov8l-1600-highres"
 ```
 
@@ -195,7 +195,7 @@ gcloud ai custom-jobs create \
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="convnext-base-384px-classifier" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --args="--epochs,50,--batch-size,32,--lr,1e-4,--model-name,convnext_base.fb_in22k_ft_in1k,--input-size,384,--gcs-name,classifier_convnext_base_384.pt,--run-id,convnext-base-384"
 ```
 
@@ -242,8 +242,8 @@ copy_paste=args.copy_paste,
 
 After making code changes:
 ```bash
-cd /workspaces/norgesgruppen_ai_vision
-gcloud builds submit --config=cloudbuild.yaml --project=ai-nm26osl-1792
+cd .
+gcloud builds submit --config=cloudbuild.yaml --project=YOUR_GCP_PROJECT_ID
 ```
 
 This must complete BEFORE launching any Tier 1-3 classifier jobs or copy-paste YOLO jobs. The Tier 1 YOLO retraining jobs (Jobs 1, 2) can launch immediately on the EXISTING container since they don't need new args.
@@ -266,7 +266,7 @@ These 3 YOLO jobs use the existing train.py with no modifications.
 
 1. Modify `train_classifier.py` (add --model-name, --input-size, --use-focal-loss, --gcs-name)
 2. Modify `train.py` (add --copy-paste)
-3. Rebuild container: `gcloud builds submit --config=cloudbuild.yaml --project=ai-nm26osl-1792`
+3. Rebuild container: `gcloud builds submit --config=cloudbuild.yaml --project=YOUR_GCP_PROJECT_ID`
 4. Launch classifier jobs:
    - **Job 3: ConvNeXt-Small 384px** -- highest priority classifier
    - **Job 4: EfficientNet-B3 384px focal** -- second classifier
@@ -325,13 +325,13 @@ Note: The 3-weight-file limit in `validate_submission.sh` may need to be updated
 
 1. Check all job statuses:
    ```bash
-   gcloud ai custom-jobs list --region=europe-west4 --project=ai-nm26osl-1792 --sort-by=~createTime --limit=15
+   gcloud ai custom-jobs list --region=europe-west4 --project=YOUR_GCP_PROJECT_ID --sort-by=~createTime --limit=15
    ```
 
 2. Download all completed weights:
    ```bash
-   gsutil ls gs://ai-nm26osl-1792-nmiai/weights/
-   gsutil -m cp gs://ai-nm26osl-1792-nmiai/weights/*.pt weights/
+   gsutil ls gs://YOUR_GCS_BUCKET/weights/
+   gsutil -m cp gs://YOUR_GCS_BUCKET/weights/*.pt weights/
    ```
 
 3. Compare retrained YOLO models (corrected labels) vs originals:

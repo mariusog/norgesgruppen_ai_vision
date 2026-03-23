@@ -125,7 +125,7 @@ Command:
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name="yolov8x-1280-cls-optimized" \
-  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+  --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest \
   --command="python training/train.py --model yolov8x.pt --imgsz 1280 --batch 4 --epochs 100"
 ```
 
