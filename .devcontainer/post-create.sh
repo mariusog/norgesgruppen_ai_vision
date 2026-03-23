@@ -16,7 +16,7 @@ pip install -e ".[dev]"
 
 # Authenticate gcloud using Application Default Credentials
 # (VS Code will prompt on first use, or run: gcloud auth application-default login)
-gcloud config set project ai-nm26osl-1792 2>/dev/null || true
+gcloud config set project YOUR_GCP_PROJECT_ID 2>/dev/null || true
 gcloud config set compute/region europe-west4 2>/dev/null || true
 
 echo ""

@@ -7,7 +7,7 @@ No Anthropic API key needed — bills through GCP.
 
 1. GCP project with Vertex AI API enabled
 2. Claude Opus enabled in Model Garden:
-   https://console.cloud.google.com/vertex-ai/publishers/anthropic/model-garden/claude-opus-4?project=ai-nm26osl-1792
+   https://console.cloud.google.com/vertex-ai/publishers/anthropic/model-garden/claude-opus-4?project=YOUR_GCP_PROJECT_ID
 3. `gcloud auth application-default login` (prompted on first use)
 
 ## Option A: Add to your devcontainer.json
@@ -25,7 +25,7 @@ Add these two blocks to your existing `.devcontainer/devcontainer.json`:
   "containerEnv": {
     "CLAUDE_CODE_USE_VERTEX": "1",
     "CLOUD_ML_REGION": "us-east5",
-    "ANTHROPIC_VERTEX_PROJECT_ID": "ai-nm26osl-1792"
+    "ANTHROPIC_VERTEX_PROJECT_ID": "YOUR_GCP_PROJECT_ID"
   }
 }
 ```
@@ -45,7 +45,7 @@ git apply patches/claude-vertex.patch
 ```bash
 export CLAUDE_CODE_USE_VERTEX=1
 export CLOUD_ML_REGION=us-east5
-export ANTHROPIC_VERTEX_PROJECT_ID=ai-nm26osl-1792
+export ANTHROPIC_VERTEX_PROJECT_ID=YOUR_GCP_PROJECT_ID
 ```
 
 ## Recommended .claude/settings.json

@@ -14,7 +14,7 @@
   "containerEnv": {
     "CLAUDE_CODE_USE_VERTEX": "1",
     "CLOUD_ML_REGION": "us-east5",
-    "ANTHROPIC_VERTEX_PROJECT_ID": "ai-nm26osl-1792"
+    "ANTHROPIC_VERTEX_PROJECT_ID": "YOUR_GCP_PROJECT_ID"
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {

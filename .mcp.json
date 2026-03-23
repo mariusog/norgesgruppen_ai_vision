@@ -2,7 +2,7 @@
   "mcpServers": {
     "nmiai": {
       "type": "http",
-      "url": "https://mcp-docs.ainm.no/mcp"
+      "url": "https://YOUR_MCP_SERVER_URL/mcp"
     }
   }
 }
