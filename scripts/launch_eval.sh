@@ -25,8 +25,8 @@ fi
 JOB_NAME="${1}"
 EXTRA_ARGS="${2:-}"
 REGION="us-central1"
-PROJECT="ai-nm26osl-1792"
-CONTAINER="europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest"
+PROJECT="YOUR_GCP_PROJECT_ID"
+CONTAINER="YOUR_DOCKER_REGISTRY/trainer:latest"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 DISPLAY_NAME="${JOB_NAME}-${TIMESTAMP}"
 

@@ -53,7 +53,7 @@ torch.load = functools.partial(torch.load, weights_only=False)
 # GCS dataset download (reused from training/train.py pattern)
 # ---------------------------------------------------------------------------
 
-GCS_BUCKET = "ai-nm26osl-1792-nmiai"
+GCS_BUCKET = "YOUR_GCS_BUCKET"
 
 
 def download_dataset_from_gcs() -> None:

@@ -7,7 +7,7 @@
 set -euo pipefail
 
 REGION="us-central1"
-PROJECT="ai-nm26osl-1792"
+PROJECT="YOUR_GCP_PROJECT_ID"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
 CONFIGS=(

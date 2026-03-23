@@ -168,8 +168,8 @@ IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp")
 # GCP configuration
 # ---------------------------------------------------------------------------
 
-GCP_PROJECT_ID = "ai-nm26osl-1792"
-GCS_BUCKET = "ai-nm26osl-1792-nmiai"
+GCP_PROJECT_ID = "YOUR_GCP_PROJECT_ID"
+GCS_BUCKET = "YOUR_GCS_BUCKET"
 GCS_DATASET_PREFIX = "datasets"
 GCS_WEIGHTS_PREFIX = "weights"
 

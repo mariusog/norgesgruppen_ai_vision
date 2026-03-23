@@ -28,7 +28,7 @@ torch.load = functools.partial(_orig_load, weights_only=False)
 
 from ultralytics import YOLO  # noqa: E402
 
-GCS_BUCKET = "ai-nm26osl-1792-nmiai"
+GCS_BUCKET = "YOUR_GCS_BUCKET"
 WEIGHTS_PREFIX = "weights"
 DEFAULT_BASE_MODEL = "yolov8m.pt"
 DEFAULT_DATA = "training/data.yaml"

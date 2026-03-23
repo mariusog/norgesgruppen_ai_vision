@@ -1,7 +1,7 @@
 # YOLO dataset configuration for NorgesGruppen grocery detection
 # NM i AI 2026 — 356 categories, IDs 0-355
 #
-# Dataset stored in GCS: gs://ai-nm26osl-1792-nmiai/datasets/
+# Dataset stored in GCS: gs://YOUR_GCS_BUCKET/datasets/
 # Pull locally before training: see scripts/download_dataset.sh
 
 path: /workspace/data    # Root dataset directory (downloaded from GCS datasets/yolo/)

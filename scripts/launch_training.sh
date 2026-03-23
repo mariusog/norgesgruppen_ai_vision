@@ -8,7 +8,7 @@
 set -euo pipefail
 
 REGION="us-central1"
-PROJECT="ai-nm26osl-1792"
+PROJECT="YOUR_GCP_PROJECT_ID"
 PROFILE="${1:-baseline}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -21,7 +21,7 @@ case "$PROFILE" in
       --region="$REGION" \
       --project="$PROJECT" \
       --display-name="$DISPLAY_NAME" \
-      --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+      --worker-pool-spec=machine-type=a2-highgpu-1g,accelerator-type=NVIDIA_TESLA_A100,accelerator-count=1,replica-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest
     ;;
   large)
     DISPLAY_NAME="yolov8l-1280-$(date +%Y%m%d-%H%M%S)"

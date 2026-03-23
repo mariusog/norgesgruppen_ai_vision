@@ -1,12 +1,12 @@
 # Training container for NM i AI 2026 — NorgesGruppen grocery detection
-# Pushed to: europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+# Pushed to: YOUR_DOCKER_REGISTRY/trainer:latest
 #
 # Build and push:
-#   gcloud builds submit --config=cloudbuild.yaml --project=ai-nm26osl-1792
+#   gcloud builds submit --config=cloudbuild.yaml --project=YOUR_GCP_PROJECT_ID
 #
 # Run locally (requires GPU):
 #   docker run --gpus all -v $(pwd):/workspace \
-#     europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest \
+#     YOUR_DOCKER_REGISTRY/trainer:latest \
 #     python training/train.py --data training/data.yaml --epochs 10 --no-upload
 
 # Ultralytics base image — includes ultralytics 8.1.0, PyTorch, CUDA, Python 3.11

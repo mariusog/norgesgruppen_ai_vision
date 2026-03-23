@@ -2,13 +2,13 @@
 # Download trained model weights from GCS after training completes.
 # Fetches the latest/best .pt file and saves it to weights/model.pt.
 #
-# Prerequisites: gcloud CLI authenticated, project set to ai-nm26osl-1792
+# Prerequisites: gcloud CLI authenticated, project set to YOUR_GCP_PROJECT_ID
 #
 # Usage: bash scripts/download_weights.sh
 
 set -euo pipefail
 
-GCS_BUCKET="ai-nm26osl-1792-nmiai"
+GCS_BUCKET="YOUR_GCS_BUCKET"
 GCS_WEIGHTS="gs://${GCS_BUCKET}/weights/"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEST_DIR="$REPO_ROOT/weights"

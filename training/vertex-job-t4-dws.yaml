@@ -5,7 +5,7 @@ workerPoolSpecs:
       acceleratorCount: 1
     replicaCount: 1
     containerSpec:
-      imageUri: europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+      imageUri: YOUR_DOCKER_REGISTRY/trainer:latest
     diskSpec:
       bootDiskType: pd-ssd
       bootDiskSizeGb: 100

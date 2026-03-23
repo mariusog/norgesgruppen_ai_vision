@@ -39,7 +39,7 @@ torch.load = functools.partial(_orig_load, weights_only=False)
 # Constants
 # ---------------------------------------------------------------------------
 
-GCS_BUCKET = "ai-nm26osl-1792-nmiai"
+GCS_BUCKET = "YOUR_GCS_BUCKET"
 WEIGHTS_PREFIX = "weights"
 GCS_WEIGHTS_NAME = "classifier_efficientnet_b3.pt"
 LOCAL_WEIGHTS_PATH = Path("weights/classifier.pt")
