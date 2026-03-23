@@ -115,7 +115,7 @@ All checks must pass:
 ## If a Check Fails
 
 1. **Forbidden imports**: Replace `os.path.*` with `pathlib.Path.*`, remove subprocess/socket calls entirely
-2. **Missing weights**: Pull from GCS — `gcloud storage cp gs://ai-nm26osl-1792-nmiai/weights/model.pt weights/`
+2. **Missing weights**: Pull from GCS — `gcloud storage cp gs://YOUR_GCS_BUCKET/weights/model.pt weights/`
 3. **Weight size over limit**: Use `model.export(format='onnx', half=True)` to compress, or use YOLOv8s instead of YOLOv8m
 4. **Schema errors**: Check that `int()` and `float()` casts are applied to all output fields
 5. **Timing over budget**: Switch to TensorRT engine export or reduce `IMAGE_SIZE` in constants

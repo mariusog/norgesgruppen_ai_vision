@@ -27,24 +27,24 @@ ML model specialist for the NM i AI 2026 NorgesGruppen competition. Owns the tra
 
 ## Task Workflow
 
-1. **Setup**: Pull dataset from `gs://ai-nm26osl-1792-nmiai/datasets/` using `gcloud storage`
+1. **Setup**: Pull dataset from `gs://YOUR_GCS_BUCKET/datasets/` using `gcloud storage`
 2. **Baseline**: Train YOLOv8m from pre-trained COCO weights (`yolov8m.pt`) on grocery dataset
 3. **Evaluate**: Run `python training/eval.py` → log mAP@50, mAP@50:95 to `docs/benchmark_results.md`
 4. **Iterate**: Tune `IMAGE_SIZE`, `CONFIDENCE_THRESHOLD`, `IOU_THRESHOLD` in `src/constants.py`
 5. **Export**: Export best weights to `weights/model.pt`, verify size < 420 MB
-6. **Upload**: Push weights to `gs://ai-nm26osl-1792-nmiai/weights/`
+6. **Upload**: Push weights to `gs://YOUR_GCS_BUCKET/weights/`
 
 ## GCP Training
 
 ```bash
 # Build and push training container
-gcloud builds submit --tag us-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest training/
+gcloud builds submit --tag YOUR_DOCKER_REGISTRY/trainer:latest training/
 
 # Launch Vertex AI custom training job
 gcloud ai custom-jobs create \
   --region=europe-west4 \
   --display-name=yolov8m-grocery \
-  --worker-pool-spec=machine-type=n1-standard-8,accelerator-type=NVIDIA_TESLA_T4,accelerator-count=1,container-image-uri=us-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest
+  --worker-pool-spec=machine-type=n1-standard-8,accelerator-type=NVIDIA_TESLA_T4,accelerator-count=1,container-image-uri=YOUR_DOCKER_REGISTRY/trainer:latest
 ```
 
 ## Model Versioning

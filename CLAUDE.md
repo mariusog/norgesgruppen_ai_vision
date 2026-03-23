@@ -60,7 +60,7 @@ Key pipeline stages in `run.py`:
 
 ### Training pipeline (`training/`)
 
-`training/train.py` is the Vertex AI job entrypoint. It pulls the dataset from GCS (`gs://ai-nm26osl-1792-nmiai/datasets/`), trains YOLOv8m via ultralytics, logs results to `docs/benchmark_results.md`, then pushes best weights back to GCS. `training/Dockerfile` extends `ultralytics/ultralytics:8.1.0` and adds the `google-cloud-storage` SDK.
+`training/train.py` is the Vertex AI job entrypoint. It pulls the dataset from GCS (`gs://YOUR_GCS_BUCKET/datasets/`), trains YOLOv8m via ultralytics, logs results to `docs/benchmark_results.md`, then pushes best weights back to GCS. `training/Dockerfile` extends `ultralytics/ultralytics:8.1.0` and adds the `google-cloud-storage` SDK.
 
 `training/data.yaml` configures the YOLO dataset: `nc: 356`, paths to `train/images` and `val/images` under `/workspace/data`.
 
@@ -75,13 +75,13 @@ Key pipeline stages in `run.py`:
 
 ### MCP
 
-The `nmiai` MCP server (`https://mcp-docs.ainm.no/mcp`) is configured in `.mcp.json` and auto-approved. Use it to discover dataset download endpoints and competition API tools.
+The `nmiai` MCP server (`https://YOUR_MCP_SERVER_URL/mcp`) is configured in `.mcp.json` and auto-approved. Use it to discover dataset download endpoints and competition API tools.
 
 ### GCP
 
-- Project: `ai-nm26osl-1792`
-- Bucket: `gs://ai-nm26osl-1792-nmiai/` (datasets + weights)
-- Training container: `us-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest`
+- Project: `YOUR_GCP_PROJECT_ID`
+- Bucket: `gs://YOUR_GCS_BUCKET/` (datasets + weights)
+- Training container: `YOUR_DOCKER_REGISTRY/trainer:latest`
 
 ## Competition Constraints
 

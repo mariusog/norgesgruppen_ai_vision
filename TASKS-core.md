@@ -12,11 +12,11 @@
 - [x] Check status of both training jobs:
   - A100 job: `7892309170144149504` (display: `yolov8m-grocery-run1-a100`)
   - L4 job: `5037027006391255040` (display: `yolov8m-grocery-run1-l4`)
-  - Command: `gcloud ai custom-jobs list --region=europe-west4 --project=ai-nm26osl-1792 --limit=5`
+  - Command: `gcloud ai custom-jobs list --region=europe-west4 --project=YOUR_GCP_PROJECT_ID --limit=5`
 - [ ] If either job succeeded: download weights from GCS
-  - `gcloud storage cp gs://ai-nm26osl-1792-nmiai/weights/best.pt weights/model.pt`
+  - `gcloud storage cp gs://YOUR_GCS_BUCKET/weights/best.pt weights/model.pt`
 - [x] If both still PENDING: check logs for errors, report status
-  - `gcloud ai custom-jobs describe <JOB_ID> --region=europe-west4 --project=ai-nm26osl-1792`
+  - `gcloud ai custom-jobs describe <JOB_ID> --region=europe-west4 --project=YOUR_GCP_PROJECT_ID`
 - [ ] Verify weight file size < 420 MB
 - [ ] Self-review: lint + quality check
 - [ ] Tests pass
@@ -26,7 +26,7 @@
 **Findings (2026-03-20)**:
 - Both A100 (`7892309170144149504`) and L4 (`5037027006391255040`) jobs are `JOB_STATE_PENDING`.
 - Logs show repeated cycle: "Resources are insufficient in region: europe-west4" — jobs keep retrying provisioning.
-- Container image `europe-west4-docker.pkg.dev/ai-nm26osl-1792/nmiai/trainer:latest` exists (built 2026-03-20T09:38:56, ~5 GB).
+- Container image `YOUR_DOCKER_REGISTRY/trainer:latest` exists (built 2026-03-20T09:38:56, ~5 GB).
 - No `weights/` directory exists in GCS yet — only `datasets/` is present.
 - A previous T4 job (`8447377824217563136`, display: `yolov8m-grocery-run1`) was manually CANCELED.
 

@@ -72,7 +72,7 @@ Weight files are not included in this repository due to size. The expected weigh
 
 Training was done on Google Cloud Vertex AI using the configs in `training/`. See `training/train.py` for the YOLOv8 training pipeline and `training/train_classifier.py` for the two-stage classifier.
 
-Dataset was hosted on GCS at `gs://ai-nm26osl-1792-nmiai/datasets/`.
+Dataset was hosted on GCS at `gs://YOUR_GCS_BUCKET/datasets/`.
 
 ## Requirements
 
