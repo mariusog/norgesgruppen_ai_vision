@@ -17,9 +17,7 @@ from google.cloud import storage
 # --- Config ---
 METADATA_PATH = Path("./training/data/images/metadata.json")
 PRODUCT_IMAGES_DIR = Path("./training/data/images")
-CATEGORY_NAMES_PATH = Path(
-    "./training/data/yolo/category_names.json"
-)
+CATEGORY_NAMES_PATH = Path("./training/data/yolo/category_names.json")
 YOLO_TRAIN_IMAGES = Path("./training/data/yolo/train/images")
 YOLO_TRAIN_LABELS = Path("./training/data/yolo/train/labels")
 GCS_BUCKET = "YOUR_GCS_BUCKET"
