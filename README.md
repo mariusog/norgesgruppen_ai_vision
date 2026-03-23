@@ -1,12 +1,12 @@
-# NM i AI 2026 -- NorgesGruppen Grocery Detection
+# NorgesGruppen AI Vision
 
 Object detection and classification of grocery products on store shelves, built for the [NM i AI 2026](https://www.nmiai.no/) competition hosted by NorgesGruppen.
 
 **Final score: 0.9121 mAP | Rank #61 out of 349 teams**
 
-## Competition Overview
+## Competition Task
 
-The task was to detect and classify grocery products from 356 categories in shelf images. Scoring was a weighted combination of detection mAP (70%, category-agnostic IoU >= 0.5) and classification mAP (30%, correct category + IoU >= 0.5). Submissions ran on an NVIDIA L4 GPU with a 300-second timeout and a 420 MB weight limit.
+Detect and classify grocery products from 356 categories in shelf images. Scoring was a weighted combination of detection mAP (70%, category-agnostic IoU >= 0.5) and classification mAP (30%, correct category + IoU >= 0.5). Submissions ran on an NVIDIA L4 GPU with a 300-second timeout and a 420 MB weight limit.
 
 ## Approach
 
@@ -33,7 +33,7 @@ A two-stage EfficientNet-B3 classifier was developed for category refinement, an
 | Sub 11 | 0.9042 | Corrected training labels, retrained models |
 | Sub 12 | 0.9121 | 4-model ensemble via dual bundle packing |
 
-## Repository Structure
+## Project Structure
 
 ```
 run.py                  # Competition entry point -- all inference logic
@@ -48,8 +48,8 @@ training/
   vertex-job-*.yaml     # Vertex AI job configs for various model/resolution combos
 tests/                  # Test suite (security checks, output format, constants)
 scripts/                # Dataset download, submission validation, prototype precomputation
-docs/                   # Strategy documents, benchmark logs, training monitor logs
-weights/                # Model weight files (not included in repo -- see below)
+docs/                   # Strategy documents and benchmark logs
+weights/                # Model weight files (not included -- see below)
 ```
 
 ## Running Inference
@@ -70,9 +70,26 @@ Weight files are not included in this repository due to size. The expected weigh
 
 ## Training
 
-Training was done on Google Cloud Vertex AI using the configs in `training/`. See `training/train.py` for the YOLOv8 training pipeline and `training/train_classifier.py` for the two-stage classifier.
+Training was done on Google Cloud Vertex AI with the configs in `training/`. To reproduce:
 
-Dataset was hosted on GCS at `gs://YOUR_GCS_BUCKET/datasets/`.
+1. Set up your GCP project and update `src/constants.py` with your project ID and bucket name
+2. Build and push the training container: `gcloud builds submit --config cloudbuild.yaml`
+3. Launch a training job: `bash scripts/launch_training.sh`
+
+See `training/train.py` for the YOLOv8 pipeline and `training/train_classifier.py` for the two-stage classifier.
+
+## Development
+
+```bash
+pip install -e ".[dev]"
+
+# Run tests
+python -m pytest tests/ -m "not slow" -q --tb=line
+
+# Lint and format
+ruff check .
+ruff format .
+```
 
 ## Requirements
 
@@ -80,8 +97,7 @@ Dataset was hosted on GCS at `gs://YOUR_GCS_BUCKET/datasets/`.
 - ultralytics 8.1.0
 - PyTorch 2.6.0+cu124
 - timm 0.9.12
-- torchvision
-- Pillow
+- torchvision, Pillow
 - ensemble-boxes (for WBF)
 
 ## License
