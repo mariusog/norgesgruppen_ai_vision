@@ -33,6 +33,29 @@ A two-stage EfficientNet-B3 classifier was developed for category refinement, an
 | Sub 11 | 0.9042 | Corrected training labels, retrained models |
 | Sub 12 | 0.9121 | 4-model ensemble via dual bundle packing |
 
+### Key Design Decisions
+
+**Multi-model ensemble over single model** -- A single YOLOv8l at 1280px scored 0.8211. Adding a second model (YOLOv8x) and fusing with WBF jumped to 0.8685. The ensemble captures complementary predictions from different architectures and resolutions -- YOLOv8l is precise on common objects, YOLOv8x catches harder cases.
+
+**Dual bundle weight packing** -- The competition enforced a 420 MB / 3 file limit. By packing two models into a single weight file (YOLOv8l @ 640px + YOLOv8x @ 1280px), we fit 4 models into 3 files. This enabled the final 4-model ensemble that scored 0.9121.
+
+**Label correction over architecture changes** -- The jump from 0.8685 to 0.9042 came from fixing annotation errors in the training data, not from changing models or hyperparameters. Corrected labels and retraining existing models had more impact than any architectural change we tried.
+
+**Two-stage classifier explored but not used** -- An EfficientNet-B3 classifier for category refinement was fully developed and trained. However, the YOLO ensemble's native classification was strong enough that adding the classifier didn't improve the overall score. The code is included for reference.
+
+### What Worked and What Didn't
+
+| Decision | Outcome |
+|----------|---------|
+| WBF ensemble (4 models) | +0.19 mAP over single model (0.82 -> 0.91) |
+| Very low confidence threshold (0.01) | +0.09 mAP -- let WBF handle filtering instead of per-model thresholds |
+| Training at 1280px resolution | +0.02 mAP over 640px for detection on dense shelves |
+| Label correction and retraining | +0.04 mAP -- bigger impact than any hyperparameter change |
+| TTA (test-time augmentation) | Modest improvement, worth the inference time cost |
+| Dual bundle packing for 4th model | +0.008 mAP -- small but free (no inference cost, just better fusion) |
+| Two-stage EfficientNet classifier | No improvement -- YOLO classification was already strong enough |
+| Prototype matching (cosine similarity) | Explored as fallback for mid-confidence predictions, not used in final |
+
 ## Project Structure
 
 ```
