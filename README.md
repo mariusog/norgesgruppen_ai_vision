@@ -43,18 +43,19 @@ A two-stage EfficientNet-B3 classifier was developed for category refinement, an
 
 **Two-stage classifier explored but not used** -- An EfficientNet-B3 classifier for category refinement was fully developed and trained. However, the YOLO ensemble's native classification was strong enough that adding the classifier didn't improve the overall score. The code is included for reference.
 
-### What Worked and What Didn't
+### What Worked
 
-| Decision | Outcome |
-|----------|---------|
-| WBF ensemble (4 models) | +0.19 mAP over single model (0.82 -> 0.91) |
-| Very low confidence threshold (0.01) | +0.09 mAP -- let WBF handle filtering instead of per-model thresholds |
-| Training at 1280px resolution | +0.02 mAP over 640px for detection on dense shelves |
-| Label correction and retraining | +0.04 mAP -- bigger impact than any hyperparameter change |
-| TTA (test-time augmentation) | Modest improvement, worth the inference time cost |
-| Dual bundle packing for 4th model | +0.008 mAP -- small but free (no inference cost, just better fusion) |
-| Two-stage EfficientNet classifier | No improvement -- YOLO classification was already strong enough |
-| Prototype matching (cosine similarity) | Explored as fallback for mid-confidence predictions, not used in final |
+- **WBF ensemble (4 models)** -- +0.19 mAP over single model (0.82 -> 0.91). The single biggest lever.
+- **Very low confidence threshold (0.01)** -- +0.09 mAP. Let WBF handle filtering instead of per-model thresholds.
+- **Label correction and retraining** -- +0.04 mAP. Bigger impact than any hyperparameter or architecture change.
+- **Training at 1280px resolution** -- +0.02 mAP over 640px for detection on dense shelves.
+- **TTA (test-time augmentation)** -- Modest but consistent improvement, worth the inference time cost.
+- **Dual bundle packing** -- Fit a 4th model into the 3-file weight limit for +0.008 mAP at no extra inference cost.
+
+### What Didn't Work
+
+- **Two-stage EfficientNet classifier** -- Fully developed and trained, but YOLO's native classification was already strong enough. No improvement on the combined score.
+- **Prototype matching (cosine similarity)** -- Explored as a fallback for mid-confidence classifier predictions. Didn't outperform direct YOLO classification.
 
 ## Project Structure
 
